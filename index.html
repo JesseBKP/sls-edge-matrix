@@ -372,6 +372,10 @@ const BP_USAGE_GAMES = [{"away": "MIN", "home": "BAL", "game_time": "2026-03-29T
 
 
 
+
+
+
+
 <div id="sls-gate" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;font-family:monospace;">
   <div style="border:1px solid #333;padding:48px 40px;text-align:center;max-width:360px;width:90%;">
     <div style="color:#e8d5a3;font-size:22px;font-weight:700;letter-spacing:3px;margin-bottom:6px;">SLS EDGE MATRIX</div>
@@ -2052,6 +2056,7 @@ wireFilter("fl-run","run");
 wireFilter("fl-bp","bp");
 render();
 updateSortArrows();
+document.addEventListener('DOMContentLoaded',function(){render();});
 
 var mmState={rp:'all',bp:'all',mt:'all',sp:'all'};
 
