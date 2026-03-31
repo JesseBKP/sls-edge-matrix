@@ -393,6 +393,8 @@ const BP_USAGE_GAMES = [{"away": "MIN", "home": "KC", "game_time": "2026-03-30T2
 
 
 
+
+
 <div id="sls-gate" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;font-family:monospace;">
   <div style="border:1px solid #333;padding:48px 40px;text-align:center;max-width:360px;width:90%;">
     <div style="color:#e8d5a3;font-size:22px;font-weight:700;letter-spacing:3px;margin-bottom:6px;">SLS EDGE MATRIX</div>
@@ -615,6 +617,7 @@ const BP_USAGE_GAMES = [{"away": "MIN", "home": "KC", "game_time": "2026-03-30T2
                 <th style="font-size:9px;font-weight:700;letter-spacing:.05em;color:var(--text2);padding:0 5px 7px 5px;text-align:center;width:32px;">xERA</th>
                 <th style="font-size:9px;font-weight:700;letter-spacing:.05em;color:var(--text2);padding:0 5px 7px 5px;text-align:center;width:36px;">L3 ERA</th>
                 <th style="font-size:9px;font-weight:700;letter-spacing:.05em;color:var(--text2);padding:0 5px 7px 5px;text-align:center;width:36px;">TREND</th>
+                <th id="mm-velo-th" style="font-size:9px;font-weight:700;letter-spacing:.05em;color:var(--text2);padding:0 5px 7px 5px;text-align:center;width:48px;cursor:pointer;user-select:none;" data-mm-sort="velo">VELO &#x25C5;</th>
                 <th style="font-size:9px;font-weight:700;letter-spacing:.05em;color:var(--text2);padding:0 8px 7px 8px;text-align:left;width:148px;">GAME TIMELINE</th>
                 <th style="font-size:9px;font-weight:700;letter-spacing:.05em;color:var(--text2);padding:0 5px 7px 5px;text-align:center;width:50px;">RUN PROB</th>
                 <th style="font-size:9px;font-weight:700;letter-spacing:.05em;color:var(--text2);padding:0 5px 7px 5px;text-align:left;width:158px;">TARGET STACK</th>
@@ -2082,7 +2085,7 @@ render();
 updateSortArrows();
 document.addEventListener('DOMContentLoaded',function(){render();});
 
-var mmState={rp:'all',bp:'all',mt:'all',sp:'all'};
+var mmState={rp:'all',bp:'all',mt:'all',sp:'all',veloDir:1};
 
 function buildMatchupMatrix(){
   var probables=typeof TODAY_PROBABLES!=='undefined'?TODAY_PROBABLES:{};
@@ -2220,8 +2223,8 @@ function buildMatchupMatrix(){
       veloTrend:recent.velo_trend||null,
       l3eraDisp:l3era?l3era.toFixed(2):'--',
       l3eraColor:l3era&&l3era<=3.50?'#27500A':l3era&&l3era<=4.25?'#854F0B':l3era>0?'#A32D2D':'var(--text2)',
-      veloDisp:(function(){var vd=recent.velo_drop_mph;if(vd===null||vd===undefined)return '--';return (vd>0?'+':'')+(-vd).toFixed(1)+' mph';}()),
-      veloDispColor:(function(){var vd=recent.velo_drop_mph;if(vd===null||vd===undefined)return 'var(--text2)';return vd>=1.5?'#ff4d6d':vd>=0.8?'#e8c547':vd<=-1.0?'#4af0b0':'#9ca8b8';}()),
+      veloDisp:(function(){var vd=recent.velo_drop_mph;if(vd===null||vd===undefined)return '--';var d=-vd;return (d>0?'+':d<0?'':'')+d.toFixed(1)+' mph';}()),
+      veloDropRaw:recent.velo_drop_mph!==undefined?recent.velo_drop_mph:null,
       trendDisp:trend||'--',
       trendColor:trend==='UP'?'#27500A':trend==='DOWN'||trend==='COLD'?'#A32D2D':trend==='HOT'?'#27500A':'var(--text2)',
     });
@@ -2229,12 +2232,49 @@ function buildMatchupMatrix(){
 
   rows.sort(function(a,b){return b.atkScore-a.atkScore;});
 
+  // Compute red-green gradient scale for velo drop across all rows
+  var veloVals=rows.map(function(r){return r.veloDropRaw;}).filter(function(v){return v!==null&&v!==undefined;});
+  var veloMin=veloVals.length?Math.min.apply(null,veloVals):0;  // most negative = biggest gain
+  var veloMax=veloVals.length?Math.max.apply(null,veloVals):0;  // most positive = biggest drop
+  var veloRange=veloMax-veloMin||1;
+  // Wire velo header sort -- toggle asc/desc
+  var veloTh=document.getElementById('mm-velo-th');
+  if(veloTh&&!veloTh.dataset.wired){
+    veloTh.dataset.wired='1';
+    veloTh.addEventListener('click',function(){
+      mmState.veloDir=mmState.veloDir===1?-1:1;
+      veloTh.innerHTML='VELO '+(mmState.veloDir===1?'&#x25B5;':'&#x25C5;');
+      rows.sort(function(a,b){
+        var av=a.veloDropRaw!==null&&a.veloDropRaw!==undefined?a.veloDropRaw:999;
+        var bv=b.veloDropRaw!==null&&b.veloDropRaw!==undefined?b.veloDropRaw:999;
+        return mmState.veloDir*(av-bv);
+      });
+      var tbody2=document.getElementById('mm-body');
+      if(tbody2) tbody2.innerHTML='';
+      var shown2=0;
+      rows.forEach(function(r){renderMmRow(r,tbody2);shown2++;});
+      var ct=document.getElementById('mm-count');
+      if(ct)ct.textContent=shown2+' games';
+    });
+  }
+
+  rows.forEach(function(r){
+    if(r.veloDropRaw===null||r.veloDropRaw===undefined){r.veloDispColor='var(--text2)';return;}
+    // 0=biggest gain (green) 1=biggest drop (red)
+    var t=(r.veloDropRaw-veloMin)/veloRange;
+    // Interpolate: green #4af0b0 -> gray #9ca8b8 -> red #ff4d6d
+    var R,G,B;
+    if(t<0.5){var u=t*2;R=Math.round(0x4a+(0x9c-0x4a)*u);G=Math.round(0xf0+(0xa8-0xf0)*u);B=Math.round(0xb0+(0xb8-0xb0)*u);}
+    else{var u=(t-0.5)*2;R=Math.round(0x9c+(0xff-0x9c)*u);G=Math.round(0xa8+(0x4d-0xa8)*u);B=Math.round(0xb8+(0x6d-0xb8)*u);}
+    r.veloDispColor='rgb('+R+','+G+','+B+')';
+  });
+
   var tbody=document.getElementById('mm-body');
   if(!tbody)return;
   tbody.innerHTML='';
   var shown=0;
 
-  rows.forEach(function(r){
+  function renderMmRow(r,tbody){
     var rpVal=r.runPct;
     var ok=true;
     if(mmState.rp==='70'&&rpVal<70)ok=false;
