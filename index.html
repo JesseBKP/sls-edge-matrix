@@ -1359,7 +1359,8 @@ function renderPitcherTable(){
     const stackSignal= r.lc>=3?'ATTACK':r.lc>=2?'LEAN':r.lc===0?'SAFE':'NEUTRAL';
     const stackColor = r.lc>=3?'#ff4d6d':r.lc>=2?'#ff8c42':r.lc===0?'#4af0b0':'#9ca8b8';
     const archColor  = ARCHETYPE_COLORS[r.arch.archetype]||ARCHETYPE_COLORS['DEFAULT'];
-    const todayBadge = r.isToday?`<span style="padding:1px 5px;border-radius:2px;background:rgba(232,197,71,0.15);border:1px solid rgba(232,197,71,0.3);font-size:8px;font-family:'DM Mono',monospace;color:#e8c547;margin-left:4px;">TODAY</span>`:'';    const estBadge = (r.arch && r.arch.source === 'quick_cache') ? '<span style="padding:1px 5px;border-radius:2px;background:rgba(74,122,255,0.12);border:1px solid rgba(74,122,255,0.3);font-size:8px;font-family:\'DM Mono\',monospace;color:#4a7aff;margin-left:4px;">[est]</span>' : '';
+    const todayBadge = r.isToday?'<span style="padding:1px 5px;border-radius:2px;background:rgba(232,197,71,0.15);border:1px solid rgba(232,197,71,0.3);font-size:8px;font-family:DM Mono,monospace;color:#e8c547;margin-left:4px;">TODAY</span>':'';
+    const estBadge = (r.arch && r.arch.source === 'quick_cache') ? '<span style="padding:1px 5px;border-radius:2px;background:rgba(74,122,255,0.12);border:1px solid rgba(74,122,255,0.3);font-size:8px;font-family:DM Mono,monospace;color:#4a7aff;margin-left:4px;">[est]</span>' : '';
     const rowBorder  = r.isToday?'border-left:2px solid #e8c547;':'border-left:2px solid #1a2230;';
 
     // Arsenal bars — fixed path
