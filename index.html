@@ -2350,7 +2350,9 @@ function buildMatchupMatrix(){
         +'<div style="font-size:8px;color:var(--text2);">ATK</div>'
       +'</td>';
     tbody.appendChild(tr);
-  });
+  }
+
+  rows.forEach(function(r){renderMmRow(r,tbody);});
 
   document.getElementById('mm-count').textContent=shown+' game'+(shown!==1?'s':'');
   document.getElementById('mm-empty').style.display=shown===0?'block':'none';
