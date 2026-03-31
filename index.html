@@ -385,6 +385,8 @@ const BP_USAGE_GAMES = [{"away": "MIN", "home": "KC", "game_time": "2026-03-30T2
 
 
 
+
+
 <div id="sls-gate" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;font-family:monospace;">
   <div style="border:1px solid #333;padding:48px 40px;text-align:center;max-width:360px;width:90%;">
     <div style="color:#e8d5a3;font-size:22px;font-weight:700;letter-spacing:3px;margin-bottom:6px;">SLS EDGE MATRIX</div>
@@ -914,7 +916,7 @@ function buildRow(p,i){
       <div style="display:flex;align-items:center;gap:5px;">
         ${teamLogo(p.team)}
         <div>
-          <div class="${nc}" style="background:${p.confirmed?'rgba(0,200,81,0.22)':'rgba(255,255,255,0.04)'};border-left:2px solid ${p.confirmed?'#00c851':'#444'};padding-left:4px;border-radius:2px;";color:${p.platoon?"#00c851":"#f0f4f8"};font-style:${p.platoon?"italic":"normal"};'>${p.name}</div>
+          <div class="${nc}" style="background:${p.confirmed?'rgba(0,200,81,0.22)':'rgba(255,255,255,0.04)'};border-left:2px solid ${p.confirmed?'#00c851':'#444'};padding-left:4px;border-radius:2px;">${p.name}</div>
           <div style="display:flex;align-items:center;gap:4px;margin-top:2px;">
             <div class="signal-dots">${sd}</div>
             ${p.pitcher_name?'<span style="font-size:9px;color:var(--text2);font-family:monospace;white-space:nowrap;">vs '+p.pitcher_name+'</span>':''}${p.pitcher_diff&&p.pitcher_diff!='NEUTRAL'?'<span style="font-size:8px;font-weight:700;padding:1px 3px;border-radius:2px;margin-left:3px;color:#fff;background:'+(p.pitcher_diff=='TOUGH'?'#c0392b':'#27ae60')+';">'+p.pitcher_diff+'</span>':''}
