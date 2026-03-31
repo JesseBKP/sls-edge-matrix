@@ -397,6 +397,8 @@ const BP_USAGE_GAMES = [{"away": "MIN", "home": "KC", "game_time": "2026-03-30T2
 
 
 
+
+
 <div id="sls-gate" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;font-family:monospace;">
   <div style="border:1px solid #333;padding:48px 40px;text-align:center;max-width:360px;width:90%;">
     <div style="color:#e8d5a3;font-size:22px;font-weight:700;letter-spacing:3px;margin-bottom:6px;">SLS EDGE MATRIX</div>
@@ -1348,7 +1350,7 @@ function renderPitcherTable(){
     const xeraColor  = r.xera<=3.5?'#4af0b0':r.xera<=4.25?'#e8c547':r.xera<=5.0?'#ff8c42':'#ff4d6d';
     const veloVal   = (r.velo_drop_sc!==null&&r.velo_drop_sc!==undefined) ? -r.velo_drop_sc : r.veloDrop;
     const veloColor  = veloVal===null?'#5c6878':veloVal<=-1.5?'#ff4d6d':veloVal<=-0.8?'#e8c547':veloVal>=1.0?'#4af0b0':'#9ca8b8';
-    const veloText   = veloVal===null?'--':(veloVal>0?'+':'')+veloVal.toFixed(1)+' mph';
+    const veloText   = veloVal===null?'--':(veloVal>0?'+':'')+(veloVal||0).toFixed(1)+' mph';
     const veloArrow  = r.velo_trend_sc==='DOWN'?' ↓':r.velo_trend_sc==='UP'?' ↑':'';
     const stackSignal= r.lc>=3?'ATTACK':r.lc>=2?'LEAN':r.lc===0?'SAFE':'NEUTRAL';
     const stackColor = r.lc>=3?'#ff4d6d':r.lc>=2?'#ff8c42':r.lc===0?'#4af0b0':'#9ca8b8';
