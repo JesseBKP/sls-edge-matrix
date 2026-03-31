@@ -401,6 +401,8 @@ const BP_USAGE_GAMES = [{"away": "MIN", "home": "KC", "game_time": "2026-03-30T2
 
 
 
+
+
 <div id="sls-gate" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;font-family:monospace;">
   <div style="border:1px solid #333;padding:48px 40px;text-align:center;max-width:360px;width:90%;">
     <div style="color:#e8d5a3;font-size:22px;font-weight:700;letter-spacing:3px;margin-bottom:6px;">SLS EDGE MATRIX</div>
@@ -1352,7 +1354,7 @@ function renderPitcherTable(){
     const xeraColor  = r.xera<=3.5?'#4af0b0':r.xera<=4.25?'#e8c547':r.xera<=5.0?'#ff8c42':'#ff4d6d';
     const veloColor  = r.veloDrop===null?'#5c6878':r.veloDrop<=-1.5?'#ff4d6d':r.veloDrop<=-0.8?'#e8c547':'#4af0b0';
     const veloText   = r.veloDrop===null?'0':(r.veloDrop>0?'+':'')+r.veloDrop+' mph';
-    const stackSignal= r.lc>=3?'ATTACK':r.lc>=2?'LEAN':r.lc===0?'SAFE':'NEUTRAL';
+    const stackSignal    const stackSignal= r.lc>=3?'ATTACK':r.lc>=2?'LEAN':r.lc===0?'SAFE':'NEUTRAL';
     const stackColor = r.lc>=3?'#ff4d6d':r.lc>=2?'#ff8c42':r.lc===0?'#4af0b0':'#9ca8b8';
     const archColor  = ARCHETYPE_COLORS[r.arch.archetype]||ARCHETYPE_COLORS['DEFAULT'];
     const todayBadge = r.isToday?`<span style="padding:1px 5px;border-radius:2px;background:rgba(232,197,71,0.15);border:1px solid rgba(232,197,71,0.3);font-size:8px;font-family:'DM Mono',monospace;color:#e8c547;margin-left:4px;">TODAY</span>`:'';    const estBadge = (r.arch && r.arch.source === 'quick_cache') ? '<span style="padding:1px 5px;border-radius:2px;background:rgba(74,122,255,0.12);border:1px solid rgba(74,122,255,0.3);font-size:8px;font-family:\'DM Mono\',monospace;color:#4a7aff;margin-left:4px;">[est]</span>' : '';
