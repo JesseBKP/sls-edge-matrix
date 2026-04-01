@@ -1384,6 +1384,7 @@ function renderPitcherTable(){
     const archColor  = ARCHETYPE_COLORS[r.arch.archetype]||ARCHETYPE_COLORS['DEFAULT'];
     const todayBadge = r.isToday?'<span style="padding:1px 5px;border-radius:2px;background:rgba(232,197,71,0.15);border:1px solid rgba(232,197,71,0.3);font-size:8px;font-family:DM Mono,monospace;color:#e8c547;margin-left:4px;">TODAY</span>':'';
     const estBadge = (r.arch && r.arch.source === 'quick_cache') ? '<span style="padding:1px 5px;border-radius:2px;background:rgba(74,122,255,0.12);border:1px solid rgba(74,122,255,0.3);font-size:8px;font-family:DM Mono,monospace;color:#4a7aff;margin-left:4px;">[est]</span>' : '';
+    const lethalBadge = r.cross_ref>=4?'<span style="padding:1px 5px;border-radius:2px;background:rgba(255,77,109,0.20);border:1px solid rgba(255,77,109,0.5);font-size:8px;font-family:DM Mono,monospace;color:#ff4d6d;margin-left:4px;font-weight:700;">LETHAL</span>':r.cross_ref<=-3?'<span style="padding:1px 5px;border-radius:2px;background:rgba(74,122,255,0.15);border:1px solid rgba(74,122,255,0.4);font-size:8px;font-family:DM Mono,monospace;color:#4a7aff;margin-left:4px;font-weight:700;">FADE</span>':'';
     const rowBorder  = r.isToday?'border-left:2px solid #e8c547;':'border-left:2px solid #1a2230;';
 
     // Arsenal bars — fixed path
@@ -1408,7 +1409,7 @@ function renderPitcherTable(){
 
     return `<tr style="${rowBorder}">
       <td class="center"><div class="rank-num">${i+1}</div></td>
-      <td><div style="font-size:12px;font-weight:600;color:#f0f4f8;">${r.arch.name}${todayBadge}${estBadge}</div><div style="font-size:9px;color:#5c6878;font-family:monospace;margin-top:1px;">${r.team||''}</div></td>
+      <td><div style="font-size:12px;font-weight:600;color:#f0f4f8;">${r.arch.name}${todayBadge}${estBadge}${lethalBadge}</div><div style="font-size:9px;color:#5c6878;font-family:monospace;margin-top:1px;">${r.team||''}</div></td>
       <td class="center">${(()=>{
         const TEAMS={"LAA":"#BA0021","ARI":"#A71930","BAL":"#DF4601","BOS":"#BD3039","CHC":"#0E3386","CIN":"#C6011F","CLE":"#00385D","COL":"#33006F","DET":"#0C2340","HOU":"#EB6E1F","KC":"#004687","LAD":"#005A9C","WSH":"#AB0003","NYM":"#002D72","ATH":"#003831","PIT":"#FDB827","SD":"#2F241D","SEA":"#0C2C56","SF":"#FD5A1E","STL":"#C41E3A","TB":"#092C5C","TEX":"#003278","TOR":"#134A8E","MIN":"#002B5C","PHI":"#E81828","ATL":"#CE1141","CWS":"#27251F","MIA":"#00A3E0","NYY":"#003087","MIL":"#FFC52F"};
         const c=TEAMS[r.opp]||'#9ca8b8';
