@@ -1399,8 +1399,8 @@ function renderPitcherTable(){
   pb.innerHTML = rows.map((r,i)=>{
     const stuffColor = r.stuffPlus>=110?'#4af0b0':r.stuffPlus>=100?'#e8c547':r.stuffPlus>=90?'#ff8c42':'#ff4d6d';
     const xeraColor  = r.xera<=3.5?'#4af0b0':r.xera<=4.25?'#e8c547':r.xera<=5.0?'#ff8c42':'#ff4d6d';
-    const veloColor  = r.veloDrop===null?'#5c6878':r.veloDrop<=-1.5?'#ff4d6d':r.veloDrop<=-0.8?'#e8c547':'#4af0b0';
-    const veloText   = r.veloDrop===null?'0':(r.veloDrop>0?'+':'')+r.veloDrop+' mph';
+    const veloColor  = r.velo_drop_sc===null?'#5c6878':r.velo_drop_sc>=1.5?'#ff4d6d':r.velo_drop_sc>=0.8?'#e8c547':r.velo_drop_sc<=-0.5?'#4af0b0':'#9ca8b8';
+    const veloText   = r.velo_drop_sc===null?'--':(function(){const d=r.velo_drop_sc;const drop=-d;return (drop>0?'+':'')+drop.toFixed(1)+' mph';})();
     const stackSignal= r.lc>=3?'ATTACK':r.lc>=2?'LEAN':r.lc===0?'SAFE':'NEUTRAL';
     const stackColor = r.lc>=3?'#ff4d6d':r.lc>=2?'#ff8c42':r.lc===0?'#4af0b0':'#9ca8b8';
     const archColor  = ARCHETYPE_COLORS[r.arch.archetype]||ARCHETYPE_COLORS['DEFAULT'];
