@@ -674,11 +674,11 @@ const BP_USAGE_GAMES = [{"away": "TEX", "home": "BAL", "game_time": "2026-03-31T
                 <th style="font-size:9px;font-weight:700;letter-spacing:.05em;color:var(--text2);padding:0 5px 7px 5px;text-align:center;width:36px;">L3 ERA</th>
                 <th style="font-size:9px;font-weight:700;letter-spacing:.05em;color:var(--text2);padding:0 5px 7px 5px;text-align:center;width:36px;">TREND</th>
                 <th id="mm-velo-th" style="font-size:9px;font-weight:700;letter-spacing:.05em;color:var(--text2);padding:0 5px 7px 5px;text-align:center;width:48px;cursor:pointer;user-select:none;" data-mm-sort="velo">VELO &#x25C5;</th>
-                <th style="font-size:9px;font-weight:700;letter-spacing:.05em;color:var(--text2);padding:0 8px 7px 8px;text-align:left;width:148px;">GAME TIMELINE</th>
+                <th style="font-size:9px;font-weight:700;letter-spacing:.05em;color:var(--text2);padding:0 8px 7px 8px;text-align:left;width:148px;cursor:pointer;" id="mm-innings-th" data-mm-sort="spInn">GAME TIMELINE ↕</th>
                 <th style="font-size:9px;font-weight:700;letter-spacing:.05em;color:var(--text2);padding:0 5px 7px 5px;text-align:center;width:50px;">RUN PROB</th>
                 <th style="font-size:9px;font-weight:700;letter-spacing:.05em;color:var(--text2);padding:0 5px 7px 5px;text-align:left;width:158px;">TARGET STACK</th>
                 <th style="font-size:9px;font-weight:700;letter-spacing:.05em;color:var(--text2);padding:0 5px 7px 5px;text-align:left;width:88px;">BP EXPOSURE</th>
-                <th style="font-size:9px;font-weight:700;letter-spacing:.05em;color:var(--text2);padding:0 5px 7px 5px;text-align:center;width:30px;">ATK</th>
+                <th style="font-size:9px;font-weight:700;letter-spacing:.05em;color:var(--text2);padding:0 5px 7px 5px;text-align:center;width:30px;cursor:pointer;" id="mm-atk-th" data-mm-sort="atkScore">ATK ↕</th>
               </tr>
             </thead>
             <tbody id="mm-body"></tbody>
@@ -2194,6 +2194,7 @@ function buildMatchupMatrix(){
     else if((stf<95&&stf>0)||(xera>4.50&&xera>0)){spQuality='hittable';spColor='#E24B4A';spLabel='ATK';spInn=4.5;}
     else if(xera>4.00&&xera>0){spQuality='hittable';spColor='#D85A30';spLabel='lean ATK';spInn=5;}
     else if(stf>=95&&xera>0){spQuality='neutral';spColor='#e8c547';spLabel='neutral';spInn=5.5;}
+    else if(stf>0&&(xera===0||xera===null||isNaN(xera))){spQuality='neutral';spColor='#e8c547';spLabel='neutral';spInn=5.5;}
     var spPct=Math.round((spInn/9)*100);
     var bpInn=9-spInn;
     var bpPct=100-spPct;
