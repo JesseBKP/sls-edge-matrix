@@ -817,7 +817,7 @@ const BP_USAGE_GAMES = [{"away": "TEX", "home": "BAL", "game_time": "2026-03-31T
                 <th style="width:70px;text-align:center;" data-sort-p="stuffPlus">Stuff+</th>
                 <th style="width:60px;text-align:center;" data-sort-p="xera">xERA</th>
                 <th style="width:160px;">Arsenal</th>
-                <th style="width:70px;text-align:center;cursor:pointer;" data-sort-p="veloDrop">Velo Drop</th>
+                <th style="width:70px;text-align:center;cursor:pointer;" data-sort-p="velo_drop_sc">Velo Drop</th>
                 <th style="width:72px;text-align:center;cursor:pointer;" data-sort-p="hardContact">Hard Cnt%</th>
                 <th style="width:76px;text-align:center;cursor:pointer;" data-sort-p="platoonSplit">Platoon</th>
                 <th style="width:80px;text-align:center;cursor:pointer;" data-sort-p="lc">LETHAL Opp</th>
@@ -1369,7 +1369,7 @@ function renderPitcherTable(){
       return false;
     });
   }
-  const textCols = ['name','hand','archetype','trend','home_away_split','opp','platoonFavors'];
+  const textCols = ['name','hand','archetype','trend','home_away_split','opp','platoonFavors','velo_trend_sc'];
   rows.sort((a,b)=>{
     let av = pitcherSortCol==='name' ? (a.arch&&a.arch.name||'') :
              pitcherSortCol==='opp' ? (a.opp||'') :
