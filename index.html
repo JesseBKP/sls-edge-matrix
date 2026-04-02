@@ -2189,8 +2189,11 @@ function buildMatchupMatrix(){
     var spLabel='neutral';
     var spInn=5.5;
     if(stf>=108&&xera>0&&xera<=3.50){spQuality='ace';spColor='#3B6D11';spLabel='dominant';spInn=7;}
+    else if(stf>=103&&xera>0&&xera<=3.75){spQuality='ace';spColor='#4a8f1a';spLabel='strong';spInn=6.5;}
+    else if(stf>=98&&xera>0&&xera<=4.00){spQuality='neutral';spColor='#6aaa2a';spLabel='solid';spInn=6;}
     else if((stf<95&&stf>0)||(xera>4.50&&xera>0)){spQuality='hittable';spColor='#E24B4A';spLabel='ATK';spInn=4.5;}
     else if(xera>4.00&&xera>0){spQuality='hittable';spColor='#D85A30';spLabel='lean ATK';spInn=5;}
+    else if(stf>=95&&xera>0){spQuality='neutral';spColor='#e8c547';spLabel='neutral';spInn=5.5;}
     var spPct=Math.round((spInn/9)*100);
     var bpInn=9-spInn;
     var bpPct=100-spPct;
