@@ -886,23 +886,6 @@ function scoreTier(score){
 }
 
 function applyFilters(){
-  // ── THE SPECTRUM: z-score dynamic color scaling ──────────────
-  // Calculated once from today's actual data distribution
-  // Every day colors spread naturally regardless of absolute values
-  const calcSpectrum = (vals) => {
-    const sorted = vals.filter(v=>v!==null&&!isNaN(v)).sort((a,b)=>a-b);
-    const n = sorted.length;
-    if(!n) return {p90:100,p75:80,p50:60,p25:40};
-    const pct = (p) => sorted[Math.floor(p*n/100)] || sorted[n-1];
-    return {p90:pct(90), p75:pct(75), p50:pct(50), p25:pct(25)};
-  };
-  const SPECTRUM = {
-    lock_g:   calcSpectrum(DATA.map(p=>parseFloat(p.lock_g))),
-    lock_c:   calcSpectrum(DATA.map(p=>parseFloat(p.lock_c))),
-    edge:     calcSpectrum(DATA.map(p=>parseFloat(p.edge))),
-    leverage: calcSpectrum(DATA.map(p=>parseFloat(p.leverage))),
-  };
-
   return DATA.filter(p=>{
     if(filters.lock.size>0&&!filters.lock.has(p.tier_g))return false;
     if(filters.pos.size>0&&!p.pos.split('/').some(pp=>filters.pos.has(pp))&&!filters.pos.has(p.pos))return false;
@@ -973,24 +956,16 @@ function teamLogo(team){
 }
 
 function buildRow(p,i){
-  const spectrumColor = (val, pcts) => {
-    if(val === null || val === undefined || isNaN(val)) return '#5c6878';
-    if(val >= pcts.p90) return '#ff4d6d';
-    if(val >= pcts.p75) return '#ff8c42';
-    if(val >= pcts.p50) return '#e8c547';
-    if(val >= pcts.p25) return '#9ca8b8';
-    return '#4a7aff';
-  };
-  const gColor   = spectrumColor(parseFloat(p.lock_g),   SPECTRUM.lock_g);
-  const cColor   = spectrumColor(parseFloat(p.lock_c),   SPECTRUM.lock_c);
-  const edgColor = spectrumColor(parseFloat(p.edge),     SPECTRUM.edge);
-  const levColor = spectrumColor(parseFloat(p.leverage), SPECTRUM.leverage);
-  const isUnicornOwn = parseFloat(p.own_pct) < 5 && parseFloat(p.lock_g) >= SPECTRUM.lock_g.p75;
-  const gStyle   = `font-size:18px;color:${gColor}`;
-  const cStyle   = `font-size:18px;color:${cColor}`;
-  const edgeStyle= `font-size:17px;color:${edgColor}`;
-  const levStyle = `color:${levColor}`;
-  const ownStyle = isUnicornOwn ? 'font-size:11px;color:#c084fc' : 'font-size:11px;';
+  const isTopG = parseFloat(p.lock_g) >= 93;
+  const isTopC = parseFloat(p.lock_c) >= 88;
+  const isTopEdge = parseFloat(p.edge) >= 60;
+  const isTopLev = parseFloat(p.leverage) >= 55;
+  const isUnicornOwn = parseFloat(p.own_pct) < 5 && parseFloat(p.lock_g) >= 80;
+  const gStyle = isTopG ? 'font-size:18px;color:#ff4d6d' : 'font-size:18px;';
+  const cStyle = isTopC ? 'font-size:18px;color:#ff4d6d' : 'font-size:18px;';
+  const edgeStyle = isTopEdge ? 'font-size:17px;color:#ff4d6d' : 'font-size:17px;';
+  const levStyle = isTopLev ? 'color:#ff4d6d' : '';
+  const ownStyle = isUnicornOwn ? 'font-size:11px;color:#ff4d6d' : 'font-size:11px;';
   const isUnicorn=p.own_tier==="unicorn"&&p.tier_g==="ELITE";
   const nc=p.hot==="hot"?"player-name is-hot":p.hot==="cold"?"player-name is-cold":p.platoon?"player-name is-platoon":"player-name";
   const ep=Math.round(((p.edge-29)/(63-29))*100);
