@@ -2340,6 +2340,48 @@ function buildMatchupMatrix(){
     });
   }
 
+  // Wire innings sort listener
+  var inningsTh = document.getElementById('mm-innings-th');
+  if(inningsTh && !inningsTh.dataset.wired){
+    inningsTh.dataset.wired='1';
+    inningsTh.addEventListener('click', function(){
+      mmState.innDir = mmState.innDir===1 ? -1 : 1;
+      inningsTh.innerHTML = 'GAME TIMELINE '+(mmState.innDir===1?'&#x25B5;':'&#x25C5;');
+      rows.sort(function(a,b){
+        var noA = a.spInn===null||a.spInn===undefined;
+        var noB = b.spInn===null||b.spInn===undefined;
+        if(noA&&noB) return 0;
+        if(noA) return 1;
+        if(noB) return -1;
+        return mmState.innDir*(a.spInn - b.spInn);
+      });
+      var tbody2 = document.getElementById('mm-body');
+      if(tbody2) tbody2.innerHTML='';
+      rows.forEach(function(r){ renderMmRow(r, tbody2); });
+    });
+  }
+
+  // Wire ATK sort listener
+  var atkTh = document.getElementById('mm-atk-th');
+  if(atkTh && !atkTh.dataset.wired){
+    atkTh.dataset.wired='1';
+    atkTh.addEventListener('click', function(){
+      mmState.atkDir = mmState.atkDir===1 ? -1 : 1;
+      atkTh.innerHTML = 'ATK '+(mmState.atkDir===1?'&#x25B5;':'&#x25C5;');
+      rows.sort(function(a,b){
+        var noA = a.atkScore===null||a.atkScore===undefined;
+        var noB = b.atkScore===null||b.atkScore===undefined;
+        if(noA&&noB) return 0;
+        if(noA) return 1;
+        if(noB) return -1;
+        return mmState.atkDir*(a.atkScore - b.atkScore);
+      });
+      var tbody2 = document.getElementById('mm-body');
+      if(tbody2) tbody2.innerHTML='';
+      rows.forEach(function(r){ renderMmRow(r, tbody2); });
+    });
+  }
+
   rows.forEach(function(r){
     if(r.veloDropRaw===null||r.veloDropRaw===undefined){r.veloDispColor='var(--text2)';return;}
     // 0=biggest gain (green) 1=biggest drop (red)
