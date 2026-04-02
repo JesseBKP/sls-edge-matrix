@@ -2216,12 +2216,21 @@ function buildMatchupMatrix(){
     var rpBarColor=(runPct>=65)?'#E24B4A':(runPct>=50)?'#BA7517':(runPct>=35)?'#888780':'#639922';
 
     var atkScore=0;
-    atkScore+=spQuality==='hittable'?35:spQuality==='neutral'?15:0;
-    atkScore+=runPct>=65?25:runPct>=50?15:runPct>=35?5:0;
-    atkScore+=(bpVerdict==='SMASH'||bpVerdict==='ATTACK')?20:bpVerdict==='NEUTRAL'?8:0;
-    atkScore+=hasSmash?10:topMatch==='LEAN'?5:0;
+    // SP quality -- wider spread
+    atkScore+=spQuality==='hittable'?40:spQuality==='neutral'?12:0;
+    // Run environment -- steeper curve
+    atkScore+=runPct>=70?28:runPct>=55?16:runPct>=40?6:0;
+    // Bullpen -- bigger gap between SMASH and NEUTRAL
+    atkScore+=(bpVerdict==='SMASH')?25:(bpVerdict==='ATTACK')?18:bpVerdict==='NEUTRAL'?5:0;
+    // Clash matchup signal
+    atkScore+=hasSmash?10:topMatch==='LEAN'?4:0;
+    // Penalize elite SP hard -- actively suppress
+    if(spQuality==='ace') atkScore=Math.max(0,atkScore-15);
+    // Reward perfect storm: hittable + explosive + smash BP
+    if(spQuality==='hittable'&&runPct>=65&&(bpVerdict==='SMASH'||bpVerdict==='ATTACK')) atkScore+=8;
     atkScore=Math.min(99,atkScore);
-    var atkColor=atkScore>=75?'#E24B4A':atkScore>=55?'#D85A30':atkScore>=35?'#BA7517':'var(--text2)';
+    // Dynamic color -- relative to score distribution not fixed thresholds
+    var atkColor=atkScore>=80?'#E24B4A':atkScore>=65?'#ff8c42':atkScore>=45?'#e8c547':atkScore>=25?'#BA7517':'var(--text2)';
 
     var stfColor=stf>=108?'#27500A':stf>=100?'#854F0B':stf>0?'#A32D2D':'var(--text2)';
     var xeraColor=(xera>0&&xera<=3.50)?'#27500A':(xera>0&&xera<=4.25)?'#854F0B':(xera>0)?'#A32D2D':'var(--text2)';
