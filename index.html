@@ -927,7 +927,7 @@ function scoreTier(score){
 function applyFilters(){
   return DATA.filter(p=>{
     if(filters.lock.size>0&&!filters.lock.has(p.tier_g))return false;
-    if(filters.pos.size>0&&!p.pos.split('/').some(pp=>filters.pos.has(pp))&&!filters.pos.has(p.pos))return false;
+    if(filters.pos.size>0){const posParts=(p.pos||'').split('/');if(!posParts.some(pp=>filters.pos.has(pp.trim())))return false;}
     if(filters.own.size>0&&!filters.own.has(p.own_tier))return false;
     if(filters.lev.size>0&&!filters.lev.has(p.lev_tier))return false;
     if(filters.run.size>0&&!filters.run.has(p.run_env||(RUN_ENV[p.team]||"AVERAGE")))return false;
