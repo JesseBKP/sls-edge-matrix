@@ -2217,6 +2217,23 @@ render();
 updateSortArrows();
 document.addEventListener('DOMContentLoaded',function(){render();});
 
+// FUNNEL TAB FIX -- runs on load, patches vtab click for funnel
+(function(){
+  function activateFunnel(){
+    document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
+    document.getElementById('view-funnel').style.cssText='display:flex !important;flex-direction:column;';
+    if(!funnelSignalDefs||funnelSignalDefs.length===0){
+      funnelSignalDefs=buildFunnelSignalDefs();
+      funnelSignalDefs.forEach(function(s){funnelThresholds[s.key]=0;});
+    }
+    renderFunnelTable();
+  }
+  document.addEventListener('click',function(e){
+    var tab=e.target.closest('.vtab');
+    if(tab&&tab.dataset.view==='funnel'){ setTimeout(activateFunnel,10); }
+  },true);
+})();
+
 var mmState={rp:'all',bp:'all',mt:'all',sp:'all',veloDir:1};
 
 function buildMatchupMatrix(){
