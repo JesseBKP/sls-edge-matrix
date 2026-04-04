@@ -3266,11 +3266,6 @@ function buildFunnelCol(sig, idx){
     });
     chipsDiv.innerHTML = chipsHtml;
   }
-
-</script>
-</body>
-</html>
-  // Funnel dropout viz
   var fvHtml = '<div style="font-family:DM Mono,monospace;font-size:9px;color:var(--text2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">signal dropout</div>';
   funnelSignals.forEach(function(sig,i){
     var cnt = funnelColCounts[i+1]!==undefined?funnelColCounts[i+1]:DATA.length;
@@ -3377,11 +3372,6 @@ function onFunnelSlider(key, val){
   if(el && sig && sig.sliderLabel) el.textContent = sig.sliderLabel(val);
   if(funnelState[key].active) renderFunnel();
 }
-
-</script>
-</body>
-</html>
-+(sal/1000).toFixed(1)+'k':'--')+'</span></td>';
       // Signal cells
       funnelSignalDefs.forEach(function(sig){
         var v   = sig.valueFn(p);
