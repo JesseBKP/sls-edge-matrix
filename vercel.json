@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "*.html",
+      "src": "**/*.html",
       "use": "@vercel/static"
     },
     {
@@ -17,6 +17,14 @@
         "content-type": "application/javascript"
       },
       "dest": "/logos.js"
+    },
+    {
+      "src": "/batters",
+      "dest": "/batters/index.html"
+    },
+    {
+      "src": "/batters/(.*)",
+      "dest": "/batters/$1"
     },
     {
       "src": "/(.*)",
