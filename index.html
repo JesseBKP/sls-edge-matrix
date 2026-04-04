@@ -551,12 +551,16 @@ const BP_USAGE_GAMES = [{"away": "STL", "home": "DET", "game_time": "2026-04-04T
   <div id="left-panel" style="width:280px;min-width:280px;background:var(--bg1);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:12px 10px;gap:10px;overflow-y:auto;">
 
     <!-- VIEW TOGGLE -->
-    <div style="display:flex;gap:0;border:1px solid var(--border-hi);border-radius:4px;overflow:hidden;">
-      <div class="vtab active" data-view="matrix" style="flex:1;text-align:center;">Matrix.B</div>
-      <div class="vtab" data-view="pitchers" style="flex:1;text-align:center;">Matrix.P</div>
-      <div class="vtab" data-view="build" style="flex:1;text-align:center;background:rgba(232,197,71,0.08);color:#e8c547;">BUILD</div>
-      <div class="vtab" data-view="matchup" style="flex:1;text-align:center;background:rgba(224,74,74,0.08);color:#e04a4a;">MATCHUP</div>
-      <div class="vtab" data-view="funnel" style="flex:1;text-align:center;background:rgba(192,132,252,0.08);color:#c084fc;">FUNNEL</div>
+    <div style="display:flex;flex-direction:column;gap:2px;border:1px solid var(--border-hi);border-radius:4px;overflow:hidden;">
+      <div style="display:flex;">
+        <div class="vtab active" data-view="matrix" style="flex:1;text-align:center;">Matrix.B</div>
+        <div class="vtab" data-view="pitchers" style="flex:1;text-align:center;">Matrix.P</div>
+        <div class="vtab" data-view="build" style="flex:1;text-align:center;background:rgba(232,197,71,0.08);color:#e8c547;">BUILD</div>
+      </div>
+      <div style="display:flex;border-top:1px solid var(--border);">
+        <div class="vtab" data-view="matchup" style="flex:1;text-align:center;background:rgba(224,74,74,0.08);color:#e04a4a;">MATCHUP</div>
+        <div class="vtab" data-view="funnel" style="flex:1;text-align:center;background:rgba(192,132,252,0.08);color:#c084fc;">⚗ FUNNEL</div>
+      </div>
     </div>
 
     <!-- LEGEND B (Matrix.B) -->
