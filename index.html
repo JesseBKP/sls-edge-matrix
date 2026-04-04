@@ -833,7 +833,7 @@ const BP_USAGE_GAMES = [{"away": "STL", "home": "DET", "game_time": "2026-04-04T
       </div>
 
       <!-- MATRIX.F FUNNEL VIEW -->
-      <div class="view" id="view-funnel">
+      <div class="view" id="view-funnel" style="display:none;flex-direction:column;height:100%;">
         <!-- Funnel Table: one narrow column per signal, players as rows -->
         <div id="funnel-wrap" style="overflow-x:auto;overflow-y:auto;height:calc(100vh - 180px);">
           <div id="funnel-loading" style="padding:40px;color:var(--text2);font-family:'DM Mono',monospace;font-size:12px;">Click FUNNEL tab to load...</div>
@@ -2168,11 +2168,11 @@ document.querySelectorAll(".gl-row .vtab").forEach(tab=>{
     document.getElementById("view-pitchers").classList.remove("active");
     document.getElementById("view-build").classList.remove("active");
     document.getElementById("view-matchup").classList.remove("active");
-    document.getElementById("view-funnel").classList.remove("active");
+    document.getElementById("view-funnel").classList.remove("active"); document.getElementById("view-funnel").style.display="none";
     if(v==="pitchers") document.getElementById("view-pitchers").classList.add("active");
     if(v==="build") document.getElementById("view-build").classList.add("active");
     if(v==="matchup") document.getElementById("view-matchup").classList.add("active");
-    if(v==="funnel"){ document.getElementById("view-funnel").classList.add("active"); initFunnel(); }
+    if(v==="funnel"){ document.getElementById("view-funnel").style.display="flex"; initFunnel(); }
     document.getElementById("view-matchup").classList.toggle("active",v==="matchup");
     if(v==="matchup")buildMatchupMatrix();
     document.getElementById("view-pitchers").classList.toggle("active",v==="pitchers");
