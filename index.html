@@ -833,23 +833,22 @@ const BP_USAGE_GAMES = [{"away": "STL", "home": "DET", "game_time": "2026-04-04T
       </div>
 
       <!-- MATRIX.F FUNNEL VIEW -->
-      <div class="view" id="view-funnel" style="display:none;">
-        <div style="display:flex;height:calc(100vh - 120px);overflow:hidden;">
-          <!-- Funnel columns (horizontal scroll) -->
-          <div id="funnel-cols" style="display:flex;flex:1;overflow-x:auto;overflow-y:hidden;min-width:0;">
-            <div style="padding:40px;color:var(--text2);font-family:DM Mono,monospace;font-size:12px;">Loading funnel...</div>
-          </div>
-          <!-- Results panel -->
-          <div id="funnel-results" style="width:320px;min-width:280px;border-left:1px solid var(--border);background:var(--bg1);display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;">
-            <div style="padding:20px;color:var(--text2);font-family:DM Mono,monospace;font-size:11px;">Apply filters to see results</div>
-          </div>
+      <div class="view" id="view-funnel">
+        <!-- Funnel Table: one narrow column per signal, players as rows -->
+        <div id="funnel-wrap" style="overflow-x:auto;overflow-y:auto;height:calc(100vh - 180px);">
+          <div id="funnel-loading" style="padding:40px;color:var(--text2);font-family:'DM Mono',monospace;font-size:12px;">Click FUNNEL tab to load...</div>
+          <table id="funnel-table" style="display:none;border-collapse:collapse;font-size:10px;min-width:100%;">
+            <thead id="funnel-thead" style="position:sticky;top:0;z-index:4;background:var(--bg2);"></thead>
+            <tbody id="funnel-tbody"></tbody>
+          </table>
         </div>
-        <!-- Header stats -->
-        <div style="position:absolute;top:0;right:320px;display:flex;align-items:center;gap:12px;padding:6px 16px;background:var(--bg1);border-bottom:1px solid var(--border);font-family:DM Mono,monospace;font-size:10px;z-index:2;">
-          <span style="color:var(--text2);">IN: <strong id="funnel-h-in" style="color:var(--text0);">--</strong></span>
-          <span style="color:var(--text2);">SURVIVING: <strong id="funnel-h-out" style="color:var(--accent2);">--</strong></span>
-          <span style="color:var(--text2);">FILTERS: <strong id="funnel-h-active" style="color:var(--accent);">--</strong></span>
-          <span style="color:var(--text2);font-size:9px;">Columns self-order by ReMatrix accuracy daily</span>
+        <!-- Bottom stat bar -->
+        <div style="display:flex;align-items:center;gap:16px;padding:6px 12px;background:var(--bg1);border-top:1px solid var(--border);font-family:'DM Mono',monospace;font-size:10px;flex-shrink:0;">
+          <span style="color:var(--text2);">POOL: <strong id="funnel-h-in" style="color:var(--text0);">--</strong></span>
+          <span style="color:var(--text2);">PASSING: <strong id="funnel-h-out" style="color:var(--accent2);">--</strong></span>
+          <span style="color:var(--text2);">FILTERS ON: <strong id="funnel-h-active" style="color:var(--accent);">0</strong></span>
+          <span style="color:var(--text2);font-size:9px;margin-left:8px;">&#9660; = sort | slider sets minimum threshold | columns auto-order by ReMatrix accuracy</span>
+          <button onclick="funnelResetAll()" style="margin-left:auto;padding:2px 10px;background:transparent;border:1px solid rgba(255,77,109,0.4);color:#ff4d6d;border-radius:3px;font-family:'DM Mono',monospace;font-size:9px;cursor:pointer;">RESET ALL</button>
         </div>
       </div>
 
@@ -2572,32 +2571,360 @@ document.querySelectorAll('.mm-pill').forEach(function(pill){
 });
 
 // ============================================================
-// MATRIX.F -- SIGNAL FUNNEL ENGINE
-// Self-ordering columns by ReMatrix accuracy
-// Soft percentile gates -- never ends with 1 player
-// Game-level gates (ATK, BP) before player-level signals
+// MATRIX.F -- SIGNAL FUNNEL ENGINE v2
+// Table layout: players as rows, signals as narrow columns
+// All signals visible at once, no scrolling needed
+// Self-ordering by ReMatrix accuracy daily
 // ============================================================
 var funnelInited = false;
-var funnelState  = {};  // key -> { active, threshold, broadened }
-var funnelSurviving = [];
-var funnelColCounts = [];
-var funnelSignals   = [];
+var funnelSortKey = 'lock_g';
+var funnelSortDir = -1;
+var funnelThresholds = {};  // key -> threshold value (0 = off)
+var funnelSignalDefs = [];
 
-function initFunnel(){
-  if(funnelInited){ renderFunnel(); return; }
-  funnelInited = true;
-  funnelSignals = buildFunnelSignals();
-  funnelSignals.forEach(function(sig){
-    if(!funnelState[sig.key]){
-      funnelState[sig.key] = { active:false, threshold: sig.defaultThreshold||0, broadened:false };
-    }
-  });
-  // Auto-activate Run Prob at STRONG+ by default
-  if(funnelState['run_prob']){ funnelState['run_prob'].active=true; funnelState['run_prob'].threshold=3; }
-  renderFunnel();
+function funnelResetAll(){
+  Object.keys(funnelThresholds).forEach(function(k){ funnelThresholds[k]=0; });
+  renderFunnelTable();
 }
 
-function buildFunnelSignals(){
+function initFunnel(){
+  if(!funnelInited){
+    funnelInited = true;
+    funnelSignalDefs = buildFunnelSignalDefs();
+    funnelSignalDefs.forEach(function(s){ funnelThresholds[s.key]=0; });
+  }
+  renderFunnelTable();
+}
+
+function buildFunnelSignalDefs(){
+  // Read live ReMatrix weights for accuracy ordering
+  var lw = {};
+  if(typeof SLS_REMATRIX_WEIGHTS !== 'undefined' && SLS_REMATRIX_WEIGHTS.weights && SLS_REMATRIX_WEIGHTS.weights.lock_weights){
+    lw = SLS_REMATRIX_WEIGHTS.weights.lock_weights;
+  } else {
+    lw = { run_prob:{accuracy:64.9,weight:0.137}, speed:{accuracy:57.7,weight:0.074}, order:{accuracy:56.4,weight:0.180},
+           heat:{accuracy:56.2,weight:0.061}, booster:{accuracy:51.1,weight:0.079}, lethal:{accuracy:51.9,weight:0.060},
+           platoon:{accuracy:50.0,weight:0.069}, leverage:{accuracy:34.6,weight:0.080}, power:{accuracy:25.0,weight:0.060} };
+  }
+
+  // ALL signal definitions — player columns
+  var SIGNAL_MAP = {
+    run_prob: {
+      label:'RUN ENV', icon:'💥', accuracy:0, weight:0,
+      // value for filtering (numeric)
+      valueFn:function(p){ return ({EXPLOSIVE:4,STRONG:3,AVERAGE:2,WEAK:1,ANEMIC:0})[p.run_env||'AVERAGE']||2; },
+      // display string in cell
+      displayFn:function(p){ var e={EXPLOSIVE:'EXP',STRONG:'STR',AVERAGE:'AVG',WEAK:'WK',ANEMIC:'ANM'}; return e[p.run_env||'AVERAGE']||'AVG'; },
+      colorFn:function(v){ return v>=4?'#ff4d6d':v>=3?'#ff8c42':v>=2?'#e8c547':'#5c6878'; },
+      sliderMin:0, sliderMax:4, sliderStep:1,
+      sliderLabels:['ANY','WEAK+','AVG+','STR+','EXP'],
+      sortNumeric:true
+    },
+    order: {
+      label:'ORDER', icon:'📋', accuracy:0, weight:0,
+      valueFn:function(p){ return p.order>0?p.order:10; },
+      displayFn:function(p){ return p.order>0?'#'+p.order:'SP'; },
+      colorFn:function(v,p){ var o=p.order; return o>0&&o<=3?'#ff4d6d':o>0&&o<=6?'#ff8c42':'#9ca8b8'; },
+      sliderMin:0, sliderMax:9, sliderStep:1,
+      sliderLabels:['ANY','#1','#2','#3','#4','#5','#6','#7','#8','#9'],
+      filterFn:function(p,t){ return t===0||( p.order>0&&p.order<=t ); },  // custom: order <= threshold
+      sortNumeric:true
+    },
+    lock_g: {
+      label:'LOCK.G', icon:'🔒', accuracy:0, weight:0,
+      valueFn:function(p){ return parseFloat(p.lock_g)||0; },
+      displayFn:function(p){ return p.lock_g||'--'; },
+      colorFn:function(v){ return v>=90?'#ff4d6d':v>=75?'#ff8c42':v>=60?'#e8c547':'#9ca8b8'; },
+      sliderMin:0, sliderMax:95, sliderStep:5,
+      sliderLabels:null,  // show numeric
+      sortNumeric:true
+    },
+    lock_c: {
+      label:'LOCK.C', icon:'💵', accuracy:0, weight:0,
+      valueFn:function(p){ return parseFloat(p.lock_c)||0; },
+      displayFn:function(p){ return p.lock_c||'--'; },
+      colorFn:function(v){ return v>=90?'#ff4d6d':v>=75?'#ff8c42':v>=60?'#e8c547':'#9ca8b8'; },
+      sliderMin:0, sliderMax:95, sliderStep:5,
+      sliderLabels:null,
+      sortNumeric:true
+    },
+    edge: {
+      label:'EDGE', icon:'⚡', accuracy:0, weight:0,
+      valueFn:function(p){ return parseFloat(p.edge)||0; },
+      displayFn:function(p){ return p.edge||'--'; },
+      colorFn:function(v){ return v>=70?'#ff4d6d':v>=60?'#ff8c42':v>=50?'#e8c547':'#9ca8b8'; },
+      sliderMin:0, sliderMax:80, sliderStep:5,
+      sliderLabels:null,
+      sortNumeric:true
+    },
+    lethal: {
+      label:'VERDICT', icon:'💀', accuracy:0, weight:0,
+      valueFn:function(p){ return {LETHAL:4,STACK:3,LEAN:2,NEUTRAL:1,FADE:0}[p.lethal||'NEUTRAL']||1; },
+      displayFn:function(p){ var s={LETHAL:'☠LTHL',STACK:'STACK',LEAN:'LEAN',FADE:'FADE'}; return s[p.lethal]||p.lethal||'NEU'; },
+      colorFn:function(v){ return v>=4?'#ff4d6d':v>=3?'#ff8c42':v>=2?'#e8c547':v<=0?'#4a7aff':'#9ca8b8'; },
+      sliderMin:0, sliderMax:4, sliderStep:1,
+      sliderLabels:['ANY','FADE+','LEAN+','STACK+','LETHAL'],
+      sortNumeric:true
+    },
+    platoon: {
+      label:'PLAT', icon:'⚔', accuracy:0, weight:0,
+      valueFn:function(p){ return p.platoon?1:0; },
+      displayFn:function(p){ return p.platoon?'✓':'-'; },
+      colorFn:function(v){ return v>=1?'#4af0b0':'#5c6878'; },
+      sliderMin:0, sliderMax:1, sliderStep:1,
+      sliderLabels:['ANY','YES'],
+      sortNumeric:true
+    },
+    heat: {
+      label:'HEAT', icon:'🔥', accuracy:0, weight:0,
+      valueFn:function(p){ return p.hot==='hot'?2:p.hot==='cold'?0:1; },
+      displayFn:function(p){ return p.hot==='hot'?'🔥':p.hot==='cold'?'❄':'—'; },
+      colorFn:function(v){ return v>=2?'#ff4d6d':v>=1?'#9ca8b8':'#4a7aff'; },
+      sliderMin:0, sliderMax:2, sliderStep:1,
+      sliderLabels:['ANY','WARM+','HOT'],
+      sortNumeric:true
+    },
+    booster: {
+      label:'BOOST', icon:'🚀', accuracy:0, weight:0,
+      valueFn:function(p){ return Math.max(0,(parseFloat(p.lock_g)||0)-(parseFloat(p.lock_c)||0)); },
+      displayFn:function(p){ var d=Math.max(0,(parseFloat(p.lock_g)||0)-(parseFloat(p.lock_c)||0)); return d>=4?'+'+d.toFixed(0):'—'; },
+      colorFn:function(v){ return v>=8?'#ff4d6d':v>=4?'#ff8c42':'#9ca8b8'; },
+      sliderMin:0, sliderMax:16, sliderStep:2,
+      sliderLabels:null,
+      sortNumeric:true
+    },
+    power: {
+      label:'PWR', icon:'💪', accuracy:0, weight:0,
+      valueFn:function(p){ return p.signals&&p.signals[4]?1:0; },
+      displayFn:function(p){ return p.signals&&p.signals[4]?'✓':'—'; },
+      colorFn:function(v){ return v>=1?'#ff8c42':'#9ca8b8'; },
+      sliderMin:0, sliderMax:1, sliderStep:1,
+      sliderLabels:['ANY','YES'],
+      sortNumeric:true
+    },
+    leverage: {
+      label:'LEV', icon:'📈', accuracy:0, weight:0,
+      valueFn:function(p){ return parseFloat(p.leverage)||0; },
+      displayFn:function(p){ return p.leverage?parseFloat(p.leverage).toFixed(0):'--'; },
+      colorFn:function(v){ return v>=55?'#ff4d6d':v>=45?'#ff8c42':v>=35?'#e8c547':'#4a7aff'; },
+      sliderMin:0, sliderMax:80, sliderStep:5,
+      sliderLabels:null,
+      sortNumeric:true
+    },
+    own_pct: {
+      label:'pOWN%', icon:'👥', accuracy:0, weight:0,
+      valueFn:function(p){ return parseFloat(p.own_pct)||0; },
+      displayFn:function(p){ return (parseFloat(p.own_pct)||0).toFixed(0)+'%'; },
+      colorFn:function(v){ return v<5?'#c084fc':v<15?'#4af0b0':v<30?'#9ca8b8':'#5c6878'; },
+      sliderMin:0, sliderMax:50, sliderStep:5,
+      sliderLabels:null,
+      filterFn:function(p,t){ return t===0||(parseFloat(p.own_pct)||0)<=t; }, // max ownership
+      sortNumeric:true
+    },
+    atk_score: {
+      label:'ATK', icon:'⚔', accuracy:72, weight:0.18,
+      valueFn:function(p){
+        // Pull from game lookup built at render time
+        return (window._funnelGameAtk&&window._funnelGameAtk[p.team])||0;
+      },
+      displayFn:function(p){
+        var v=(window._funnelGameAtk&&window._funnelGameAtk[p.team])||0;
+        return v>0?v:'--';
+      },
+      colorFn:function(v){ return v>=80?'#ff4d6d':v>=65?'#ff8c42':v>=45?'#e8c547':'#9ca8b8'; },
+      sliderMin:0, sliderMax:90, sliderStep:10,
+      sliderLabels:null,
+      sortNumeric:true
+    },
+    bp_verdict: {
+      label:'BP', icon:'🔱', accuracy:65, weight:0.12,
+      valueFn:function(p){
+        return (window._funnelBpScore&&window._funnelBpScore[p.team])||0;
+      },
+      displayFn:function(p){
+        return (window._funnelBpVerdict&&window._funnelBpVerdict[p.team])||'—';
+      },
+      colorFn:function(v){ return v>=4?'#ff4d6d':v>=3?'#ff8c42':v>=2?'#e8c547':'#9ca8b8'; },
+      sliderMin:0, sliderMax:4, sliderStep:1,
+      sliderLabels:['ANY','AVOID+','CAUT+','NEU+','ATK+','SMASH'],
+      sortNumeric:true
+    }
+  };
+
+  // Merge ReMatrix accuracy into signal map
+  Object.entries(lw).forEach(function(e){
+    var key=e[0]; var data=e[1];
+    if(SIGNAL_MAP[key]){
+      SIGNAL_MAP[key].accuracy = typeof data==='object'?data.accuracy:55;
+      SIGNAL_MAP[key].weight   = typeof data==='object'?data.weight:data;
+    }
+  });
+
+  // Fixed order: player identity columns first, then game-level gates, then player signals sorted by ReMatrix accuracy
+  var fixedFirst = ['lock_g','lock_c','edge','run_prob','atk_score','bp_verdict'];
+  var playerSignals = ['run_prob','order','lethal','platoon','heat','booster','power','leverage','own_pct']
+    .filter(function(k){ return !fixedFirst.includes(k); })
+    .map(function(k){ return Object.assign({key:k}, SIGNAL_MAP[k]); })
+    .sort(function(a,b){ return b.accuracy-a.accuracy; });
+
+  // Build final ordered list
+  var result = [];
+  // Game gates first
+  ['atk_score','bp_verdict'].forEach(function(k){
+    if(SIGNAL_MAP[k]) result.push(Object.assign({key:k},SIGNAL_MAP[k]));
+  });
+  // Then player signals by accuracy
+  result = result.concat(playerSignals);
+  // Then scoring metrics
+  ['lock_g','lock_c','edge'].forEach(function(k){
+    if(SIGNAL_MAP[k]) result.push(Object.assign({key:k},SIGNAL_MAP[k]));
+  });
+  // ownership at end
+  if(SIGNAL_MAP['own_pct']) result.push(Object.assign({key:'own_pct'},SIGNAL_MAP['own_pct']));
+
+  return result;
+}
+
+function buildFunnelGameLookups(){
+  // Build per-team ATK score and BP verdict for filtering
+  var probables = typeof TODAY_PROBABLES!=='undefined'?TODAY_PROBABLES:{};
+  var bpTeams   = typeof BP_USAGE_TEAMS !=='undefined'?BP_USAGE_TEAMS:{};
+  var archs     = typeof SLS_ARCHETYPES !=='undefined'?SLS_ARCHETYPES:{};
+  var BP_SCORE  = {SMASH:5,ATTACK:4,NEUTRAL:3,CAUTION:2,AVOID:1};
+  window._funnelGameAtk     = {};
+  window._funnelBpScore     = {};
+  window._funnelBpVerdict   = {};
+  Object.values(probables).forEach(function(pd){
+    var opp=pd.opp||'';
+    var pid=Object.keys(probables).find(function(k){ return probables[k]===pd; })||'';
+    var arch=archs[pid]||archs[String(pid)]||{};
+    var stf=parseFloat(arch.stuff_plus)||0;
+    var xera=parseFloat(arch.xera)||0;
+    var bpT=bpTeams[opp]||{};
+    var bpV=bpT.verdict||'NEUTRAL';
+    var spQ='neutral'; var spInn=5.5;
+    if(stf>=108&&xera>0&&xera<=3.50){spQ='ace';spInn=7;}
+    else if(stf>=103&&xera>0&&xera<=3.75){spQ='ace';spInn=6.5;}
+    else if(stf>=98&&xera>0&&xera<=4.00){spInn=6;}
+    else if((stf<95&&stf>0)||(xera>4.50&&xera>0)){spQ='hittable';spInn=4.5;}
+    else if(xera>4.00&&xera>0){spQ='hittable';spInn=5;}
+    var atk=0;
+    atk+=spQ==='hittable'?40:spQ==='neutral'?12:0;
+    atk+=(bpV==='SMASH')?25:(bpV==='ATTACK')?18:(bpV==='NEUTRAL')?5:0;
+    if(spQ==='ace')atk=Math.max(0,atk-15);
+    atk=Math.min(99,atk);
+    window._funnelGameAtk[opp]   = atk;
+    window._funnelBpScore[opp]   = BP_SCORE[bpV]||3;
+    window._funnelBpVerdict[opp] = bpV;
+  });
+}
+
+function renderFunnelTable(){
+  var loading  = document.getElementById('funnel-loading');
+  var table    = document.getElementById('funnel-table');
+  var thead    = document.getElementById('funnel-thead');
+  var tbody    = document.getElementById('funnel-tbody');
+  var hIn      = document.getElementById('funnel-h-in');
+  var hOut     = document.getElementById('funnel-h-out');
+  var hActive  = document.getElementById('funnel-h-active');
+  if(!table) return;
+
+  buildFunnelGameLookups();
+
+  // Get slate-filtered player pool (no SP/RP)
+  var pool = DATA.filter(function(p){ return p.salary>0&&p.pos!=='SP'&&p.pos!=='RP'&&p.pos!=='P'; });
+  if(hIn) hIn.textContent = pool.length;
+
+  // Apply all thresholds
+  var activeCount = 0;
+  funnelSignalDefs.forEach(function(sig){
+    var t = funnelThresholds[sig.key]||0;
+    if(t===0) return;
+    activeCount++;
+    pool = pool.filter(function(p){
+      if(sig.filterFn) return sig.filterFn(p,t);
+      return sig.valueFn(p) >= t;
+    });
+  });
+  if(hActive) hActive.textContent = activeCount;
+
+  // Sort
+  var sortSig = funnelSignalDefs.find(function(s){ return s.key===funnelSortKey; });
+  if(sortSig){
+    pool = pool.slice().sort(function(a,b){
+      var av=sortSig.valueFn(a)||0;
+      var bv=sortSig.valueFn(b)||0;
+      return funnelSortDir*(bv-av);
+    });
+  } else {
+    pool = pool.slice().sort(function(a,b){ return (parseFloat(b.lock_g)||0)-(parseFloat(a.lock_g)||0); });
+  }
+
+  if(hOut) hOut.textContent = pool.length;
+
+  // Build header: Player + Pos + Sal + one col per signal
+  var NCOL = 48; // narrow col width px
+  var hdrHtml = '<tr style="border-bottom:2px solid var(--border-hi);">';
+  // Fixed left cols
+  hdrHtml += '<th style="padding:4px 6px;text-align:left;min-width:130px;font-family:DM Mono,monospace;font-size:9px;color:var(--text2);letter-spacing:.1em;">PLAYER</th>';
+  hdrHtml += '<th style="padding:4px 3px;text-align:center;width:30px;font-family:DM Mono,monospace;font-size:9px;color:var(--text2);">POS</th>';
+  hdrHtml += '<th style="padding:4px 3px;text-align:center;width:36px;font-family:DM Mono,monospace;font-size:9px;color:var(--text2);">SAL</th>';
+
+  // Signal columns
+  funnelSignalDefs.forEach(function(sig){
+    var t = funnelThresholds[sig.key]||0;
+    var acc = sig.accuracy||0;
+    var accStr = acc>0?acc.toFixed(0)+'%':'';
+    var accCol = acc>=65?'#ff4d6d':acc>=58?'#ff8c42':acc>=52?'#e8c547':acc>0?'#9ca8b8':'';
+    var isActive = t>0;
+    var isSorted = funnelSortKey===sig.key;
+    var thStyle = 'padding:2px 2px;text-align:center;width:'+NCOL+'px;max-width:'+NCOL+'px;cursor:pointer;user-select:none;';
+    if(isActive) thStyle += 'background:rgba(74,240,176,0.06);';
+    if(isSorted) thStyle += 'border-bottom:2px solid var(--accent);';
+
+    hdrHtml += '<th style="'+thStyle+'" onclick="funnelSort(\''+sig.key+'\')">';
+    hdrHtml += '<div style="font-family:DM Mono,monospace;font-size:8px;color:'+(isActive?'var(--accent2)':'var(--text2)')+';letter-spacing:.06em;">';
+    hdrHtml += sig.icon+' '+sig.label+(isSorted?(funnelSortDir>0?' ▲':' ▼'):'')+'</div>';
+    if(accStr) hdrHtml += '<div style="font-size:7px;color:'+accCol+';">' + accStr + '</div>';
+
+    // Slider threshold control
+    var sliderVal = t;
+    var sliderLabel = getSliderLabel(sig, sliderVal);
+    hdrHtml += '<div style="padding:2px 0;">';
+    hdrHtml += '<input type="range" style="width:'+(NCOL-4)+'px;accent-color:var(--accent);cursor:pointer;" ';
+    hdrHtml += 'min="'+sig.sliderMin+'" max="'+sig.sliderMax+'" step="'+sig.sliderStep+'" value="'+sliderVal+'" ';
+    hdrHtml += 'oninput="funnelSetThreshold(\''+sig.key+'\',this.value)" onclick="event.stopPropagation()">';
+    hdrHtml += '</div>';
+    hdrHtml += '<div style="font-family:DM Mono,monospace;font-size:7px;color:'+(isActive?'var(--accent)':'var(--text2)')+';white-space:nowrap;">'+sliderLabel+'</div>';
+    hdrHtml += '</th>';
+  });
+  hdrHtml += '</tr>';
+  thead.innerHTML = hdrHtml;
+
+  // Build rows
+  var rowsHtml = '';
+  if(!pool.length){
+    rowsHtml = '<tr><td colspan="'+(3+funnelSignalDefs.length)+'" style="padding:30px;text-align:center;color:var(--text2);font-family:DM Mono,monospace;font-size:11px;">⚠ No players pass all filters — broaden a slider</td></tr>';
+  } else {
+    pool.forEach(function(p,i){
+      var isPl = p.platoon;
+      var lockG = parseFloat(p.lock_g)||0;
+      var rowBg = i%2===0?'':'background:rgba(255,255,255,0.015);';
+      var nameCol = isPl?'#4af0b0':'var(--text0)';
+      var nameStyle = isPl?'font-style:italic;text-transform:uppercase;':'';
+      var locked = lockG>=90?'border-left:2px solid var(--elite);':lockG>=75?'border-left:2px solid var(--strong);':lockG>=60?'border-left:2px solid var(--lean);':'';
+      rowsHtml += '<tr style="border-bottom:0.5px solid var(--border);'+rowBg+locked+'">';
+      // Player name
+      rowsHtml += '<td style="padding:4px 6px;white-space:nowrap;">';
+      rowsHtml += '<span style="font-size:11px;font-weight:600;color:'+nameCol+';'+nameStyle+'">'+p.name+'</span>';
+      rowsHtml += '<span style="font-family:DM Mono,monospace;font-size:8px;color:var(--text2);margin-left:5px;">'+p.team+'</span>';
+      rowsHtml += '</td>';
+      // Pos
+      rowsHtml += '<td style="padding:3px;text-align:center;"><span style="font-family:DM Mono,monospace;font-size:9px;color:var(--text1);">'+( p.pos||'--')+'</span></td>';
+      // Salary
+      var sal = parseFloat(p.salary)||0;
+      var salCol = sal>=5500?'#4af0b0':sal>=4500?'#e8c547':sal>=3500?'#ff8c42':'#ff4d6d';
+      rowsHtml += '<td style="padding:3px;text-align:center;"><span style="font-family:DM Mono,monospace;font-size:9px;color:'+salCol+';">'+(sal>0?'
   var lw = {};
   if(typeof SLS_REMATRIX_WEIGHTS !== 'undefined' && SLS_REMATRIX_WEIGHTS.weights && SLS_REMATRIX_WEIGHTS.weights.lock_weights){
     lw = SLS_REMATRIX_WEIGHTS.weights.lock_weights;
@@ -2939,13 +3266,10 @@ function buildFunnelCol(sig, idx){
     });
     chipsDiv.innerHTML = chipsHtml;
   }
-  col.appendChild(chipsDiv);
 
-  // Wire events after insert (use event delegation on wrap)
-  return col;
-}
-
-function renderFunnelResults(players, rp){
+</script>
+</body>
+</html>
   // Funnel dropout viz
   var fvHtml = '<div style="font-family:DM Mono,monospace;font-size:9px;color:var(--text2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">signal dropout</div>';
   funnelSignals.forEach(function(sig,i){
@@ -3053,6 +3377,52 @@ function onFunnelSlider(key, val){
   if(el && sig && sig.sliderLabel) el.textContent = sig.sliderLabel(val);
   if(funnelState[key].active) renderFunnel();
 }
+
+</script>
+</body>
+</html>
++(sal/1000).toFixed(1)+'k':'--')+'</span></td>';
+      // Signal cells
+      funnelSignalDefs.forEach(function(sig){
+        var v   = sig.valueFn(p);
+        var d   = sig.displayFn(p);
+        var col = sig.colorFn(v, p);
+        var t   = funnelThresholds[sig.key]||0;
+        // check if this cell passes filter
+        var passes = t===0||(sig.filterFn?sig.filterFn(p,t):v>=t);
+        var cellBg = !passes&&t>0?'background:rgba(255,77,109,0.06);':'';
+        rowsHtml += '<td style="padding:3px 2px;text-align:center;'+cellBg+'">';
+        rowsHtml += '<span style="font-family:DM Mono,monospace;font-size:9px;font-weight:600;color:'+col+';">'+d+'</span>';
+        rowsHtml += '</td>';
+      });
+      rowsHtml += '</tr>';
+    });
+  }
+  tbody.innerHTML = rowsHtml;
+
+  if(loading) loading.style.display='none';
+  table.style.display='';
+}
+
+function getSliderLabel(sig, val){
+  val = parseFloat(val);
+  if(val===0||(sig.sliderMin===0&&val===sig.sliderMin)) return 'OFF';
+  if(sig.sliderLabels && sig.sliderLabels[Math.round(val)]) return sig.sliderLabels[Math.round(val)];
+  if(sig.key==='own_pct') return '≤'+val+'%';
+  return '≥'+val;
+}
+
+function funnelSort(key){
+  if(funnelSortKey===key){ funnelSortDir*=-1; }
+  else { funnelSortKey=key; funnelSortDir=-1; }
+  renderFunnelTable();
+}
+
+function funnelSetThreshold(key, val){
+  funnelThresholds[key] = parseFloat(val);
+  renderFunnelTable();
+}
+
 
 </script>
 </body>
