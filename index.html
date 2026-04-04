@@ -2588,7 +2588,7 @@ function funnelResetAll(){
 }
 
 function initFunnel(){
-  if(!funnelInited){
+  if(!funnelInited || funnelSignalDefs.length === 0){
     funnelInited = true;
     funnelSignalDefs = buildFunnelSignalDefs();
     funnelSignalDefs.forEach(function(s){ funnelThresholds[s.key]=0; });
