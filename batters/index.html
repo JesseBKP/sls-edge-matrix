@@ -88,32 +88,7 @@ td.center{text-align:center;} td.right{text-align:right;}
 <body>
 
 <!-- DATA -->
-<script>
-(function() {
-  var SALT = "APEXPREDATOR";
-  function getCode() {
-    var d = new Date();
-    var y = d.getFullYear();
-    var m = String(d.getMonth()+1).padStart(2,'0');
-    var day = String(d.getDate()).padStart(2,'0');
-    var str = "" + y + m + day + SALT;
-    var hash = CryptoJS.SHA256(str).toString();
-    return hash.substring(0,4).toUpperCase();
-  }
-  window.slsCheckGate = function() {
-    var input = document.getElementById('sls-gate-input').value.toUpperCase();
-    if (input === getCode()) {
-      document.getElementById('sls-gate').style.display = 'none';
-    } else {
-      document.getElementById('sls-gate-err').innerText = 'INVALID CODE -- CHECK #edge-matrix-link';
-      document.getElementById('sls-gate-input').value = '';
-    }
-  };
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') window.slsCheckGate();
-  });
-})();
-</script>
+
 <script>const SLATE_LABELS = ["7:05 PM (8G)", "4:05 PM (4G)", "1:10 PM (3G)", "9:05 PM (2G)", "SD 2:10 PM (1G)", "SD 7:05 PM (1G)", "SD 8:10 PM (1G)", "SD 9:38 PM (1G)"];</script>
 
 <!-- GATE -->
