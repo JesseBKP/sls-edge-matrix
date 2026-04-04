@@ -15,7 +15,7 @@
   --lev-fade:#4a7aff;--unicorn:#c084fc;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--bg0);color:var(--text0);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;}
+body{background:var(--bg0);color:var(--text0);font-family:'DM Sans',sans-serif;min-height:100vh;}
 
 /* GATE */
 #sls-gate{position:fixed;inset:0;background:#000;z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;font-family:monospace;}
@@ -27,86 +27,94 @@ body{background:var(--bg0);color:var(--text0);font-family:'DM Sans',sans-serif;m
 .gate-btn{margin-top:20px;width:100%;padding:13px;background:#e8d5a3;color:#000;font-weight:700;font-size:13px;letter-spacing:3px;border:none;cursor:pointer;}
 .gate-hint{color:#333;font-size:10px;margin-top:24px;letter-spacing:1px;}
 
-/* LEGEND STRIP */
-.legend-strip{background:var(--bg1);border-bottom:1px solid var(--border);padding:5px 12px;display:flex;align-items:center;flex-wrap:wrap;gap:10px;}
-.ls-item{display:flex;align-items:center;gap:4px;font-family:'DM Mono',monospace;font-size:9px;color:var(--text2);white-space:nowrap;}
-.ls-swatch{width:8px;height:8px;border-radius:1px;flex-shrink:0;}
-.ls-label{color:var(--text1);}
-
 /* HEADER */
-.header{padding:8px 12px;background:var(--bg1);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
-.brand{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:0.04em;}
+.header{padding:6px 12px;background:var(--bg1);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;}
+.brand{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:0.04em;}
 .brand span{color:var(--accent);}
-.header-sub{font-family:'DM Mono',monospace;font-size:9px;color:var(--text2);}
+.hdr-right{font-family:'DM Mono',monospace;font-size:9px;color:var(--text2);text-align:right;}
+
+/* LEGEND STRIP */
+.legend-strip{background:var(--bg1);border-bottom:1px solid var(--border);padding:4px 12px;display:flex;align-items:center;flex-wrap:wrap;gap:10px;}
+.ls-item{display:flex;align-items:center;gap:3px;font-family:'DM Mono',monospace;font-size:8px;color:var(--text2);white-space:nowrap;}
+.ls-swatch{width:7px;height:7px;border-radius:1px;flex-shrink:0;}
+.ls-sep{width:1px;height:10px;background:var(--border);}
 
 /* FILTER BAR */
-.filter-bar{background:var(--bg1);border-bottom:1px solid var(--border);padding:5px 12px;display:flex;align-items:flex-start;flex-wrap:wrap;gap:6px;}
+.filter-bar{background:var(--bg1);border-bottom:1px solid var(--border);padding:4px 12px;display:flex;align-items:flex-start;flex-wrap:wrap;gap:5px;}
 .fg{display:flex;flex-direction:column;gap:2px;}
-.fl{font-size:8px;text-transform:uppercase;letter-spacing:0.12em;color:var(--text2);font-family:'DM Mono',monospace;}
+.fl{font-size:7px;text-transform:uppercase;letter-spacing:0.12em;color:var(--text2);font-family:'DM Mono',monospace;}
 .pills{display:flex;flex-wrap:wrap;gap:2px;}
-.fpill{padding:2px 6px;border-radius:3px;font-size:9px;font-family:'DM Mono',monospace;border:1px solid var(--border);background:var(--bg3);color:var(--text1);cursor:pointer;user-select:none;white-space:nowrap;}
+.fpill{padding:2px 5px;border-radius:3px;font-size:8px;font-family:'DM Mono',monospace;border:1px solid var(--border);background:var(--bg3);color:var(--text1);cursor:pointer;user-select:none;white-space:nowrap;}
 .fpill:hover{border-color:var(--border-hi);color:var(--text0);}
 .fpill.active{background:rgba(232,197,71,0.12);border-color:rgba(232,197,71,0.5);color:var(--accent);}
 .fpill.active.pos-pill{background:rgba(74,240,176,0.08);border-color:rgba(74,240,176,0.4);color:var(--accent2);}
-.fpill.verdict-lethal.active{background:rgba(255,77,109,0.12);border-color:rgba(255,77,109,0.4);color:#ff4d6d;}
-.fpill.verdict-stack.active{background:rgba(255,140,66,0.12);border-color:rgba(255,140,66,0.4);color:#ff8c42;}
-.fpill.verdict-lean.active{background:rgba(232,197,71,0.12);border-color:rgba(232,197,71,0.4);color:#e8c547;}
-.fpill.verdict-fade.active{background:rgba(74,122,255,0.12);border-color:rgba(74,122,255,0.4);color:#4a7aff;}
 
 /* TABLE */
 .wrap{overflow-x:auto;}
 table{width:100%;border-collapse:collapse;font-size:10px;}
 thead tr{background:var(--bg2);border-bottom:1px solid var(--border-hi);position:sticky;top:0;z-index:2;}
-th{padding:4px 3px;font-size:8px;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:0.08em;color:var(--text2);text-align:left;cursor:pointer;user-select:none;white-space:nowrap;}
-th.right{text-align:right;}
-th.center{text-align:center;}
-tbody tr{border-bottom:1px solid var(--border);}
+th{padding:4px 3px;font-size:8px;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:0.06em;color:var(--text2);text-align:left;cursor:pointer;user-select:none;white-space:nowrap;}
+th.center{text-align:center;} th.right{text-align:right;}
+th[data-sort].sort-asc::after{content:" ▲";color:var(--elite);}
+th[data-sort].sort-desc::after{content:" ▼";color:var(--elite);}
+tbody tr{border-bottom:1px solid var(--border);transition:background 0.1s;}
 tbody tr:hover{background:rgba(255,255,255,0.02);}
 td{padding:3px 3px;vertical-align:middle;}
-td.center{text-align:center;}
-td.right{text-align:right;}
+td.center{text-align:center;} td.right{text-align:right;}
 .row-elite{border-left:2px solid var(--elite);}
 .row-strong{border-left:2px solid var(--strong);}
 .row-lean{border-left:2px solid var(--lean);}
 .row-monitor{border-left:2px solid var(--text2);}
-
-/* PLAYER NAME */
 .pname{font-size:11px;font-weight:600;color:var(--text0);white-space:nowrap;}
 .pname.is-platoon{color:#4af0b0 !important;text-transform:uppercase !important;}
 .pname.is-hot{text-transform:uppercase;color:var(--accent);font-weight:700;}
-.pmeta{font-size:8px;color:var(--text2);font-family:'DM Mono',monospace;}
-
-/* LOCK SCORE */
 .lock-g{font-family:'Bebas Neue',sans-serif;font-size:18px;line-height:1;}
-.lock-c{font-family:'Bebas Neue',sans-serif;font-size:14px;line-height:1;color:var(--text1);}
-.tier-elite{color:var(--elite);}
-.tier-strong{color:var(--strong);}
-.tier-lean{color:var(--lean);}
-.tier-monitor{color:var(--text2);}
-
-/* VERDICT */
-.vbadge{display:inline-block;padding:1px 5px;border-radius:2px;font-size:8px;font-family:'DM Mono',monospace;font-weight:500;text-transform:uppercase;}
+.lock-c{font-family:'Bebas Neue',sans-serif;font-size:13px;line-height:1;}
+.tier-elite{color:var(--elite);} .tier-strong{color:var(--strong);} .tier-lean{color:var(--lean);} .tier-monitor{color:var(--text2);}
+.vbadge{display:inline-block;padding:1px 4px;border-radius:2px;font-size:8px;font-family:'DM Mono',monospace;font-weight:500;text-transform:uppercase;}
 .vb-lethal{background:rgba(255,77,109,0.14);color:var(--elite);border:1px solid rgba(255,77,109,0.3);}
 .vb-stack{background:rgba(255,140,66,0.12);color:var(--strong);border:1px solid rgba(255,140,66,0.25);}
 .vb-lean{background:rgba(232,197,71,0.10);color:var(--lean);border:1px solid rgba(232,197,71,0.2);}
 .vb-neutral{background:var(--bg4);color:var(--text2);border:1px solid var(--border);}
 .vb-fade{background:rgba(74,122,255,0.10);color:var(--lev-fade);border:1px solid rgba(74,122,255,0.25);}
-
-/* MISC */
-.pos-badge{font-family:'DM Mono',monospace;font-size:8px;padding:1px 4px;border-radius:2px;background:var(--bg4);color:var(--text1);border:1px solid var(--border);}
-.team-chip{display:inline-flex;align-items:center;justify-content:center;width:22px;height:14px;border-radius:2px;font-family:'DM Mono',monospace;font-size:7px;font-weight:700;}
-.order-dot{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;font-size:9px;font-family:'DM Mono',monospace;background:rgba(232,197,71,0.1);color:#e8c547;border:1px solid rgba(232,197,71,0.3);}
+.pos-badge{font-family:'DM Mono',monospace;font-size:8px;padding:1px 3px;border-radius:2px;background:var(--bg4);color:var(--text1);border:1px solid var(--border);}
+.team-chip{display:inline-flex;align-items:center;justify-content:center;width:22px;height:14px;border-radius:2px;font-family:'DM Mono',monospace;font-size:7px;font-weight:700;flex-shrink:0;}
+.order-dot{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;font-size:8px;font-family:'DM Mono',monospace;background:rgba(232,197,71,0.1);color:#e8c547;border:1px solid rgba(232,197,71,0.3);}
 .order-dot.top3{background:rgba(232,197,71,0.2);border-color:rgba(232,197,71,0.6);}
 .empty{padding:40px;text-align:center;color:var(--text2);font-family:'DM Mono',monospace;font-size:12px;}
-.footer{padding:8px 12px;border-top:1px solid var(--border);background:var(--bg1);font-family:'DM Mono',monospace;font-size:9px;color:var(--text2);display:flex;justify-content:space-between;}
-th[data-sort].sort-asc::after{content:" ▲";color:var(--elite);}
-th[data-sort].sort-desc::after{content:" ▼";color:var(--elite);}
+.footer{padding:6px 12px;border-top:1px solid var(--border);background:var(--bg1);font-family:'DM Mono',monospace;font-size:9px;color:var(--text2);display:flex;justify-content:space-between;}
 </style>
 </head>
 <body>
 
-<!-- DATA INJECTION -->
-
+<!-- DATA -->
+<script>
+(function() {
+  var SALT = "APEXPREDATOR";
+  function getCode() {
+    var d = new Date();
+    var y = d.getFullYear();
+    var m = String(d.getMonth()+1).padStart(2,'0');
+    var day = String(d.getDate()).padStart(2,'0');
+    var str = "" + y + m + day + SALT;
+    var hash = CryptoJS.SHA256(str).toString();
+    return hash.substring(0,4).toUpperCase();
+  }
+  window.slsCheckGate = function() {
+    var input = document.getElementById('sls-gate-input').value.toUpperCase();
+    if (input === getCode()) {
+      document.getElementById('sls-gate').style.display = 'none';
+    } else {
+      document.getElementById('sls-gate-err').innerText = 'INVALID CODE -- CHECK #edge-matrix-link';
+      document.getElementById('sls-gate-input').value = '';
+    }
+  };
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') window.slsCheckGate();
+  });
+})();
+</script>
+<script>const SLATE_LABELS = ["7:05 PM (8G)", "4:05 PM (4G)", "1:10 PM (3G)", "9:05 PM (2G)", "SD 2:10 PM (1G)", "SD 7:05 PM (1G)", "SD 8:10 PM (1G)", "SD 9:38 PM (1G)"];</script>
 
 <!-- GATE -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
@@ -141,134 +149,119 @@ th[data-sort].sort-desc::after{content:" ▼";color:var(--elite);}
 <div class="header">
   <div>
     <div class="brand">SLS <span>MATRIX.B</span></div>
-    <div class="header-sub" id="hdr-sub">APR 04, 2026 &bull; LIVE DATA &bull; SWIPELEFT SPORTS</div>
+    <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--text2);" id="hdr-sub">SwipeLeft Sports &bull; Live Data</div>
   </div>
-  <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text2);" id="hdr-counts"></div>
+  <div class="hdr-right" id="hdr-counts"></div>
 </div>
 
 <!-- LEGEND STRIP -->
 <div class="legend-strip">
-  <div class="ls-item"><div class="ls-swatch" style="background:var(--elite);"></div><span class="ls-label">Elite</span><span>90-100</span></div>
-  <div class="ls-item"><div class="ls-swatch" style="background:var(--strong);"></div><span class="ls-label">Strong</span><span>75-89</span></div>
-  <div class="ls-item"><div class="ls-swatch" style="background:var(--lean);"></div><span class="ls-label">Lean</span><span>60-74</span></div>
-  <div class="ls-item"><div class="ls-swatch" style="background:var(--unicorn);"></div><span class="ls-label">UNI</span><span>Elite+&lt;8%own</span></div>
-  <div class="ls-item"><div class="ls-swatch" style="background:var(--elite);border-radius:0;"></div><span class="ls-label">Lethal</span><span>Cross-ref</span></div>
-  <div class="ls-item"><div class="ls-swatch" style="background:var(--lev-fade);"></div><span class="ls-label">Fade</span><span>Avoid GPP</span></div>
-  <div class="ls-item"><span style="color:#4af0b0;font-weight:700;font-size:9px;font-family:'DM Mono',monospace;">CAPS GREEN</span><span>=platoon</span></div>
-  <div class="ls-item"><span style="text-transform:uppercase;color:var(--accent);font-weight:700;font-size:9px;font-family:'DM Mono',monospace;">CAPS YELLOW</span><span>=HOT</span></div>
-  <div class="ls-item"><div class="ls-swatch" style="background:var(--elite);border-radius:0;"></div><span class="ls-label">Run</span><span>EXP=Explosive</span></div>
+  <div class="ls-item"><div class="ls-swatch" style="background:var(--elite);"></div><span style="color:var(--text1);">Elite</span><span>90-100</span></div>
+  <div class="ls-sep"></div>
+  <div class="ls-item"><div class="ls-swatch" style="background:var(--strong);"></div><span style="color:var(--text1);">Strong</span><span>75-89</span></div>
+  <div class="ls-sep"></div>
+  <div class="ls-item"><div class="ls-swatch" style="background:var(--lean);"></div><span style="color:var(--text1);">Lean</span><span>60-74</span></div>
+  <div class="ls-sep"></div>
+  <div class="ls-item"><div class="ls-swatch" style="background:var(--unicorn);"></div><span style="color:var(--text1);">UNI</span><span>Elite+&lt;8%own</span></div>
+  <div class="ls-sep"></div>
+  <div class="ls-item"><div class="ls-swatch" style="background:var(--elite);border-radius:0;"></div><span style="color:var(--text1);">Lethal</span><span>Cross-ref</span></div>
+  <div class="ls-sep"></div>
+  <div class="ls-item"><div class="ls-swatch" style="background:var(--lev-fade);"></div><span style="color:var(--text1);">Fade</span><span>Avoid GPP</span></div>
+  <div class="ls-sep"></div>
+  <div class="ls-item"><span style="color:#4af0b0;font-weight:700;">CAPS GREEN</span><span>=platoon advantage</span></div>
+  <div class="ls-sep"></div>
+  <div class="ls-item"><span style="text-transform:uppercase;color:var(--accent);font-weight:700;">CAPS YELLOW</span><span>=HOT streak</span></div>
+  <div class="ls-sep"></div>
+  <div class="ls-item"><div class="ls-swatch" style="background:var(--elite);border-radius:0;"></div><span style="color:var(--text1);">EXP</span><span>=Explosive run env</span></div>
 </div>
 
 <!-- FILTER BAR -->
 <div class="filter-bar">
   <div class="fg"><span class="fl">Slate</span><div class="pills" id="fl-slate"><div class="fpill active" data-val="ALL">All</div></div></div>
   <div class="fg"><span class="fl">Lock</span><div class="pills" id="fl-lock"><div class="fpill active" data-val="ALL">All</div><div class="fpill" data-val="ELITE">Elite</div><div class="fpill" data-val="STRONG">Strong</div><div class="fpill" data-val="LEAN">Lean</div><div class="fpill" data-val="MONITOR">MON</div></div></div>
-  <div class="fg"><span class="fl">Verdict</span><div class="pills" id="fl-verdict"><div class="fpill active" data-val="ALL">All</div><div class="fpill verdict-lethal" data-val="LETHAL">☠ LETHAL</div><div class="fpill verdict-stack" data-val="STACK">STACK</div><div class="fpill verdict-lean" data-val="LEAN">LEAN</div><div class="fpill verdict-fade" data-val="FADE">FADE</div></div></div>
+  <div class="fg"><span class="fl">Verdict</span><div class="pills" id="fl-verdict"><div class="fpill active" data-val="ALL">All</div><div class="fpill" data-val="LETHAL">&#9760; LETHAL</div><div class="fpill" data-val="STACK">STACK</div><div class="fpill" data-val="LEAN">LEAN</div><div class="fpill" data-val="FADE">FADE</div></div></div>
   <div class="fg"><span class="fl">Pos</span><div class="pills" id="fl-pos"><div class="fpill active pos-pill" data-val="ALL">All</div><div class="fpill pos-pill" data-val="C">C</div><div class="fpill pos-pill" data-val="1B">1B</div><div class="fpill pos-pill" data-val="2B">2B</div><div class="fpill pos-pill" data-val="3B">3B</div><div class="fpill pos-pill" data-val="SS">SS</div><div class="fpill pos-pill" data-val="OF">OF</div><div class="fpill pos-pill" data-val="DH">DH</div></div></div>
   <div class="fg"><span class="fl">Salary</span><div class="pills" id="fl-sal"><div class="fpill active" data-val="ALL">All</div><div class="fpill" data-val="5K+">$5K+</div><div class="fpill" data-val="4K+">$4K+</div><div class="fpill" data-val="3K+">$3K+</div><div class="fpill" data-val="<3K">&lt;$3K</div></div></div>
   <div class="fg"><span class="fl">Own</span><div class="pills" id="fl-own"><div class="fpill active" data-val="ALL">All</div><div class="fpill" data-val="unicorn">UNI</div><div class="fpill" data-val="mid">Mid</div><div class="fpill" data-val="chalk">Chalk</div></div></div>
-  <div class="fg"><span class="fl">Run Env</span><div class="pills" id="fl-run"><div class="fpill active" data-val="ALL">All</div><div class="fpill" data-val="EXPLOSIVE">EXP</div><div class="fpill" data-val="STRONG">STR</div><div class="fpill" data-val="AVERAGE">AVG</div></div></div>
+  <div class="fg"><span class="fl">Run</span><div class="pills" id="fl-run"><div class="fpill active" data-val="ALL">All</div><div class="fpill" data-val="EXPLOSIVE">EXP</div><div class="fpill" data-val="STRONG">STR</div><div class="fpill" data-val="AVERAGE">AVG</div></div></div>
   <div class="fg"><span class="fl">Opp BP</span><div class="pills" id="fl-bp"><div class="fpill active" data-val="ALL">All</div><div class="fpill" data-val="SMASH">SMASH</div><div class="fpill" data-val="ATTACK">ATK</div><div class="fpill" data-val="NEUTRAL">NEU</div></div></div>
 </div>
 
 <!-- TABLE -->
 <div class="wrap">
 <table id="batter-table">
-<thead>
-<tr>
-  <th style="width:28px;" class="center">#</th>
-  <th style="width:140px;" data-sort="name">Player</th>
-  <th style="width:32px;" class="center" data-sort="pos">Pos</th>
-  <th style="width:38px;" class="center" data-sort="salary">Sal</th>
-  <th style="width:22px;" class="center" data-sort="order">Ord</th>
-  <th style="width:52px;" data-sort="edge">Edge</th>
-  <th style="width:52px;" data-sort="lock_g">Lock.G</th>
-  <th style="width:52px;" data-sort="lock_c">Lock.C</th>
-  <th style="width:62px;" data-sort="lethal">Verdict</th>
-  <th style="width:52px;" data-sort="leverage">Lev</th>
-  <th style="width:38px;" class="right" data-sort="own_pct">Own%</th>
-  <th style="width:32px;" class="center" data-sort="run_env">Run</th>
-  <th style="width:44px;" class="center" data-sort="opp_bp">BP</th>
-</tr>
-</thead>
+<thead><tr>
+  <th style="width:24px;" class="center">#</th>
+  <th style="min-width:130px;" data-sort="name">Player</th>
+  <th style="width:30px;" class="center" data-sort="pos">Pos</th>
+  <th style="width:36px;" class="center" data-sort="salary">Sal</th>
+  <th style="width:20px;" class="center" data-sort="order">Ord</th>
+  <th style="width:48px;" data-sort="edge">Edge</th>
+  <th style="width:44px;" data-sort="lock_g">Lk.G</th>
+  <th style="width:38px;" data-sort="lock_c">Lk.C</th>
+  <th style="width:58px;" data-sort="lethal">Verdict</th>
+  <th style="width:30px;" class="center" data-sort="leverage">Lev</th>
+  <th style="width:34px;" class="right" data-sort="own_pct">Own</th>
+  <th style="width:28px;" class="center" data-sort="run_env">Run</th>
+  <th style="width:40px;" class="center" data-sort="opp_bp">BP</th>
+</tr></thead>
 <tbody id="batter-body"></tbody>
 </table>
 </div>
 <div class="empty" id="empty-msg" style="display:none;">NO PLAYERS MATCH FILTERS</div>
 <div class="footer">
-  <span>SwipeLeft Sports &bull; <strong style="color:var(--accent);">SLS Matrix.B</strong> &bull; Built by Jesse + Mojambo</span>
+  <span>SwipeLeft Sports &bull; <strong style="color:var(--accent);">SLS Matrix.B</strong></span>
   <span id="footer-ts"></span>
 </div>
 
 <script>
-// ── data ────────────────────────────────────────────────────
-const DATA = (typeof GRID_PLAYERS !== 'undefined' && GRID_PLAYERS.length) ? GRID_PLAYERS : [];
-const RUN_ENV = {PIT:"EXPLOSIVE",TOR:"STRONG",TB:"STRONG",NYM:"STRONG",ATL:"AVERAGE",MIN:"AVERAGE",STL:"AVERAGE",HOU:"AVERAGE",CIN:"AVERAGE",LAD:"STRONG",SF:"AVERAGE",BOS:"STRONG",COL:"EXPLOSIVE",KC:"AVERAGE",DET:"AVERAGE",PHI:"STRONG",BAL:"AVERAGE",WSH:"AVERAGE"};
+const DATA=(typeof GRID_PLAYERS!=='undefined'&&GRID_PLAYERS.length)?GRID_PLAYERS:[];
+const RUN_ENV={PIT:"EXPLOSIVE",TOR:"STRONG",TB:"STRONG",NYM:"STRONG",ATL:"AVERAGE",MIN:"AVERAGE",STL:"AVERAGE",HOU:"AVERAGE",CIN:"AVERAGE",LAD:"STRONG",SF:"AVERAGE",BOS:"STRONG",COL:"EXPLOSIVE",KC:"AVERAGE",DET:"AVERAGE",PHI:"STRONG",BAL:"AVERAGE",WSH:"AVERAGE"};
 
-// ── spectrum colors ─────────────────────────────────────────
-const calcSpectrum = (vals) => {
-  const sorted = vals.filter(v=>v!==null&&!isNaN(v)).sort((a,b)=>a-b);
-  const n = sorted.length; if(!n) return {p90:100,p75:80,p50:60,p25:40};
-  const pct = p => sorted[Math.min(Math.floor(p*n/100),n-1)];
-  return {p90:pct(90),p75:pct(75),p50:pct(50),p25:pct(25)};
+const calcSpectrum=(vals)=>{
+  const sorted=vals.filter(v=>v!==null&&!isNaN(v)).sort((a,b)=>a-b);
+  const n=sorted.length;if(!n)return{p90:100,p75:80,p50:60,p25:40};
+  const pct=p=>sorted[Math.min(Math.floor(p*n/100),n-1)];
+  return{p90:pct(90),p75:pct(75),p50:pct(50),p25:pct(25)};
 };
-const SPECTRUM = {
-  lock_g:   calcSpectrum(DATA.map(p=>parseFloat(p.lock_g))),
-  lock_c:   calcSpectrum(DATA.map(p=>parseFloat(p.lock_c))),
-  edge:     calcSpectrum(DATA.map(p=>parseFloat(p.edge))),
-  leverage: calcSpectrum(DATA.map(p=>parseFloat(p.leverage))),
+const SPECTRUM={
+  lock_g:calcSpectrum(DATA.map(p=>parseFloat(p.lock_g))),
+  lock_c:calcSpectrum(DATA.map(p=>parseFloat(p.lock_c))),
+  edge:calcSpectrum(DATA.map(p=>parseFloat(p.edge))),
+  leverage:calcSpectrum(DATA.map(p=>parseFloat(p.leverage))),
 };
-const specCol = (v, pcts) => {
-  if(v===null||isNaN(v)) return '#5c6878';
-  if(v>=pcts.p90) return '#ff4d6d';
-  if(v>=pcts.p75) return '#ff8c42';
-  if(v>=pcts.p50) return '#e8c547';
-  if(v>=pcts.p25) return '#9ca8b8';
-  return '#4a7aff';
+const specCol=(v,pcts)=>{
+  if(v===null||isNaN(v))return'#5c6878';
+  if(v>=pcts.p90)return'#ff4d6d';if(v>=pcts.p75)return'#ff8c42';
+  if(v>=pcts.p50)return'#e8c547';if(v>=pcts.p25)return'#9ca8b8';
+  return'#4a7aff';
 };
 
-// ── team logos ──────────────────────────────────────────────
-const TEAMS = {LAA:"#BA0021",ARI:"#A71930",BAL:"#DF4601",BOS:"#BD3039",CHC:"#0E3386",CIN:"#C6011F",CLE:"#00385D",COL:"#33006F",DET:"#0C2340",HOU:"#EB6E1F",KC:"#004687",LAD:"#005A9C",WSH:"#AB0003",NYM:"#002D72",ATH:"#003831",PIT:"#FDB827",SD:"#2F241D",SEA:"#0C2C56",SF:"#FD5A1E",STL:"#C41E3A",TB:"#092C5C",TEX:"#003278",TOR:"#134A8E",MIN:"#002B5C",PHI:"#E81828",ATL:"#CE1141",CWS:"#27251F",MIA:"#00A3E0",NYY:"#003087",MIL:"#FFC52F"};
-const LIGHT = new Set(["PIT","HOU","MIL","MIA"]);
-function teamChip(team){
-  const c=TEAMS[team]||'#5c6878';
-  const tc=LIGHT.has(team)?'#000':'#fff';
-  return `<span class="team-chip" style="background:${c};color:${tc};">${team}</span>`;
-}
+const TEAMS={LAA:"#BA0021",ARI:"#A71930",BAL:"#DF4601",BOS:"#BD3039",CHC:"#0E3386",CIN:"#C6011F",CLE:"#00385D",COL:"#33006F",DET:"#0C2340",HOU:"#EB6E1F",KC:"#004687",LAD:"#005A9C",WSH:"#AB0003",NYM:"#002D72",ATH:"#003831",PIT:"#FDB827",SD:"#2F241D",SEA:"#0C2C56",SF:"#FD5A1E",STL:"#C41E3A",TB:"#092C5C",TEX:"#003278",TOR:"#134A8E",MIN:"#002B5C",PHI:"#E81828",ATL:"#CE1141",CWS:"#27251F",MIA:"#00A3E0",NYY:"#003087",MIL:"#FFC52F"};
+const LIGHT=new Set(["PIT","HOU","MIL","MIA"]);
+function teamChip(team){const c=TEAMS[team]||'#5c6878';const tc=LIGHT.has(team)?'#000':'#fff';return `<span class="team-chip" style="background:${c};color:${tc};">${team}</span>`;}
 
-// ── filters & sort ──────────────────────────────────────────
 let filters={lock:new Set(),pos:new Set(),own:new Set(),run:new Set(),bp:new Set(),slate:new Set(),sal:new Set(),verdict:new Set()};
-let sortCol='lock_g', sortDir=-1;
+let sortCol='lock_g',sortDir=-1;
 
-function scoreTier(s){
-  s=parseFloat(s)||0;
-  if(s>=90)return'ELITE'; if(s>=75)return'STRONG'; if(s>=60)return'LEAN'; if(s>=45)return'MONITOR'; return'SKIP';
-}
+function scoreTier(s){s=parseFloat(s)||0;if(s>=90)return'ELITE';if(s>=75)return'STRONG';if(s>=60)return'LEAN';if(s>=45)return'MONITOR';return'SKIP';}
 function rowCls(t){return t==='ELITE'?'row-elite':t==='STRONG'?'row-strong':t==='LEAN'?'row-lean':'row-monitor';}
 function tierCls(t){return t==='ELITE'?'tier-elite':t==='STRONG'?'tier-strong':t==='LEAN'?'tier-lean':'tier-monitor';}
 function vbCls(v){return v==='LETHAL'?'vb-lethal':v==='STACK'?'vb-stack':v==='LEAN'?'vb-lean':v==='FADE'?'vb-fade':'vb-neutral';}
 
 function applyFilters(){
   return DATA.filter(p=>{
-    // exclude pitchers
-    if(['SP','RP','P'].includes(p.pos)) return false;
-    if(filters.lock.size>0&&!filters.lock.has(p.tier_g)) return false;
-    if(filters.verdict.size>0&&!filters.verdict.has(p.lethal)) return false;
+    if(['SP','RP','P'].includes(p.pos))return false;
+    if(filters.lock.size>0&&!filters.lock.has(p.tier_g))return false;
+    if(filters.verdict.size>0&&!filters.verdict.has(p.lethal))return false;
     if(filters.pos.size>0){const parts=(p.pos||'').split('/');if(!parts.some(pp=>filters.pos.has(pp.trim())))return false;}
-    if(filters.own.size>0&&!filters.own.has(p.own_tier)) return false;
-    if(filters.run.size>0&&!filters.run.has(p.run_env||(RUN_ENV[p.team]||'AVERAGE'))) return false;
-    if(filters.bp.size>0&&(!p.opp_bp||!filters.bp.has(p.opp_bp.verdict))) return false;
-    if(filters.slate.size>0&&!(p.slates||[]).some(s=>filters.slate.has(s))) return false;
-    if(filters.sal.size>0){
-      const s=p.salary||0;
-      const ok=[...filters.sal].some(t=>t==='5K+'?s>=5000:t==='4K+'?s>=4000&&s<5000:t==='3K+'?s>=3000&&s<4000:t==='<3K'?s<3000:true);
-      if(!ok) return false;
-    }
+    if(filters.own.size>0&&!filters.own.has(p.own_tier))return false;
+    if(filters.run.size>0&&!filters.run.has(p.run_env||(RUN_ENV[p.team]||'AVERAGE')))return false;
+    if(filters.bp.size>0&&(!p.opp_bp||!filters.bp.has(p.opp_bp.verdict)))return false;
+    if(filters.slate.size>0&&!(p.slates||[]).some(s=>filters.slate.has(s)))return false;
+    if(filters.sal.size>0){const s=p.salary||0;const ok=[...filters.sal].some(t=>t==='5K+'?s>=5000:t==='4K+'?s>=4000&&s<5000:t==='3K+'?s>=3000&&s<4000:t==='<3K'?s<3000:true);if(!ok)return false;}
     return true;
-  }).sort((a,b)=>{
-    const av=a[sortCol]||0, bv=b[sortCol]||0;
-    return sortDir*(av>bv?1:av<bv?-1:0);
-  });
+  }).sort((a,b)=>{const av=a[sortCol]||0,bv=b[sortCol]||0;return sortDir*(av>bv?1:av<bv?-1:0);});
 }
 
 function render(){
@@ -276,14 +269,11 @@ function render(){
   const tbody=document.getElementById('batter-body');
   const empty=document.getElementById('empty-msg');
   const counts=document.getElementById('hdr-counts');
-  if(counts) counts.textContent=`${filtered.length} players | ${filtered.filter(p=>p.tier_g==='ELITE').length} elite | ${filtered.filter(p=>p.lethal==='LETHAL').length} lethal`;
+  if(counts)counts.textContent=filtered.length+' players | '+filtered.filter(p=>p.tier_g==='ELITE').length+' elite | '+filtered.filter(p=>p.lethal==='LETHAL').length+' lethal';
   if(!filtered.length){tbody.innerHTML='';empty.style.display='block';return;}
   empty.style.display='none';
-
-  // Get active slate for salary/pos display
   const activeSlatePills=[...document.querySelectorAll('#fl-slate .fpill.active')].map(p=>p.dataset.val).filter(v=>v!=='ALL');
   const activeSlate=activeSlatePills.length===1?activeSlatePills[0]:null;
-
   tbody.innerHTML=filtered.map((p,i)=>{
     const gColor=specCol(parseFloat(p.lock_g),SPECTRUM.lock_g);
     const cColor=specCol(parseFloat(p.lock_c),SPECTRUM.lock_c);
@@ -305,46 +295,38 @@ function render(){
     const ownStyle=isUni?'color:#c084fc;':'';
     const bpVerdict=p.opp_bp&&p.opp_bp.verdict!=='N/A'?p.opp_bp.verdict:'--';
     const bpColor=p.opp_bp?p.opp_bp.color:'#5c6878';
-    return `<tr class="${rowCls(p.tier_g)}">
-      <td class="center" style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text2);">${i+1}</td>
-      <td>
-        <div style="display:flex;align-items:center;gap:4px;">
-          ${teamChip(p.team)}
-          <div>
-            <div class="${nc}" style="background:${p.confirmed?'rgba(0,200,81,0.18)':'rgba(255,255,255,0.03)'};border-left:2px solid ${p.confirmed?'#00c851':'#333'};padding-left:3px;border-radius:2px;">${displayName}</div>
-          </div>
-        </div>
-      </td>
-      <td class="center"><span class="pos-badge">${pos}</span></td>
-      <td class="center" style="font-family:'DM Mono',monospace;font-size:9px;color:${salColor};">${salDisplay}</td>
-      <td class="center"><div class="order-dot ${p.order<=3&&p.order>0?'top3':''}">${p.order||'P'}</div></td>
-      <td>
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;color:${eColor};">${p.edge}</div>
-        <div style="height:2px;background:var(--bg4);border-radius:1px;margin-top:2px;"><div style="width:${ep}%;height:100%;background:${eColor};border-radius:1px;"></div></div>
-      </td>
-      <td><div class="lock-g ${tierCls(p.tier_g)}" style="color:${gColor};">${p.lock_g}</div></td>
-      <td><div class="lock-c ${tierCls(scoreTier(p.lock_c))}" style="color:${cColor};">${p.lock_c||'--'}</div></td>
-      <td><span class="vbadge ${vbCls(p.lethal)}">${p.lethal}</span></td>
-      <td style="font-family:'DM Mono',monospace;font-size:10px;color:${lColor};">${p.leverage}</td>
-      <td class="right" style="font-family:'DM Mono',monospace;font-size:10px;${ownStyle}">${(p.own_pct||0).toFixed(1)}%</td>
-      <td class="center" style="font-family:'DM Mono',monospace;font-size:8px;color:${runColor};">${runShort}</td>
-      <td class="center" style="font-family:'DM Mono',monospace;font-size:8px;font-weight:700;color:${bpColor};">${bpVerdict}</td>
-    </tr>`;
+    return '<tr class="'+rowCls(p.tier_g)+'">'+
+      '<td class="center" style="font-family:DM Mono,monospace;font-size:10px;color:var(--text2);">'+(i+1)+'</td>'+
+      '<td><div style="display:flex;align-items:center;gap:4px;">'+teamChip(p.team)+
+        '<div style="background:'+(p.confirmed?'rgba(0,200,81,0.18)':'rgba(255,255,255,0.03)')+';border-left:2px solid '+(p.confirmed?'#00c851':'#333')+';padding-left:3px;border-radius:2px;">'+
+          '<div class="'+nc+'">'+displayName+'</div>'+
+        '</div></div></td>'+
+      '<td class="center"><span class="pos-badge">'+pos+'</span></td>'+
+      '<td class="center" style="font-family:DM Mono,monospace;font-size:9px;color:'+salColor+';">'+salDisplay+'</td>'+
+      '<td class="center"><div class="order-dot '+(p.order<=3&&p.order>0?'top3':'')+'">'+( p.order||'P')+'</div></td>'+
+      '<td><div style="font-family:Bebas Neue,sans-serif;font-size:16px;color:'+eColor+';">'+p.edge+'</div>'+
+        '<div style="height:2px;background:var(--bg4);border-radius:1px;margin-top:2px;"><div style="width:'+ep+'%;height:100%;background:'+eColor+';border-radius:1px;"></div></div></td>'+
+      '<td><div class="lock-g '+tierCls(p.tier_g)+'" style="color:'+gColor+';">'+p.lock_g+'</div></td>'+
+      '<td><div class="lock-c '+tierCls(scoreTier(p.lock_c))+'" style="color:'+cColor+';">'+(p.lock_c||'--')+'</div></td>'+
+      '<td><span class="vbadge '+vbCls(p.lethal)+'">'+p.lethal+'</span></td>'+
+      '<td class="center" style="font-family:DM Mono,monospace;font-size:10px;color:'+lColor+';">'+p.leverage+'</td>'+
+      '<td class="right" style="font-family:DM Mono,monospace;font-size:9px;'+ownStyle+'">'+((p.own_pct||0).toFixed(1))+'%</td>'+
+      '<td class="center" style="font-family:DM Mono,monospace;font-size:8px;color:'+runColor+';">'+runShort+'</td>'+
+      '<td class="center" style="font-family:DM Mono,monospace;font-size:8px;font-weight:700;color:'+bpColor+';">'+bpVerdict+'</td>'+
+    '</tr>';
   }).join('');
 }
 
-// ── wire filters ─────────────────────────────────────────────
-function wireFilter(id, key){
-  const el=document.getElementById(id);
-  if(!el) return;
+function wireFilter(id,key){
+  const el=document.getElementById(id);if(!el)return;
   el.querySelector('.fpill[data-val="ALL"]')?.classList.add('active');
   el.addEventListener('click',e=>{
-    const pill=e.target.closest('.fpill'); if(!pill) return;
+    const pill=e.target.closest('.fpill');if(!pill)return;
     const val=pill.dataset.val;
     if(val==='ALL'){filters[key].clear();el.querySelectorAll('.fpill').forEach(p=>p.classList.remove('active'));pill.classList.add('active');}
     else{
       const allP=el.querySelector('.fpill[data-val="ALL"]');
-      if(allP) allP.classList.remove('active');
+      if(allP)allP.classList.remove('active');
       if(filters[key].has(val)){filters[key].delete(val);pill.classList.remove('active');if(filters[key].size===0&&allP)allP.classList.add('active');}
       else{filters[key].add(val);pill.classList.add('active');}
     }
@@ -352,25 +334,19 @@ function wireFilter(id, key){
   });
 }
 
-// ── sort ─────────────────────────────────────────────────────
 document.querySelectorAll('th[data-sort]').forEach(th=>{
   th.addEventListener('click',()=>{
     const col=th.dataset.sort;
-    if(sortCol===col) sortDir*=-1; else{sortCol=col;sortDir=-1;}
+    if(sortCol===col)sortDir*=-1;else{sortCol=col;sortDir=-1;}
     document.querySelectorAll('th[data-sort]').forEach(t=>t.classList.remove('sort-asc','sort-desc'));
     th.classList.add(sortDir===1?'sort-asc':'sort-desc');
     render();
   });
 });
 
-// ── slate pills ──────────────────────────────────────────────
 if(typeof SLATE_LABELS!=='undefined'&&SLATE_LABELS.length>0){
   const sc=document.getElementById('fl-slate');
-  SLATE_LABELS.forEach(label=>{
-    const d=document.createElement('div');
-    d.className='fpill';d.dataset.val=label;d.textContent=label;
-    sc.appendChild(d);
-  });
+  SLATE_LABELS.forEach(label=>{const d=document.createElement('div');d.className='fpill';d.dataset.val=label;d.textContent=label;sc.appendChild(d);});
 }
 
 wireFilter('fl-slate','slate');
@@ -382,10 +358,7 @@ wireFilter('fl-own','own');
 wireFilter('fl-run','run');
 wireFilter('fl-bp','bp');
 
-// ── footer ───────────────────────────────────────────────────
-const fts=document.getElementById('footer-ts');
-if(fts) fts.textContent='Generated: '+new Date().toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'});
-
+document.getElementById('footer-ts').textContent='Generated: '+new Date().toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'});
 render();
 </script>
 </body>
