@@ -2172,7 +2172,7 @@ document.querySelectorAll(".gl-row .vtab").forEach(tab=>{
     if(v==="pitchers") document.getElementById("view-pitchers").classList.add("active");
     if(v==="build") document.getElementById("view-build").classList.add("active");
     if(v==="matchup") document.getElementById("view-matchup").classList.add("active");
-    if(v==="funnel"){ document.getElementById("view-funnel").classList.add("active"); initFunnel(); }
+    if(v==="funnel"){ document.getElementById("view-funnel").classList.add("active"); funnelSignalDefs=buildFunnelSignalDefs(); funnelSignalDefs.forEach(function(s){funnelThresholds[s.key]=funnelThresholds[s.key]||0;}); renderFunnelTable(); }
     document.getElementById("view-matchup").classList.toggle("active",v==="matchup");
     if(v==="matchup")buildMatchupMatrix();
     document.getElementById("view-pitchers").classList.toggle("active",v==="pitchers");
