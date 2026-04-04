@@ -78,7 +78,7 @@ td.r{text-align:right;} td.c{text-align:center;}
 .team-chip{display:inline-flex;align-items:center;justify-content:center;width:22px;height:14px;border-radius:2px;font-family:'DM Mono',monospace;font-size:7px;font-weight:700;flex-shrink:0;}
 .order-dot{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;font-size:8px;font-family:'DM Mono',monospace;background:rgba(232,197,71,0.1);color:#e8c547;border:1px solid rgba(232,197,71,0.3);}
 .order-dot.top3{background:rgba(232,197,71,0.2);border-color:rgba(232,197,71,0.6);}
-.narrative{font-size:9px;color:var(--text2);font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px;}
+.narrative{font-size:9px;color:#8a9ab0;font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px;}
 .empty{padding:40px;text-align:center;color:var(--text2);font-family:'DM Mono',monospace;font-size:12px;}
 .footer{padding:5px 10px;border-top:1px solid var(--border);background:var(--bg1);font-family:'DM Mono',monospace;font-size:8px;color:var(--text2);display:flex;justify-content:space-between;}
 </style>
@@ -175,7 +175,7 @@ const BP_USAGE_GAMES = [{"away": "STL", "home": "DET", "game_time": "2026-04-04T
 <table id="batter-table">
 <thead><tr>
   <th style="width:22px;" class="c">#</th>
-  <th style="min-width:120px;" data-sort="name">Player</th>
+  <th style="min-width:110px;max-width:150px;" data-sort="name">Player</th>
   <th style="width:28px;" class="c" data-sort="pos">Pos</th>
   <th style="width:34px;" class="c" data-sort="salary">Sal</th>
   <th style="width:18px;" class="c" data-sort="order">Or</th>
@@ -187,8 +187,8 @@ const BP_USAGE_GAMES = [{"away": "STL", "home": "DET", "game_time": "2026-04-04T
   <th style="width:32px;" class="r" data-sort="own_pct">Own</th>
   <th style="width:26px;" class="c" data-sort="run_env">Run</th>
   <th style="width:42px;" class="c" data-sort="opp_bp">Opp BP</th>
-  <th style="width:30px;" class="c">Wx</th>
-  <th style="min-width:120px;" data-sort="story">Narrative</th>
+  <th style="width:55px;" class="c">Wx</th>
+  <th style="min-width:100px;max-width:150px;" data-sort="story">Note</th>
 </tr></thead>
 <tbody id="batter-body"></tbody>
 </table>
@@ -238,11 +238,18 @@ const TEAMS={LAA:"#BA0021",ARI:"#A71930",BAL:"#DF4601",BOS:"#BD3039",CHC:"#0E338
 const LIGHT=new Set(["PIT","HOU","MIL","MIA"]);
 function teamChip(team){const c=TEAMS[team]||'#5c6878';const tc=LIGHT.has(team)?'#000':'#fff';return '<span class="team-chip" style="background:'+c+';color:'+tc+';">'+team+'</span>';}
 
-function wxIcon(p){
+function wxCell(p){
   const i=p.temp_icon||'neutral';
   const icon=i==='sun'?'☀':i==='rain'?'🌧':i==='snowflake'?'❄':i==='controlled'||i==='dome'?'🏟':'⛅';
   const temp=p.wx_temp?p.wx_temp+'°':'--';
-  return '<span style="font-size:9px;">'+icon+'</span><span style="font-family:DM Mono,monospace;font-size:8px;color:var(--text2);">'+temp+'</span>';
+  // wind arrow
+  const a=p.wind_arrow||'neutral';
+  const arrow=a==='up'||a==='up_center'?'↑':a==='up_right'?'↗':a==='right'?'→':a==='down_right'?'↘':a==='down'||a==='down_center'?'↓':a==='down_left'?'↙':a==='left'?'←':a==='up_left'?'↖':'·';
+  const wind=p.wx_wind?p.wx_wind.replace(' mph',''):'';
+  return '<span style="font-size:10px;">'+icon+'</span>'+
+         '<span style="font-family:DM Mono,monospace;font-size:8px;color:var(--text2);">'+temp+'</span>'+
+         '<span style="font-size:9px;color:#9ca8b8;">'+arrow+'</span>'+
+         (wind?'<span style="font-family:DM Mono,monospace;font-size:7px;color:var(--text2);">'+wind+'</span>':'');
 }
 
 let filters={lock:new Set(),pos:new Set(),own:new Set(),run:new Set(),bp:new Set(),slate:new Set(),sal:new Set(),verdict:new Set()};
@@ -305,7 +312,7 @@ function render(){
     const ownColor=ownCol(own);
     const bpVerdict=p.opp_bp&&p.opp_bp.verdict!=='N/A'?p.opp_bp.verdict:'--';
     const bpColor=p.opp_bp&&p.opp_bp.color?p.opp_bp.color:'#5c6878';
-    const story=p.story||'';
+    const story=(p.story||'').replace('EXPLOSIVE','EXP').replace('STRONG','STR').replace('AVERAGE','AVG').replace('run env','env').replace('owned','own').replace('leverage','lev').replace('signal','sig').replace('badge','bdg').replace('platoon','plat');
 
     return '<tr class="'+rowCls(p.tier_g)+'">'+
       '<td class="c" style="font-family:DM Mono,monospace;font-size:9px;color:var(--text2);">'+(i+1)+'</td>'+
@@ -327,7 +334,7 @@ function render(){
       '<td class="r" style="font-family:DM Mono,monospace;font-size:9px;color:'+ownColor+';">'+own.toFixed(1)+'%</td>'+
       '<td class="c" style="font-family:DM Mono,monospace;font-size:8px;color:'+runColor+';">'+runShort+'</td>'+
       '<td class="c" style="font-family:DM Mono,monospace;font-size:8px;font-weight:700;color:'+bpColor+';">'+bpVerdict+'</td>'+
-      '<td class="c">'+wxIcon(p)+'</td>'+
+      '<td class="c">'+wxCell(p)+'</td>'+
       '<td><div class="narrative">'+story+'</div></td>'+
     '</tr>';
   }).join('');
