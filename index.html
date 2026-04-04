@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SLS EDGE MATRIX</title><!-- v2026-04-04 11:28:50 --><!-- deploy 2026-04-04 11:23:20 -->
+<title>SLS EDGE MATRIX</title><!-- v2026-04-04 11:42:53 --><!-- deploy 2026-04-04 11:23:20 -->
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -2168,11 +2168,11 @@ document.querySelectorAll(".gl-row .vtab").forEach(tab=>{
     document.getElementById("view-pitchers").classList.remove("active");
     document.getElementById("view-build").classList.remove("active");
     document.getElementById("view-matchup").classList.remove("active");
-    document.getElementById("view-funnel").classList.remove("active"); document.getElementById("view-funnel").style.display="none"; document.getElementById("view-funnel").style.display="none";
+    document.getElementById("view-funnel").classList.remove("active"); document.getElementById("view-funnel").style.display="none"; document.getElementById("view-funnel").style.display="none"; document.getElementById("view-funnel").style.display="none";
     if(v==="pitchers") document.getElementById("view-pitchers").classList.add("active");
     if(v==="build") document.getElementById("view-build").classList.add("active");
     if(v==="matchup") document.getElementById("view-matchup").classList.add("active");
-    if(v==="funnel"){ document.getElementById("view-funnel").style.display="flex"; initFunnel(); }
+    if(v==="funnel"){ document.getElementById("view-funnel").style.display="flex"; initFunnel(); renderFunnelTable(); }
     document.getElementById("view-matchup").classList.toggle("active",v==="matchup");
     if(v==="matchup")buildMatchupMatrix();
     document.getElementById("view-pitchers").classList.toggle("active",v==="pitchers");
@@ -2828,6 +2828,11 @@ function renderFunnelTable(){
   var hOut     = document.getElementById('funnel-h-out');
   var hActive  = document.getElementById('funnel-h-active');
   if(!table) return;
+  // Always ensure signal defs are built
+  if(!funnelSignalDefs || funnelSignalDefs.length === 0){
+    funnelSignalDefs = buildFunnelSignalDefs();
+    funnelSignalDefs.forEach(function(s){ if(!funnelThresholds[s.key]) funnelThresholds[s.key]=0; });
+  }
 
   buildFunnelGameLookups();
 
@@ -2944,7 +2949,7 @@ function renderFunnelTable(){
   tbody.innerHTML = rowsHtml;
 
   if(loading) loading.style.display='none';
-  table.style.display='';
+  table.style.display='table';
 }
 
 function getSliderLabel(sig, val){
