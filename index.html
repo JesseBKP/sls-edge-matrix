@@ -2220,7 +2220,7 @@ document.addEventListener('DOMContentLoaded',function(){render();});
 // FUNNEL TAB FIX -- runs on load, patches vtab click for funnel
 (function(){
   function activateFunnel(){
-    document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
+    document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); v.style.display='none'; });
     document.getElementById('view-funnel').style.cssText='display:flex !important;flex-direction:column;';
     if(!funnelSignalDefs||funnelSignalDefs.length===0){
       funnelSignalDefs=buildFunnelSignalDefs();
