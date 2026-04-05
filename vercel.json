@@ -27,6 +27,14 @@
       "dest": "/batters/$1"
     },
     {
+      "src": "/funnel",
+      "dest": "/funnel/index.html"
+    },
+    {
+      "src": "/funnel/(.*)",
+      "dest": "/funnel/$1"
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.html"
     }
