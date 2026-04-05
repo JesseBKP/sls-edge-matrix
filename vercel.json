@@ -6,7 +6,7 @@
       "use": "@vercel/static"
     },
     {
-      "src": "*.js",
+      "src": "**/*.js",
       "use": "@vercel/static"
     }
   ],
@@ -29,6 +29,11 @@
     {
       "src": "/funnel",
       "dest": "/funnel/index.html"
+    },
+    {
+      "src": "/funnel/data.js",
+      "headers": { "content-type": "application/javascript" },
+      "dest": "/funnel/data.js"
     },
     {
       "src": "/funnel/(.*)",
