@@ -135,7 +135,7 @@ const BP_USAGE_GAMES = [{"away": "CHC", "home": "CLE", "game_time": "2026-04-05T
     <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--text2);">Signal Funnel &bull; Batters Only</div>
   </div>
   <div class="hdr-right">
-    <div>2026-04-05 10:37:06</div>
+    <div>2026-04-05 10:45:24</div>
     <div>sls-edge-matrix.vercel.app/funnel</div>
   </div>
 </div>
@@ -188,7 +188,7 @@ const BP_USAGE_GAMES = [{"away": "CHC", "home": "CLE", "game_time": "2026-04-05T
 </div>
 
 <div class="footer">
-  <span>SLS Matrix.F &bull; Funnel &bull; 2026-04-05 10:37:06</span>
+  <span>SLS Matrix.F &bull; Funnel &bull; 2026-04-05 10:45:24</span>
   <span id="footer-pool"></span>
 </div>
 
@@ -345,9 +345,9 @@ function buildRowHTML(g){
   var ctrl='';
   if(g.dir==='gte'||g.dir==='lte'){
     ctrl='<div class="gate-thresh" onclick="event.stopPropagation()">'+
-      '<button class="thresh-btn" onclick="adj(\'' + g.key + '\',-1)">&#8722;</button>'+
+      '<button class="thresh-btn" onclick="adj(''+g.key+'',-1)">&#8722;</button>'+
       '<span class="thresh-val" id="tv-'+g.key+'">'+t+'</span>'+
-      '<button class="thresh-btn" onclick="adj(\'' + g.key + '\',1)">+</button>'+
+      '<button class="thresh-btn" onclick="adj(''+g.key+'',1)">+</button>'+
       '</div>';
   }
   var pc=countPassing(g);
