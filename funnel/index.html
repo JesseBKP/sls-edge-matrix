@@ -6,6 +6,7 @@
 <title>SLS MATRIX.F -- FUNNEL</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+
 :root{
   --bg0:#090b0e;--bg1:#0d1117;--bg2:#131920;--bg3:#1a2230;--bg4:#1f2937;
   --border:rgba(255,255,255,0.07);--border-hi:rgba(255,255,255,0.14);
@@ -95,6 +96,7 @@ td.r{text-align:right;} td.c{text-align:center;}
 .dot.fail{background:var(--bg3);border:1px solid var(--border);}
 .empty{padding:40px;text-align:center;color:var(--text2);font-family:'DM Mono',monospace;font-size:12px;}
 .footer{padding:5px 10px;border-top:1px solid var(--border);background:var(--bg1);font-family:'DM Mono',monospace;font-size:8px;color:var(--text2);display:flex;justify-content:space-between;}
+
 </style>
 </head>
 <body>
@@ -135,16 +137,13 @@ const BP_USAGE_GAMES = [{"away": "CHC", "home": "CLE", "game_time": "2026-04-05T
     <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--text2);">Signal Funnel &bull; Batters Only</div>
   </div>
   <div class="hdr-right">
-    <div>2026-04-05 10:54:39</div>
+    <div>2026-04-05 11:03:01</div>
     <div>sls-edge-matrix.vercel.app/funnel</div>
   </div>
 </div>
 
 <div class="pool-bar">
-  <div>
-    <div class="pool-count" id="pool-num">---</div>
-    <div class="pool-label">batters passing</div>
-  </div>
+  <div><div class="pool-count" id="pool-num">---</div><div class="pool-label">batters passing</div></div>
   <div>
     <div class="pool-pct-bar"><div class="pool-pct-fill" id="pool-fill" style="width:100%"></div></div>
     <div class="pool-label" id="pool-pct-label" style="margin-top:2px;"></div>
@@ -188,14 +187,12 @@ const BP_USAGE_GAMES = [{"away": "CHC", "home": "CLE", "game_time": "2026-04-05T
 </div>
 
 <div class="footer">
-  <span>SLS Matrix.F &bull; Funnel &bull; 2026-04-05 10:54:39</span>
+  <span>SLS Matrix.F &bull; Funnel &bull; 2026-04-05 11:03:01</span>
   <span id="footer-pool"></span>
 </div>
 
 <script>
-// ============================================================
-// AUTH
-// ============================================================
+
 (function(){
   var SALT="APEXPREDATOR";
   function getCode(){
@@ -211,87 +208,77 @@ const BP_USAGE_GAMES = [{"away": "CHC", "home": "CLE", "game_time": "2026-04-05T
   document.addEventListener('keydown',function(e){if(e.key==='Enter')window.checkGate();});
 })();
 
-// ============================================================
-// FUNNEL ENGINE
-// Field names verified against sls_grid_builder.py
-// ============================================================
-
-// Batters only -- exclude SP/RP/P position
-var BATTERS = (window.GRID_PLAYERS||[]).filter(function(p){
-  var pos = (p.pos||p.position||'').toUpperCase();
-  return pos!=='SP' && pos!=='RP' && pos!=='P';
+var BATTERS=(window.GRID_PLAYERS||[]).filter(function(p){
+  var pos=(p.pos||p.position||'').toUpperCase();
+  return pos!=='SP'&&pos!=='RP'&&pos!=='P';
 });
-var TOTAL = BATTERS.length;
+var TOTAL=BATTERS.length;
 
-// ============================================================
-// GATE DEFINITIONS
-// All getVal() functions use ACTUAL field names from GRID_PLAYERS
-// ============================================================
-var GATES = [
-  // SP WEAKNESS
-  {key:'sp_atk', section:'SP Weakness', label:'SP = ATTACK',
-    desc:'Opp starter is ATTACK-tier (weak SP)',
-    thresh:0, dir:'bool', acc:65,
-    getVal:function(p){return p.pitcher_diff==='ATTACK'?1:0;}},
+var GATES=[
+  {key:'sp_atk',section:'SP Weakness',label:'SP = ATTACK',
+   desc:'Opp starter is ATTACK-tier (weak SP)',
+   thresh:0,dir:'bool',acc:65,
+   getVal:function(p){return p.pitcher_diff==='ATTACK'?1:0;}},
 
-  // BP WEAKNESS
-  {key:'bp', section:'BP Weakness', label:'Opp BP Weak',
-    desc:'Opp bullpen rated SMASH or ATTACK',
-    thresh:0, dir:'bool', acc:62,
-    getVal:function(p){var v=(p.opp_bp||{}).verdict||'';return (v==='SMASH'||v==='ATTACK')?1:0;}},
+  {key:'bp',section:'BP Weakness',label:'Opp BP Weak',
+   desc:'Opp bullpen rated SMASH or ATTACK',
+   thresh:0,dir:'bool',acc:62,
+   getVal:function(p){var v=(p.opp_bp||{}).verdict||'';return (v==='SMASH'||v==='ATTACK')?1:0;}},
 
-  // ENVIRONMENT
-  {key:'run_env', section:'Environment', label:'Run Env STRONG+',
-    desc:'Game env STRONG or EXPLOSIVE',
-    thresh:0, dir:'bool', acc:61,
-    getVal:function(p){var v=p.run_env||'';return (v==='EXPLOSIVE'||v==='STRONG')?1:0;}},
-  {key:'run_p3', section:'Environment', label:'P(3+ runs)',
-    desc:'Team prob of 3+ runs',
-    thresh:55, dir:'gte', acc:61,
-    getVal:function(p){return p.run_prob_p3||0;}},
-  {key:'wind', section:'Environment', label:'Wind OUT',
-    desc:'Wind blowing to outfield',
-    thresh:0, dir:'bool', acc:55,
-    getVal:function(p){var a=p.wind_arrow||'';return (a==='out'||a==='out-left'||a==='out-right')?1:0;}},
+  {key:'run_env',section:'Environment',label:'Run Env STRONG+',
+   desc:'Game env STRONG or EXPLOSIVE',
+   thresh:0,dir:'bool',acc:61,
+   getVal:function(p){var v=p.run_env||'';return (v==='EXPLOSIVE'||v==='STRONG')?1:0;}},
 
-  // PLAYER SIGNALS
-  {key:'order', section:'Player Signals', label:'Order top-5',
-    desc:'Batting in top 5',
-    thresh:5, dir:'lte', acc:56,
-    getVal:function(p){return p.order||9;}},
-  {key:'platoon', section:'Player Signals', label:'Platoon Adv',
-    desc:'Platoon advantage vs starter hand',
-    thresh:0, dir:'bool', acc:50,
-    getVal:function(p){return p.platoon?1:0;}},
-  {key:'heat', section:'Player Signals', label:'Hot Streak',
-    desc:'Batter currently hot',
-    thresh:0, dir:'bool', acc:56,
-    getVal:function(p){return p.hot==='hot'?1:0;}},
-  {key:'lethal', section:'Player Signals', label:'Lethal/Stack',
-    desc:'LETHAL or STACK cross-ref',
-    thresh:0, dir:'bool', acc:52,
-    getVal:function(p){var v=p.lethal||'';return (v==='LETHAL'||v==='STACK')?1:0;}},
+  {key:'run_p3',section:'Environment',label:'P(3+ runs)',
+   desc:'Team prob of 3+ runs',
+   thresh:55,dir:'gte',acc:61,
+   getVal:function(p){return p.run_prob_p3||0;}},
 
-  // SCORING
-  {key:'lock_g', section:'Scoring', label:'Lock.G min',
-    desc:'Min global lock score',
-    thresh:60, dir:'gte', acc:0,
-    getVal:function(p){return p.lock_g||0;}},
-  {key:'own', section:'Scoring', label:'Own% max',
-    desc:'Ownership ceiling',
-    thresh:30, dir:'lte', acc:0,
-    getVal:function(p){return p.own_pct||99;}},
-  {key:'sal', section:'Scoring', label:'Salary min',
-    desc:'Min DK salary',
-    thresh:3000, dir:'gte', acc:0,
-    getVal:function(p){return p.salary||0;}},
+  {key:'wind',section:'Environment',label:'Wind OUT',
+   desc:'Wind blowing to outfield',
+   thresh:0,dir:'bool',acc:55,
+   getVal:function(p){var a=p.wind_arrow||'';return (a==='out'||a==='out-left'||a==='out-right')?1:0;}},
+
+  {key:'order',section:'Player Signals',label:'Order top-5',
+   desc:'Batting in top 5',
+   thresh:5,dir:'lte',acc:56,
+   getVal:function(p){return p.order||9;}},
+
+  {key:'platoon',section:'Player Signals',label:'Platoon Adv',
+   desc:'Platoon advantage vs starter hand',
+   thresh:0,dir:'bool',acc:50,
+   getVal:function(p){return p.platoon?1:0;}},
+
+  {key:'heat',section:'Player Signals',label:'Hot Streak',
+   desc:'Batter currently hot',
+   thresh:0,dir:'bool',acc:56,
+   getVal:function(p){return p.hot==='hot'?1:0;}},
+
+  {key:'lethal',section:'Player Signals',label:'Lethal/Stack',
+   desc:'LETHAL or STACK cross-ref',
+   thresh:0,dir:'bool',acc:52,
+   getVal:function(p){var v=p.lethal||'';return (v==='LETHAL'||v==='STACK')?1:0;}},
+
+  {key:'lock_g',section:'Scoring',label:'Lock.G min',
+   desc:'Min global lock score',
+   thresh:60,dir:'gte',acc:0,
+   getVal:function(p){return p.lock_g||0;}},
+
+  {key:'own',section:'Scoring',label:'Own% max',
+   desc:'Ownership ceiling',
+   thresh:30,dir:'lte',acc:0,
+   getVal:function(p){return p.own_pct||99;}},
+
+  {key:'sal',section:'Scoring',label:'Salary min',
+   desc:'Min DK salary',
+   thresh:3000,dir:'gte',acc:0,
+   getVal:function(p){return p.salary||0;}},
 ];
 
-// STATE
-var activeGates={}, thresholds={};
+var activeGates={},thresholds={};
 GATES.forEach(function(g){activeGates[g.key]=false;thresholds[g.key]=g.thresh;});
 
-// GROUP BY SECTION
 function groupBySec(gates){
   var out=[],cur=null;
   gates.forEach(function(g){
@@ -301,7 +288,6 @@ function groupBySec(gates){
   return out;
 }
 
-// GATE PASS LOGIC
 function gatePass(g,p){
   var v=g.getVal(p);
   if(g.dir==='gte') return v>=thresholds[g.key];
@@ -314,7 +300,6 @@ function countPassing(g){
   return BATTERS.filter(function(p){return gatePass(g,p);}).length;
 }
 
-// BUILD LANE UI
 function buildLanes(){
   var wrap=document.getElementById('funnel-lanes');
   wrap.innerHTML='';
@@ -344,10 +329,11 @@ function buildRowHTML(g){
   var t=thresholds[g.key];
   var ctrl='';
   if(g.dir==='gte'||g.dir==='lte'){
+    var k=g.key;
     ctrl='<div class="gate-thresh" onclick="event.stopPropagation()">'+
-      '<button class="thresh-btn" onclick="adj(''+g.key+'',-1)">&#8722;</button>'+
-      '<span class="thresh-val" id="tv-'+g.key+'">'+t+'</span>'+
-      '<button class="thresh-btn" onclick="adj(''+g.key+'',1)">+</button>'+
+      '<button class="thresh-btn" onclick="adj(this.dataset.k,-1)" data-k="'+k+'">&#8722;</button>'+
+      '<span class="thresh-val" id="tv-'+k+'">'+t+'</span>'+
+      '<button class="thresh-btn" onclick="adj(this.dataset.k,1)" data-k="'+k+'">+</button>'+
       '</div>';
   }
   var pc=countPassing(g);
@@ -392,14 +378,16 @@ function buildSlateOptions(){
   });
 }
 
-// MAIN RENDER
 function renderFunnel(){
   var slate=(document.getElementById('slate-filter')||{}).value||'ALL';
   var ac=GATES.filter(function(g){return activeGates[g.key];}).length;
   document.getElementById('active-gate-count').textContent=ac;
 
   var pool=BATTERS.filter(function(p){
-    if(slate!=='ALL'&&!p.slates.includes(slate)) return false;
+    if(slate!=='ALL'){
+      var inSlate=p.slates&&p.slates.indexOf(slate)>=0;
+      if(!inSlate) return false;
+    }
     return GATES.every(function(g){
       if(!activeGates[g.key]) return true;
       return gatePass(g,p);
@@ -429,7 +417,7 @@ function renderFunnel(){
   tbody.innerHTML=pool.map(function(p,i){
     var lg=p.lock_g||0,lc=p.lock_c||0;
     var tier=lg>=90?'elite':lg>=75?'strong':lg>=60?'lean':'monitor';
-    var isPlt=!!p.platoon, isHot=p.hot==='hot';
+    var isPlt=!!p.platoon,isHot=p.hot==='hot';
     var nameCls='pname'+(isPlt?' is-platoon':isHot?' is-hot':'');
     var nm=p.name||'?';
     var ord=p.order||'-';
@@ -437,7 +425,7 @@ function renderFunnel(){
     var sal=p.salary||0;
     var salFmt=sal?'$'+(sal/1000).toFixed(1)+'k':'--';
     var lethal=p.lethal||'NEUTRAL';
-    var lClass=lethal==='LETHAL'?'vb-lethal':lethal==='STACK'?'vb-stack':lethal==='FADE'||lethal==='HARD FADE'?'vb-fade':'vb-neutral';
+    var lClass=lethal==='LETHAL'?'vb-lethal':lethal==='STACK'?'vb-stack':(lethal==='FADE'||lethal==='HARD FADE')?'vb-fade':'vb-neutral';
     var lTxt=lethal==='LETHAL'?'&#9760; LETHAL':lethal;
     var lgC=lg>=90?'var(--elite)':lg>=75?'var(--strong)':lg>=60?'var(--lean)':'var(--text2)';
     var lgSz=lg>=90?17:14;
@@ -456,13 +444,9 @@ function renderFunnel(){
     var wC=wa.startsWith('out')?'var(--accent2)':'var(--text2)';
     if(wa==='neutral'||wa===''){wTxt='&mdash;';wC='var(--text2)';}
     var wx=p.wx_icon||'';
-
-    // Gate dot strip
     var dots=GATES.map(function(g){
-      var pass=gatePass(g,p);
-      return '<span class="dot '+(pass?'pass':'fail')+'"></span>';
+      return '<span class="dot '+(gatePass(g,p)?'pass':'fail')+'"></span>';
     }).join('');
-
     return '<tr class="row-'+tier+'">'+
       '<td class="c" style="color:var(--text2);font-size:9px;">'+(i+1)+'</td>'+
       '<td><span class="'+nameCls+'">'+nm+'</span></td>'+
@@ -494,6 +478,7 @@ function init(){
   buildLanes();
   renderFunnel();
 }
+
 </script>
 </body>
 </html>
