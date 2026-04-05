@@ -96,7 +96,6 @@ td.r{text-align:right;} td.c{text-align:center;}
 .empty{padding:40px;text-align:center;color:var(--text2);font-family:'DM Mono',monospace;font-size:12px;}
 .footer{padding:5px 10px;border-top:1px solid var(--border);background:var(--bg1);font-family:'DM Mono',monospace;font-size:8px;color:var(--text2);display:flex;justify-content:space-between;}
 </style>
-<!-- cache-bust: 2026-04-05 12:39:43.134838 -->
 </head>
 <body>
 
@@ -134,7 +133,7 @@ const BP_USAGE_GAMES = [{"away": "CHC", "home": "CLE", "game_time": "2026-04-05T
     <div class="brand">SLS <span>MATRIX.F</span></div>
     <div style="font-family:DM Mono,monospace;font-size:8px;color:var(--text2);">Signal Funnel &bull; Batters Only</div>
   </div>
-  <div class="hdr-right"><div>2026-04-05 12:04:46</div><div>sls-edge-matrix.vercel.app/funnel</div></div>
+  <div class="hdr-right"><div>2026-04-05 14:30:47</div><div>sls-edge-matrix.vercel.app/funnel</div></div>
 </div>
 
 <div class="pool-bar">
@@ -163,7 +162,7 @@ const BP_USAGE_GAMES = [{"away": "CHC", "home": "CLE", "game_time": "2026-04-05T
   </tr></thead><tbody id="funnel-tbody"></tbody></table>
 </div>
 
-<div class="footer"><span>SLS Matrix.F &bull; Funnel &bull; 2026-04-05 12:04:46</span><span id="footer-pool"></span></div>
+<div class="footer"><span>SLS Matrix.F &bull; Funnel &bull; 2026-04-05 14:30:47</span><span id="footer-pool"></span></div>
 
 <script>
 
@@ -182,8 +181,8 @@ const BP_USAGE_GAMES = [{"away": "CHC", "home": "CLE", "game_time": "2026-04-05T
   document.addEventListener('keydown',function(e){if(e.key==='Enter')window.checkGate();});
 })();
 
-var BATTERS=(window.GRID_PLAYERS||[]).filter(function(p){var pos=(p.pos||p.position||"").toUpperCase();return pos!=="SP"&&pos!=="RP"&&pos!=="P";});
-var TOTAL=BATTERS.length;
+var BATTERS=[];
+var TOTAL=0;
 
 var GATES=[
   {key:'sp_atk',section:'SP Weakness',label:'SP = ATTACK',
@@ -437,7 +436,13 @@ function renderFunnel(){
 }
 
 function init(){
-  console.log('Funnel init: BATTERS='+BATTERS.length);
+  // Build BATTERS here -- GRID_PLAYERS is guaranteed to exist at this point
+  BATTERS=(window.GRID_PLAYERS||[]).filter(function(p){
+    var pos=(p.pos||p.position||'').toUpperCase();
+    return pos!=='SP'&&pos!=='RP'&&pos!=='P';
+  });
+  TOTAL=BATTERS.length;
+  console.log('Funnel init: GRID_PLAYERS='+((window.GRID_PLAYERS||[]).length)+' BATTERS='+BATTERS.length);
   buildSlateOptions();
   buildLanes();
   renderFunnel();
