@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>SLS MATRIX.P</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg0:#090b0e;--bg1:#0d1117;--bg2:#131920;--bg3:#1a2230;--bg4:#1f2937;
+  --border:rgba(255,255,255,0.07);--border-hi:rgba(255,255,255,0.14);
+  --text0:#f0f4f8;--text1:#9ca8b8;--text2:#5c6878;
+  --accent:#e8c547;--accent2:#4af0b0;
+  --elite:#ff4d6d;--strong:#ff8c42;--lean:#e8c547;--monitor:#5c6878;
+  --ace:#ff4d6d;--play:#ff8c42;--leanv:#e8c547;--fadec:#4a7aff;--smashr:#c084fc;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg0);color:var(--text0);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:auto;}
+/* GATE */
+#sls-gate{position:fixed;inset:0;background:#000;z-index:99999;display:flex;align-items:center;justify-content:center;font-family:monospace;}
+.gate-box{border:1px solid #333;padding:40px;text-align:center;max-width:340px;width:90%;}
+.gate-title{color:#e8d5a3;font-size:20px;font-weight:700;letter-spacing:3px;margin-bottom:4px;}
+.gate-sub{color:#555;font-size:10px;letter-spacing:2px;margin-bottom:28px;}
+.gate-input{width:100%;padding:12px;background:#0a0a0a;border:1px solid #333;color:#e8d5a3;font-size:26px;font-weight:700;letter-spacing:12px;text-align:center;text-transform:uppercase;outline:none;}
+.gate-err{color:#c0392b;font-size:10px;letter-spacing:2px;margin-top:10px;height:14px;}
+.gate-btn{margin-top:16px;width:100%;padding:12px;background:#e8d5a3;color:#000;font-weight:700;font-size:12px;letter-spacing:3px;border:none;cursor:pointer;}
+.gate-hint{color:#333;font-size:9px;margin-top:20px;}
+/* HEADER */
+.header{padding:5px 10px;background:var(--bg1);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px;width:fit-content;min-width:100%;}
+.brand{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:0.04em;}
+.brand span{color:#ff8c42;}
+.hdr-right{font-family:'DM Mono',monospace;font-size:8px;color:var(--text2);text-align:right;}
+/* LEGEND */
+.legend-strip{background:var(--bg1);border-bottom:1px solid var(--border);padding:3px 10px;display:flex;align-items:center;flex-wrap:wrap;gap:8px;row-gap:3px;}
+.ls-item{display:flex;align-items:center;gap:3px;font-family:'DM Mono',monospace;font-size:8px;color:var(--text2);white-space:nowrap;}
+.ls-sw{width:7px;height:7px;border-radius:1px;flex-shrink:0;}
+.ls-sep{width:1px;height:9px;background:var(--border);flex-shrink:0;}
+/* FUNNEL GATES */
+.funnel-wrap{padding:6px 10px;background:var(--bg1);border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:4px;}
+.funnel-header{display:flex;align-items:center;justify-content:space-between;}
+.funnel-title{font-family:'DM Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:0.12em;color:var(--text2);}
+.funnel-counts{font-family:'DM Mono',monospace;font-size:8px;color:var(--text2);}
+.funnel-counts span{color:var(--accent);}
+.gates{display:flex;flex-wrap:wrap;gap:4px;row-gap:4px;}
+.gate{background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:4px 7px;min-width:120px;flex:0 0 auto;}
+.gate-label{font-family:'DM Mono',monospace;font-size:7px;text-transform:uppercase;letter-spacing:0.1em;color:var(--text2);margin-bottom:3px;display:flex;justify-content:space-between;align-items:center;}
+.gate-label .acc{color:#4af0b0;font-size:7px;}
+.gate-val{font-family:'DM Mono',monospace;font-size:9px;color:var(--accent);margin-bottom:2px;}
+.gate-slider{-webkit-appearance:none;appearance:none;width:100%;height:3px;border-radius:2px;background:var(--bg4);outline:none;cursor:pointer;}
+.gate-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:10px;height:10px;border-radius:50%;background:var(--accent);cursor:pointer;}
+.gate-slider::-moz-range-thumb{width:10px;height:10px;border-radius:50%;background:var(--accent);border:none;cursor:pointer;}
+.gate.active-gate{border-color:rgba(232,197,71,0.4);background:rgba(232,197,71,0.05);}
+.gate-pass{font-family:'DM Mono',monospace;font-size:7px;color:var(--text2);margin-top:2px;}
+.reset-btn{font-family:'DM Mono',monospace;font-size:8px;padding:2px 8px;border:1px solid var(--border);background:var(--bg4);color:var(--text1);cursor:pointer;border-radius:2px;}
+.reset-btn:hover{border-color:var(--border-hi);color:var(--text0);}
+/* FILTER BAR */
+.filter-bar{background:var(--bg1);border-bottom:1px solid var(--border);padding:3px 10px;display:flex;align-items:flex-start;flex-wrap:wrap;gap:4px;row-gap:3px;}
+.fg{display:flex;flex-direction:column;gap:1px;}
+.fl{font-size:7px;text-transform:uppercase;letter-spacing:0.1em;color:var(--text2);font-family:'DM Mono',monospace;}
+.pills{display:flex;flex-wrap:wrap;gap:2px;}
+.fpill{padding:2px 5px;border-radius:2px;font-size:8px;font-family:'DM Mono',monospace;border:1px solid var(--border);background:var(--bg3);color:var(--text1);cursor:pointer;user-select:none;white-space:nowrap;}
+.fpill:hover{border-color:var(--border-hi);color:var(--text0);}
+.fpill.active{background:rgba(255,140,66,0.12);border-color:rgba(255,140,66,0.5);color:var(--strong);}
+/* TABLE */
+.wrap{overflow-x:auto;width:100%;}
+table{border-collapse:collapse;font-size:10px;width:1px;table-layout:auto;}
+thead tr{background:var(--bg2);border-bottom:1px solid var(--border-hi);position:sticky;top:0;z-index:2;}
+th{padding:4px 5px;font-size:7px;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:0.06em;color:var(--text2);text-align:left;cursor:pointer;user-select:none;white-space:nowrap;}
+th.r{text-align:right;} th.c{text-align:center;}
+th[data-sort].sort-asc::after{content:" ▲";color:var(--elite);opacity:1;}
+th[data-sort].sort-desc::after{content:" ▼";color:var(--elite);opacity:1;}
+thead th.important{color:var(--accent);}
+tbody tr{border-bottom:0.5px solid var(--border);}
+tbody tr:hover{background:rgba(255,255,255,0.02);}
+td{padding:3px 5px;vertical-align:middle;white-space:nowrap;}
+td.r{text-align:right;} td.c{text-align:center;}
+.row-ace{border-left:2px solid var(--elite);}
+.row-play{border-left:2px solid var(--strong);}
+.row-lean{border-left:2px solid var(--lean);}
+.row-fade{border-left:2px solid var(--fadec);}
+.row-smash{border-left:2px solid var(--smashr);}
+.pname{font-size:11px;font-weight:600;color:var(--text0);white-space:nowrap;}
+.team-chip{display:inline-flex;align-items:center;justify-content:center;width:22px;height:14px;border-radius:2px;font-family:'DM Mono',monospace;font-size:7px;font-weight:700;flex-shrink:0;}
+.hand-badge{font-family:'DM Mono',monospace;font-size:8px;padding:1px 4px;border-radius:2px;border:1px solid var(--border);}
+.arch-badge{font-family:'DM Mono',monospace;font-size:7px;padding:1px 4px;border-radius:2px;background:var(--bg4);color:var(--text1);border:1px solid var(--border);white-space:nowrap;max-width:90px;overflow:hidden;text-overflow:ellipsis;}
+.vbadge{display:inline-block;padding:1px 5px;border-radius:2px;font-size:8px;font-family:'DM Mono',monospace;font-weight:700;text-transform:uppercase;white-space:nowrap;}
+.vb-ace{background:rgba(255,77,109,0.14);color:var(--elite);border:1px solid rgba(255,77,109,0.3);}
+.vb-play{background:rgba(255,140,66,0.12);color:var(--strong);border:1px solid rgba(255,140,66,0.25);}
+.vb-lean{background:rgba(232,197,71,0.10);color:var(--lean);border:1px solid rgba(232,197,71,0.2);}
+.vb-fade{background:rgba(74,122,255,0.10);color:var(--fadec);border:1px solid rgba(74,122,255,0.25);}
+.vb-smash{background:rgba(192,132,252,0.12);color:var(--smashr);border:1px solid rgba(192,132,252,0.3);}
+.score-bar{height:3px;border-radius:2px;margin-top:2px;}
+.stat-cell{font-family:'DM Mono',monospace;font-size:9px;}
+.stat-good{color:#4af0b0;}
+.stat-ok{color:#e8c547;}
+.stat-bad{color:#ff8c42;}
+.stat-ugly{color:#ff4d6d;}
+.stat-dim{color:#5c6878;}
+.placeholder-col{opacity:0.35;font-style:italic;}
+.footer{padding:5px 10px;border-top:1px solid var(--border);background:var(--bg1);font-family:'DM Mono',monospace;font-size:8px;color:var(--text2);display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;}
+</style>
+</head>
+<body>
+
+<script>
+var PITCHERS = [{"pid": "650911", "name": "Cristopher Sánchez", "team": "PHI", "hand": "L", "archetype": "--", "arch_name": "--", "opp": "SF", "stuff_plus": 102, "xera": 0.73, "era26": 0.79, "k9_26": 13.5, "bb9_26": 3.18, "whip26": 0.97, "gs26": 2, "era25": 2.5, "k9_25": 9.45, "bb9_25": 1.96, "ip25": 202.0, "k9": 13.5, "bb9": 3.18, "era": 0.79, "run_env": "WEAK", "opp_bp": "CAUTION", "opp_bp_era": 3.61, "opp_bp_color": "#27ae60", "opp_bp_score": 38.8, "score": 90, "verdict": "ACE"}, {"pid": "694819", "name": "Jacob Misiorowski", "team": "MIL", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "BOS", "stuff_plus": 106, "xera": 2.25, "era26": 2.45, "k9_26": 14.73, "bb9_26": 4.09, "whip26": 1.0, "gs26": 2, "era25": 4.36, "k9_25": 11.86, "bb9_25": 4.23, "ip25": 66.0, "k9": 14.73, "bb9": 4.09, "era": 2.45, "run_env": "AVERAGE", "opp_bp": "NEUTRAL", "opp_bp_era": 4.28, "opp_bp_color": "#666666", "opp_bp_score": 52.6, "score": 86, "verdict": "ACE"}, {"pid": "676979", "name": "Garrett Crochet", "team": "BOS", "hand": "L", "archetype": "L2", "arch_name": "SINKER/GROUND", "opp": "MIL", "stuff_plus": 116.0, "xera": 2.85, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "run_env": "STRONG", "opp_bp": "NEUTRAL", "opp_bp_era": 4.86, "opp_bp_color": "#666666", "opp_bp_score": 63.8, "score": 84, "verdict": "ACE"}, {"pid": "656876", "name": "Drew Rasmussen", "team": "TB", "hand": "R", "archetype": "R9", "arch_name": "SWING/MISS BREAKER", "opp": "CHC", "stuff_plus": 128.0, "xera": 2.06, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "run_env": "STRONG", "opp_bp": "ATTACK", "opp_bp_era": 4.87, "opp_bp_color": "#e67e22", "opp_bp_score": 67.7, "score": 81, "verdict": "ACE"}, {"pid": "669373", "name": "Tarik Skubal", "team": "DET", "hand": "L", "archetype": "L2", "arch_name": "SINKER/GROUND", "opp": "MIN", "stuff_plus": 112.0, "xera": 2.69, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "run_env": "AVERAGE", "opp_bp": "--", "opp_bp_era": null, "opp_bp_color": "#666666", "opp_bp_score": 0, "score": 80, "verdict": "ACE"}, {"pid": "668909", "name": "Gavin Williams", "team": "CLE", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "KC", "stuff_plus": 88, "xera": 2.07, "era26": 2.25, "k9_26": 12.75, "bb9_26": 6.75, "whip26": 1.08, "gs26": 2, "era25": 3.06, "k9_25": 9.29, "bb9_25": 4.46, "ip25": 167.2, "k9": 12.75, "bb9": 6.75, "era": 2.25, "run_env": "AVERAGE", "opp_bp": "--", "opp_bp_era": null, "opp_bp_color": "#666666", "opp_bp_score": 0, "score": 74, "verdict": "PLAY"}, {"pid": "693645", "name": "Cam Schlittler", "team": "NYY", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "ATH", "stuff_plus": 91, "xera": 2.72, "era26": 0.0, "k9_26": 11.57, "bb9_26": 0.0, "whip26": 0.26, "gs26": 2, "era25": 2.96, "k9_25": 10.36, "bb9_25": 3.82, "ip25": 73.0, "k9": 11.57, "bb9": 0.0, "era": 0.0, "run_env": "STRONG", "opp_bp": "SMASH", "opp_bp_era": 5.56, "opp_bp_color": "#c0392b", "opp_bp_score": 80.9, "score": 73, "verdict": "PLAY"}, {"pid": "702070", "name": "Noah Cameron", "team": "KC", "hand": "L", "archetype": "--", "arch_name": "--", "opp": "CLE", "stuff_plus": 84, "xera": 1.66, "era26": 1.8, "k9_26": 9.0, "bb9_26": 1.8, "whip26": 1.0, "gs26": 1, "era25": 2.99, "k9_25": 7.42, "bb9_25": 2.8, "ip25": 138.1, "k9": 9.0, "bb9": 1.8, "era": 1.8, "run_env": "AVERAGE", "opp_bp": "NEUTRAL", "opp_bp_era": 4.33, "opp_bp_color": "#666666", "opp_bp_score": 48.0, "score": 70, "verdict": "PLAY"}, {"pid": "642547", "name": "Freddy Peralta", "team": "NYM", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "ARI", "stuff_plus": 100, "xera": 4.0, "era26": 4.35, "k9_26": 12.19, "bb9_26": 1.74, "whip26": 1.06, "gs26": 2, "era25": 2.7, "k9_25": 10.39, "bb9_25": 3.36, "ip25": 176.2, "k9": 12.19, "bb9": 1.74, "era": 4.35, "run_env": "STRONG", "opp_bp": "NEUTRAL", "opp_bp_era": 4.49, "opp_bp_color": "#666666", "opp_bp_score": 56.0, "score": 70, "verdict": "PLAY"}, {"pid": "650644", "name": "Aaron Civale", "team": "ATH", "hand": "R", "archetype": "R4", "arch_name": "SWEEPER/HORIZONTAL", "opp": "NYY", "stuff_plus": 106.0, "xera": 4.06, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "run_env": "AVERAGE", "opp_bp": "CAUTION", "opp_bp_era": 3.79, "opp_bp_color": "#27ae60", "opp_bp_score": 42.9, "score": 64, "verdict": "LEAN"}, {"pid": "669923", "name": "George Kirby", "team": "SEA", "hand": "R", "archetype": "R9", "arch_name": "SWING/MISS BREAKER", "opp": "TEX", "stuff_plus": 104.0, "xera": 3.4, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "run_env": "AVERAGE", "opp_bp": "NEUTRAL", "opp_bp_era": 4.34, "opp_bp_color": "#666666", "opp_bp_score": 52.9, "score": 64, "verdict": "LEAN"}, {"pid": "592662", "name": "Robbie Ray", "team": "SF", "hand": "L", "archetype": "L1", "arch_name": "POWER FOUR-SEAM", "opp": "PHI", "stuff_plus": 105.0, "xera": 3.76, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "run_env": "STRONG", "opp_bp": "NEUTRAL", "opp_bp_era": 4.1, "opp_bp_color": "#666666", "opp_bp_score": 48.8, "score": 60, "verdict": "LEAN"}, {"pid": "668678", "name": "Zac Gallen", "team": "ARI", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "NYM", "stuff_plus": 57, "xera": 3.31, "era26": 3.6, "k9_26": 3.6, "bb9_26": 1.8, "whip26": 1.1, "gs26": 2, "era25": 4.83, "k9_25": 8.2, "bb9_25": 3.09, "ip25": 192.0, "k9": 3.6, "bb9": 1.8, "era": 3.6, "run_env": "WEAK", "opp_bp": "CAUTION", "opp_bp_era": 3.97, "opp_bp_color": "#27ae60", "opp_bp_score": 42.8, "score": 56, "verdict": "LEAN"}, {"pid": "808967", "name": "Yoshinobu Yamamoto", "team": "LAD", "hand": "R", "archetype": "R4", "arch_name": "SWEEPER/HORIZONTAL", "opp": "TOR", "stuff_plus": 97.0, "xera": 3.45, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "run_env": "EXPLOSIVE", "opp_bp": "NEUTRAL", "opp_bp_era": 4.71, "opp_bp_color": "#666666", "opp_bp_score": 55.9, "score": 56, "verdict": "LEAN"}, {"pid": "671096", "name": "Andrew Abbott", "team": "CIN", "hand": "L", "archetype": "--", "arch_name": "--", "opp": "MIA", "stuff_plus": 70, "xera": 2.84, "era26": 3.09, "k9_26": 6.94, "bb9_26": 3.09, "whip26": 1.37, "gs26": 2, "era25": 2.87, "k9_25": 8.06, "bb9_25": 2.33, "ip25": 166.1, "k9": 6.94, "bb9": 3.09, "era": 3.09, "run_env": "AVERAGE", "opp_bp": "ATTACK", "opp_bp_era": 5.18, "opp_bp_color": "#e67e22", "opp_bp_score": 72.1, "score": 55, "verdict": "LEAN"}, {"pid": "676917", "name": "Cade Cavalli", "team": "WSH", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "STL", "stuff_plus": 68, "xera": 2.57, "era26": 2.79, "k9_26": 7.45, "bb9_26": 4.66, "whip26": 1.34, "gs26": 2, "era25": 4.25, "k9_25": 7.4, "bb9_25": 2.77, "ip25": 48.2, "k9": 7.45, "bb9": 4.66, "era": 2.79, "run_env": "AVERAGE", "opp_bp": "NEUTRAL", "opp_bp_era": 4.57, "opp_bp_color": "#666666", "opp_bp_score": 59.9, "score": 52, "verdict": "LEAN"}, {"pid": "665871", "name": "Javier Assad", "team": "CHC", "hand": "R", "archetype": "R5", "arch_name": "CRAFTSMAN", "opp": "TB", "stuff_plus": 91.0, "xera": 4.94, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "run_env": "AVERAGE", "opp_bp": "NEUTRAL", "opp_bp_era": 3.91, "opp_bp_color": "#666666", "opp_bp_score": 45.0, "score": 50, "verdict": "LEAN"}, {"pid": "671737", "name": "Taj Bradley", "team": "MIN", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "DET", "stuff_plus": null, "xera": null, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "run_env": "AVERAGE", "opp_bp": "NEUTRAL", "opp_bp_era": 4.59, "opp_bp_color": "#666666", "opp_bp_score": 63.1, "score": 50, "verdict": "LEAN"}, {"pid": "669461", "name": "Matthew Liberatore", "team": "STL", "hand": "L", "archetype": "L5", "arch_name": "CRAFTSMAN", "opp": "WSH", "stuff_plus": 104.0, "xera": 4.19, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "run_env": "STRONG", "opp_bp": "ATTACK", "opp_bp_era": 5.51, "opp_bp_color": "#e67e22", "opp_bp_score": 79.2, "score": 49, "verdict": "FADE"}, {"pid": "601713", "name": "Nick Pivetta", "team": "SD", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "PIT", "stuff_plus": 95, "xera": 6.21, "era26": 6.75, "k9_26": 13.5, "bb9_26": 5.63, "whip26": 1.63, "gs26": 2, "era25": 2.87, "k9_25": 9.41, "bb9_25": 2.48, "ip25": 181.2, "k9": 13.5, "bb9": 5.63, "era": 6.75, "run_env": "AVERAGE", "opp_bp": "NEUTRAL", "opp_bp_era": 4.74, "opp_bp_color": "#666666", "opp_bp_score": 57.7, "score": 48, "verdict": "FADE"}, {"pid": "543135", "name": "Nathan Eovaldi", "team": "TEX", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "SEA", "stuff_plus": 97, "xera": 10.51, "era26": 11.42, "k9_26": 12.46, "bb9_26": 3.12, "whip26": 2.19, "gs26": 2, "era25": 1.73, "k9_25": 8.93, "bb9_25": 1.45, "ip25": 130.0, "k9": 12.46, "bb9": 3.12, "era": 11.42, "run_env": "STRONG", "opp_bp": "ATTACK", "opp_bp_era": 5.11, "opp_bp_color": "#e67e22", "opp_bp_score": 73.1, "score": 47, "verdict": "FADE"}, {"pid": "592332", "name": "Kevin Gausman", "team": "TOR", "hand": "R", "archetype": "R9", "arch_name": "SWING/MISS BREAKER", "opp": "LAD", "stuff_plus": 96.0, "xera": 4.82, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "run_env": "EXPLOSIVE", "opp_bp": "NEUTRAL", "opp_bp_era": 5.16, "opp_bp_color": "#666666", "opp_bp_score": 64.8, "score": 46, "verdict": "FADE"}, {"pid": "607536", "name": "Kyle Freeland", "team": "COL", "hand": "L", "archetype": "L6", "arch_name": "DECEPTIVE/SLOT", "opp": "HOU", "stuff_plus": 90.0, "xera": 4.98, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "run_env": "EXPLOSIVE", "opp_bp": "CAUTION", "opp_bp_era": 3.48, "opp_bp_color": "#27ae60", "opp_bp_score": 30.9, "score": 42, "verdict": "FADE"}, {"pid": "625643", "name": "Reynaldo López", "team": "ATL", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "LAA", "stuff_plus": null, "xera": null, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "run_env": "EXPLOSIVE", "opp_bp": "NEUTRAL", "opp_bp_era": 4.24, "opp_bp_color": "#666666", "opp_bp_score": 55.0, "score": 42, "verdict": "FADE"}, {"pid": "645261", "name": "Sandy Alcantara", "team": "MIA", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "CIN", "stuff_plus": 75, "xera": 4.93, "era26": 0.0, "k9_26": 6.75, "bb9_26": 1.13, "whip26": 0.56, "gs26": 2, "era25": 5.36, "k9_25": 7.32, "bb9_25": 2.94, "ip25": 174.2, "k9": 6.75, "bb9": 1.13, "era": 0.0, "run_env": "EXPLOSIVE", "opp_bp": "NEUTRAL", "opp_bp_era": 4.34, "opp_bp_color": "#666666", "opp_bp_score": 54.4, "score": 38, "verdict": "FADE"}, {"pid": "669432", "name": "Trevor Rogers", "team": "BAL", "hand": "L", "archetype": "L6", "arch_name": "DECEPTIVE/SLOT", "opp": "CWS", "stuff_plus": 89.0, "xera": 5.1, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "run_env": "STRONG", "opp_bp": "ATTACK", "opp_bp_era": 5.02, "opp_bp_color": "#e67e22", "opp_bp_score": 68.6, "score": 31, "verdict": "SMASH"}, {"pid": "681347", "name": "Mike Burrows", "team": "HOU", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "COL", "stuff_plus": 82, "xera": 5.44, "era26": 5.91, "k9_26": 10.13, "bb9_26": 4.22, "whip26": 1.78, "gs26": 2, "era25": 3.94, "k9_25": 9.09, "bb9_25": 2.91, "ip25": 96.0, "k9": 10.13, "bb9": 4.22, "era": 5.91, "run_env": "WEAK", "opp_bp": "ATTACK", "opp_bp_era": 4.84, "opp_bp_color": "#e67e22", "opp_bp_score": 68.2, "score": 31, "verdict": "SMASH"}, {"pid": "694973", "name": "Paul Skenes", "team": "PIT", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "SD", "stuff_plus": 73, "xera": 8.77, "era26": 9.53, "k9_26": 9.53, "bb9_26": 6.35, "whip26": 1.94, "gs26": 2, "era25": 1.97, "k9_25": 10.36, "bb9_25": 2.01, "ip25": 187.2, "k9": 9.53, "bb9": 6.35, "era": 9.53, "run_env": "STRONG", "opp_bp": "CAUTION", "opp_bp_era": 3.46, "opp_bp_color": "#27ae60", "opp_bp_score": 31.9, "score": 24, "verdict": "SMASH"}, {"pid": "579328", "name": "Yusei Kikuchi", "team": "LAA", "hand": "L", "archetype": "--", "arch_name": "--", "opp": "ATL", "stuff_plus": 68, "xera": 6.0, "era26": 6.52, "k9_26": 7.45, "bb9_26": 4.66, "whip26": 1.97, "gs26": 2, "era25": 3.99, "k9_25": 8.78, "bb9_25": 3.73, "ip25": 178.1, "k9": 7.45, "bb9": 4.66, "era": 6.52, "run_env": "STRONG", "opp_bp": "NEUTRAL", "opp_bp_era": 3.96, "opp_bp_color": "#666666", "opp_bp_score": 45.8, "score": 18, "verdict": "SMASH"}, {"pid": "681343", "name": "Shane Smith", "team": "CWS", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "BAL", "stuff_plus": 50, "xera": 17.75, "era26": 19.29, "k9_26": 5.79, "bb9_26": 7.71, "whip26": 3.21, "gs26": 2, "era25": 3.81, "k9_25": 8.92, "bb9_25": 3.57, "ip25": 146.1, "k9": 5.79, "bb9": 7.71, "era": 19.29, "run_env": "AVERAGE", "opp_bp": "CAUTION", "opp_bp_era": 3.77, "opp_bp_color": "#27ae60", "opp_bp_score": 44.4, "score": 16, "verdict": "SMASH"}];
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+<div id="sls-gate">
+  <div class="gate-box">
+    <div class="gate-title">SLS MATRIX.P</div>
+    <div class="gate-sub">SWIPELEFT SPORTS // MEMBERS ONLY</div>
+    <input id="gate-input" class="gate-input" type="password" maxlength="4" placeholder="----"/>
+    <div id="gate-err" class="gate-err"></div>
+    <button class="gate-btn" onclick="checkGate()">UNLOCK</button>
+    <div class="gate-hint">CODE POSTED DAILY IN #edge-matrix-link</div>
+  </div>
+</div>
+<script>
+(function(){
+  var SALT="APEXPREDATOR";
+  function getCode(){
+    var d=new Date();
+    var str=""+d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+SALT;
+    return CryptoJS.SHA256(str).toString().substring(0,4).toUpperCase();
+  }
+  window.checkGate=function(){
+    var v=document.getElementById('gate-input').value.toUpperCase();
+    if(v===getCode())document.getElementById('sls-gate').style.display='none';
+    else{document.getElementById('gate-err').innerText='INVALID CODE';document.getElementById('gate-input').value='';}
+  };
+  document.addEventListener('keydown',function(e){if(e.key==='Enter')window.checkGate();});
+})();
+</script>
+
+<div class="header">
+  <div>
+    <div class="brand">SLS <span>MATRIX.P</span></div>
+    <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--text2);">SwipeLeft Sports &bull; Pitcher Intelligence &bull; Apr 07, 2026</div>
+  </div>
+  <div class="hdr-right" id="hdr-counts"></div>
+</div>
+
+<div class="legend-strip">
+  <div class="ls-item"><div class="ls-sw" style="background:var(--elite);"></div><span style="color:var(--text1);">ACE — Lock SP play</span></div>
+  <div class="ls-sep"></div>
+  <div class="ls-item"><div class="ls-sw" style="background:var(--strong);"></div><span style="color:var(--text1);">PLAY — Strong SP</span></div>
+  <div class="ls-sep"></div>
+  <div class="ls-item"><div class="ls-sw" style="background:var(--lean);"></div><span style="color:var(--text1);">LEAN — Situational</span></div>
+  <div class="ls-sep"></div>
+  <div class="ls-item"><div class="ls-sw" style="background:var(--fadec);"></div><span style="color:var(--text1);">FADE — Avoid</span></div>
+  <div class="ls-sep"></div>
+  <div class="ls-item"><div class="ls-sw" style="background:var(--smashr);"></div><span style="color:var(--text1);">SMASH — Stack opp batters</span></div>
+  <div class="ls-sep"></div>
+  <div class="ls-item"><span style="color:var(--accent);font-family:'DM Mono',monospace;font-size:8px;">STF+</span><span>=stuff plus (100=avg)</span></div>
+  <div class="ls-sep"></div>
+  <div class="ls-item"><span style="color:var(--accent);font-family:'DM Mono',monospace;font-size:8px;">xERA</span><span>=expected ERA (skill)</span></div>
+  <div class="ls-sep"></div>
+  <div class="ls-item"><span style="color:#4af0b0;font-family:'DM Mono',monospace;font-size:8px;">26★</span><span>=live 2026 stats</span></div>
+</div>
+
+<!-- FUNNEL GATES -- ordered by ReMatrix correlation (highest first) -->
+<div class="funnel-wrap">
+  <div class="funnel-header">
+    <div class="funnel-title">🔽 FUNNEL — Slide to Filter (Most → Least Predictive)</div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div class="funnel-counts">Pool: <span id="pool-count">30</span> / 30 | Passing: <span id="pass-count">30</span></div>
+      <button class="reset-btn" onclick="resetAll()">RESET ALL</button>
+    </div>
+  </div>
+  <div class="gates" id="gate-container">
+
+    <!-- GATE 1: Stuff+ (highest ReMatrix correlation) -->
+    <div class="gate" id="g-stuff">
+      <div class="gate-label">① Stuff+ Min <span class="acc">~72% corr</span></div>
+      <div class="gate-val" id="v-stuff">≥ 0</div>
+      <input type="range" class="gate-slider" min="0" max="130" step="5" value="0"
+             oninput="setGate('stuff',this.value)">
+      <div class="gate-pass" id="p-stuff">-- passing</div>
+    </div>
+
+    <!-- GATE 2: xERA (2nd highest) -->
+    <div class="gate" id="g-xera">
+      <div class="gate-label">② xERA Max <span class="acc">~68% corr</span></div>
+      <div class="gate-val" id="v-xera">≤ 9.99</div>
+      <input type="range" class="gate-slider" min="1" max="10" step="0.25" value="10"
+             oninput="setGate('xera',this.value)">
+      <div class="gate-pass" id="p-xera">-- passing</div>
+    </div>
+
+    <!-- GATE 3: 2026 K/9 -->
+    <div class="gate" id="g-k9">
+      <div class="gate-label">③ K/9 Min (2026) <span class="acc">~61% corr</span></div>
+      <div class="gate-val" id="v-k9">≥ 0</div>
+      <input type="range" class="gate-slider" min="0" max="18" step="0.5" value="0"
+             oninput="setGate('k9',this.value)">
+      <div class="gate-pass" id="p-k9">-- passing</div>
+    </div>
+
+    <!-- GATE 4: BB/9 (control -- max threshold) -->
+    <div class="gate" id="g-bb9">
+      <div class="gate-label">④ BB/9 Max (control) <span class="acc">~54% corr</span></div>
+      <div class="gate-val" id="v-bb9">≤ 9.99</div>
+      <input type="range" class="gate-slider" min="1" max="10" step="0.25" value="10"
+             oninput="setGate('bb9',this.value)">
+      <div class="gate-pass" id="p-bb9">-- passing</div>
+    </div>
+
+    <!-- GATE 5: Run Env of opponent -->
+    <div class="gate" id="g-runenv">
+      <div class="gate-label">⑤ Opp Run Env <span class="acc">~48% corr</span></div>
+      <div class="gate-val" id="v-runenv">Any</div>
+      <select id="sel-runenv" style="width:100%;background:var(--bg4);color:var(--text1);border:1px solid var(--border);font-family:'DM Mono',monospace;font-size:8px;padding:2px;"
+              onchange="setGate('runenv',this.value)">
+        <option value="ANY">Any</option>
+        <option value="WEAK">Weak only</option>
+        <option value="WEAK_AVG">Weak + Average</option>
+        <option value="AVERAGE">Average only</option>
+      </select>
+      <div class="gate-pass" id="p-runenv">-- passing</div>
+    </div>
+
+    <!-- GATE 6: Opp Bullpen (SP exit risk) -->
+    <div class="gate" id="g-oppbp">
+      <div class="gate-label">⑥ Own BP Safety <span class="acc">~38% corr</span></div>
+      <div class="gate-val" id="v-oppbp">Any</div>
+      <select id="sel-oppbp" style="width:100%;background:var(--bg4);color:var(--text1);border:1px solid var(--border);font-family:'DM Mono',monospace;font-size:8px;padding:2px;"
+              onchange="setGate('oppbp',this.value)">
+        <option value="ANY">Any</option>
+        <option value="NO_SMASH">Exclude SMASH opp BP</option>
+        <option value="CAUTION_ONLY">CAUTION only (safest)</option>
+      </select>
+      <div class="gate-pass" id="p-oppbp">-- passing</div>
+    </div>
+
+    <!-- GATE 7: Score floor -->
+    <div class="gate" id="g-score">
+      <div class="gate-label">⑦ SLS Score Min <span class="acc">composite</span></div>
+      <div class="gate-val" id="v-score">≥ 0</div>
+      <input type="range" class="gate-slider" min="0" max="100" step="5" value="0"
+             oninput="setGate('score',this.value)">
+      <div class="gate-pass" id="p-score">-- passing</div>
+    </div>
+
+    <!-- PLACEHOLDER GATES -- reserved for future data -->
+    <div class="gate" style="opacity:0.4;pointer-events:none;">
+      <div class="gate-label">⑧ CWS% <span class="acc">coming soon</span></div>
+      <div class="gate-val">-- </div>
+      <input type="range" class="gate-slider" min="0" max="100" step="5" value="0" disabled>
+      <div class="gate-pass">pending data</div>
+    </div>
+
+    <div class="gate" style="opacity:0.4;pointer-events:none;">
+      <div class="gate-label">⑨ QS% <span class="acc">coming soon</span></div>
+      <div class="gate-val">--</div>
+      <input type="range" class="gate-slider" min="0" max="100" step="5" value="0" disabled>
+      <div class="gate-pass">pending data</div>
+    </div>
+
+    <div class="gate" style="opacity:0.4;pointer-events:none;">
+      <div class="gate-label">⑩ L3 ERA <span class="acc">coming soon</span></div>
+      <div class="gate-val">--</div>
+      <input type="range" class="gate-slider" min="0" max="10" step="0.25" value="10" disabled>
+      <div class="gate-pass">pending data</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- QUICK FILTERS -->
+<div class="filter-bar">
+  <div class="fg"><span class="fl">Verdict</span><div class="pills" id="fl-verdict">
+    <div class="fpill active" data-val="ALL">All</div>
+    <div class="fpill" data-val="ACE" style="color:#ff4d6d;">ACE</div>
+    <div class="fpill" data-val="PLAY" style="color:#ff8c42;">PLAY</div>
+    <div class="fpill" data-val="LEAN" style="color:#e8c547;">LEAN</div>
+    <div class="fpill" data-val="FADE" style="color:#4a7aff;">FADE</div>
+    <div class="fpill" data-val="SMASH" style="color:#c084fc;">SMASH</div>
+  </div></div>
+  <div class="fg"><span class="fl">Hand</span><div class="pills" id="fl-hand">
+    <div class="fpill active" data-val="ALL">All</div>
+    <div class="fpill" data-val="R">RHP</div>
+    <div class="fpill" data-val="L">LHP</div>
+  </div></div>
+  <div class="fg"><span class="fl">Run Env</span><div class="pills" id="fl-runenv">
+    <div class="fpill active" data-val="ALL">All</div>
+    <div class="fpill" data-val="WEAK" style="color:#4af0b0;">WK Opp</div>
+    <div class="fpill" data-val="AVERAGE">AVG Opp</div>
+    <div class="fpill" data-val="STRONG" style="color:#ff8c42;">STR Opp</div>
+    <div class="fpill" data-val="EXPLOSIVE" style="color:#ff4d6d;">EXP Opp</div>
+  </div></div>
+  <div class="fg"><span class="fl">Opp BP</span><div class="pills" id="fl-bp">
+    <div class="fpill active" data-val="ALL">All</div>
+    <div class="fpill" data-val="CAUTION" style="color:#4af0b0;">CAUTION</div>
+    <div class="fpill" data-val="NEUTRAL">NEU</div>
+    <div class="fpill" data-val="ATTACK" style="color:#ff8c42;">ATTACK</div>
+    <div class="fpill" data-val="SMASH" style="color:#ff4d6d;">SMASH</div>
+  </div></div>
+</div>
+
+<div class="wrap">
+<table id="pitcher-table">
+<thead><tr>
+  <th style="width:22px;" class="c">#</th>
+  <th style="width:150px;" data-sort="name">Pitcher</th>
+  <th style="width:22px;" class="c" data-sort="hand">H</th>
+  <th style="width:90px;">Archetype</th>
+  <th style="width:50px;" class="c" data-sort="score">Score</th>
+  <th style="width:45px;" class="c important" data-sort="stuff_plus" title="Stuff+ (100=avg, higher=better)">STF+</th>
+  <th style="width:45px;" class="c important" data-sort="xera" title="Expected ERA (lower=better)">xERA</th>
+  <th style="width:38px;" class="c important" data-sort="k9" title="K/9 (strikeouts per 9 innings)">K/9</th>
+  <th style="width:38px;" class="c" data-sort="era" title="ERA this season (2026 if avail, else 2025)">ERA</th>
+  <th style="width:38px;" class="c" data-sort="bb9" title="BB/9 (lower=better control)">BB/9</th>
+  <th style="width:38px;" class="c" data-sort="ip25" title="2025 innings pitched (durability)">IP25</th>
+  <th style="width:30px;" class="c" data-sort="gs26" title="2026 starts">GS</th>
+  <th style="width:55px;" class="c" data-sort="run_env" title="Opponent run environment">Opp Env</th>
+  <th style="width:55px;" class="c" data-sort="opp_bp_score" title="Own team bullpen verdict (exit risk)">Own BP</th>
+  <th style="width:55px;" class="c" data-sort="verdict">Verdict</th>
+  <!-- RESERVED COLUMNS -- activate when data available -->
+  <!-- <th style="width:40px;" class="c placeholder-col" title="Chase/Whiff Strike% -- coming soon">CWS%</th> -->
+  <!-- <th style="width:40px;" class="c placeholder-col" title="Quality Start % -- coming soon">QS%</th>  -->
+  <!-- <th style="width:38px;" class="c placeholder-col" title="Last 3 starts ERA -- coming soon">L3 ERA</th> -->
+</tr></thead>
+<tbody id="pitcher-body"></tbody>
+</table>
+</div>
+<div id="empty-msg" class="footer" style="display:none;justify-content:center;font-size:11px;">NO PITCHERS MATCH FILTERS</div>
+
+<div class="footer">
+  <span>SwipeLeft Sports &bull; <strong style="color:#ff8c42;">SLS Matrix.P</strong> &bull; Jesse + Mojambo</span>
+  <span id="footer-ts"></span>
+</div>
+
+<script>
+// ── DATA ───────────────────────────────────────────────────────────────────────
+var DATA = (typeof PITCHERS !== 'undefined') ? PITCHERS : [];
+console.log('Matrix.P: ' + DATA.length + ' starters loaded');
+
+// ── TEAM COLORS ────────────────────────────────────────────────────────────────
+var TEAMS={LAA:"#BA0021",ARI:"#A71930",BAL:"#DF4601",BOS:"#BD3039",CHC:"#0E3386",
+  CIN:"#C6011F",CLE:"#00385D",COL:"#33006F",DET:"#0C2340",HOU:"#EB6E1F",
+  KC:"#004687",LAD:"#005A9C",WSH:"#AB0003",NYM:"#002D72",ATH:"#003831",
+  PIT:"#FDB827",SD:"#2F241D",SEA:"#0C2C56",SF:"#FD5A1E",STL:"#C41E3A",
+  TB:"#092C5C",TEX:"#003278",TOR:"#134A8E",MIN:"#002B5C",PHI:"#E81828",
+  ATL:"#CE1141",CWS:"#27251F",MIA:"#00A3E0",NYY:"#003087",MIL:"#FFC52F"};
+var LIGHT=new Set(["PIT","HOU","MIL","MIA"]);
+function teamChip(t){var c=TEAMS[t]||'#5c6878';var tc=LIGHT.has(t)?'#000':'#fff';return '<span class="team-chip" style="background:'+c+';color:'+tc+';">'+t+'</span>';}
+
+// ── STAT COLORING ──────────────────────────────────────────────────────────────
+function stuffCol(v){
+  if(v===null||v===undefined)return'#5c6878';
+  if(v>=115)return'#4af0b0'; if(v>=105)return'#e8c547'; if(v>=95)return'#9ca8b8'; return'#ff8c42';
+}
+function xeraCol(v){
+  if(v===null||v===undefined)return'#5c6878';
+  if(v<=3.0)return'#4af0b0'; if(v<=3.75)return'#e8c547'; if(v<=4.5)return'#ff8c42'; return'#ff4d6d';
+}
+function k9Col(v){
+  if(v===null||v===undefined)return'#5c6878';
+  if(v>=12)return'#4af0b0'; if(v>=9)return'#e8c547'; if(v>=6)return'#9ca8b8'; return'#ff4d6d';
+}
+function eraCol(v){
+  if(v===null||v===undefined)return'#5c6878';
+  if(v<=2.5)return'#4af0b0'; if(v<=3.5)return'#e8c547'; if(v<=4.5)return'#ff8c42'; return'#ff4d6d';
+}
+function bb9Col(v){
+  if(v===null||v===undefined)return'#5c6878';
+  if(v<=2.0)return'#4af0b0'; if(v<=3.0)return'#e8c547'; if(v<=4.0)return'#ff8c42'; return'#ff4d6d';
+}
+function scoreCol(v){
+  if(v>=75)return'#ff4d6d'; if(v>=60)return'#ff8c42'; if(v>=45)return'#e8c547'; return'#5c6878';
+}
+function runEnvDisp(v){
+  var colors={EXPLOSIVE:'#ff4d6d',STRONG:'#ff8c42',AVERAGE:'#9ca8b8',WEAK:'#4af0b0'};
+  var shorts={EXPLOSIVE:'EXP',STRONG:'STR',AVERAGE:'AVG',WEAK:'WK'};
+  return '<span style="font-family:DM Mono,monospace;font-size:8px;color:'+(colors[v]||'#5c6878')+'">'+(shorts[v]||v||'--')+'</span>';
+}
+function bpDisp(verdict, color){
+  return '<span style="font-family:DM Mono,monospace;font-size:8px;font-weight:700;color:'+(color||'#666')+';">'+(verdict||'--')+'</span>';
+}
+function vbCls(v){
+  return v==='ACE'?'vb-ace':v==='PLAY'?'vb-play':v==='LEAN'?'vb-lean':v==='FADE'?'vb-fade':'vb-smash';
+}
+function rowCls(v){
+  return v==='ACE'?'row-ace':v==='PLAY'?'row-play':v==='LEAN'?'row-lean':v==='FADE'?'row-fade':'row-smash';
+}
+function fmtN(v,dec){
+  if(v===null||v===undefined||v==='')return'<span style="color:#5c6878">--</span>';
+  return parseFloat(v).toFixed(dec!==undefined?dec:2);
+}
+
+// ── GATE STATE ─────────────────────────────────────────────────────────────────
+var gates = {
+  stuff:   {val:0,   dir:'min'},
+  xera:    {val:10,  dir:'max'},
+  k9:      {val:0,   dir:'min'},
+  bb9:     {val:10,  dir:'max'},
+  runenv:  {val:'ANY', dir:'select'},
+  oppbp:   {val:'ANY', dir:'select'},
+  score:   {val:0,   dir:'min'},
+};
+
+var pillFilters = {verdict: new Set(), hand: new Set(), runenv: new Set(), bp: new Set()};
+var sortCol = 'score', sortDir = -1;
+
+function gatePass(p, key){
+  var g = gates[key];
+  if(g.dir === 'min'){
+    var val = p[key==='stuff'?'stuff_plus':key==='score'?'score':'k9'==='k9'?'k9':'bb9'];
+    if(key==='stuff')  val = p.stuff_plus;
+    if(key==='k9')     val = p.k9;
+    if(key==='bb9')    val = p.bb9;
+    if(key==='score')  val = p.score;
+    if(val===null||val===undefined) return g.val<=0;
+    return parseFloat(val) >= parseFloat(g.val);
+  }
+  if(g.dir === 'max'){
+    var val2 = key==='xera'?p.xera:p.bb9;
+    if(val2===null||val2===undefined) return parseFloat(g.val)>=9.9;
+    return parseFloat(val2) <= parseFloat(g.val);
+  }
+  if(g.dir === 'select'){
+    if(key==='runenv'){
+      if(g.val==='ANY') return true;
+      if(g.val==='WEAK') return p.run_env==='WEAK';
+      if(g.val==='WEAK_AVG') return p.run_env==='WEAK'||p.run_env==='AVERAGE';
+      if(g.val==='AVERAGE') return p.run_env==='AVERAGE';
+    }
+    if(key==='oppbp'){
+      if(g.val==='ANY') return true;
+      if(g.val==='NO_SMASH') return p.opp_bp!=='SMASH';
+      if(g.val==='CAUTION_ONLY') return p.opp_bp==='CAUTION'||p.opp_bp==='--';
+    }
+  }
+  return true;
+}
+
+function passesAllGates(p){
+  return Object.keys(gates).every(function(k){return gatePass(p,k);});
+}
+
+function passesAllPills(p){
+  if(pillFilters.verdict.size>0&&!pillFilters.verdict.has(p.verdict))return false;
+  if(pillFilters.hand.size>0&&!pillFilters.hand.has(p.hand))return false;
+  if(pillFilters.runenv.size>0&&!pillFilters.runenv.has(p.run_env))return false;
+  if(pillFilters.bp.size>0&&!pillFilters.bp.has(p.opp_bp))return false;
+  return true;
+}
+
+function updateGatePass(){
+  var passGate = DATA.filter(passesAllGates);
+  var passBoth = passGate.filter(passesAllPills);
+  document.getElementById('pool-count').textContent = passGate.length;
+  document.getElementById('pass-count').textContent = passBoth.length;
+
+  // Update per-gate pass counts (how many pass THIS gate independently of others)
+  Object.keys(gates).forEach(function(k){
+    var el = document.getElementById('p-'+k);
+    if(!el) return;
+    var c = DATA.filter(function(p){return gatePass(p,k);}).length;
+    el.textContent = c + ' passing';
+  });
+  return passBoth;
+}
+
+function render(){
+  var filtered = updateGatePass();
+  filtered = filtered.slice().sort(function(a,b){
+    var av = a[sortCol]; var bv = b[sortCol];
+    if(av===null||av===undefined) av = sortDir===1?9999:-9999;
+    if(bv===null||bv===undefined) bv = sortDir===1?9999:-9999;
+    if(sortCol==='xera'||sortCol==='bb9'||sortCol==='era') sortDir=sortDir; // already handled
+    return sortDir*(parseFloat(av)>parseFloat(bv)?1:parseFloat(av)<parseFloat(bv)?-1:0);
+  });
+
+  var tbody = document.getElementById('pitcher-body');
+  var empty = document.getElementById('empty-msg');
+  var hdr   = document.getElementById('hdr-counts');
+  if(hdr) hdr.textContent = filtered.length+' pitchers | '+filtered.filter(function(p){return p.verdict==='ACE';}).length+' ACE | '+filtered.filter(function(p){return p.verdict==='SMASH';}).length+' SMASH';
+
+  if(!filtered.length){tbody.innerHTML='';empty.style.display='flex';return;}
+  empty.style.display='none';
+
+  tbody.innerHTML = filtered.map(function(p,i){
+    var sc = p.score||0;
+    var scColor = scoreCol(sc);
+    var barW = Math.max(2,Math.round(sc));
+    var gs26label = (p.gs26>0) ? '<span style="color:#4af0b0;font-size:7px;">★</span>'+p.gs26 : (p.gs26===0?'0':'--');
+    var eraLabel = (p.gs26>0&&p.era26!==null) ? '<span style="color:#4af0b0;font-size:7px;">★</span>'+fmtN(p.era26,2) : fmtN(p.era25,2);
+    var k9label  = (p.gs26>0&&p.k9_26!==null) ? '<span style="color:#4af0b0;font-size:7px;">★</span>'+fmtN(p.k9_26,1) : fmtN(p.k9_25,1);
+    var bb9label = (p.gs26>0&&p.bb9_26!==null)? '<span style="color:#4af0b0;font-size:7px;">★</span>'+fmtN(p.bb9_26,1): fmtN(p.bb9_25,1);
+    var handColor = p.hand==='L'?'#4af0b0':'#9ca8b8';
+    var oppChip   = p.opp ? teamChip(p.opp) : '<span style="color:#5c6878;font-size:8px;">--</span>';
+
+    return '<tr class="'+rowCls(p.verdict)+'">'+
+      '<td class="c" style="font-family:DM Mono,monospace;font-size:9px;color:var(--text2);">'+(i+1)+'</td>'+
+      '<td>'+
+        '<div style="display:flex;align-items:center;gap:3px;">'+
+          teamChip(p.team)+
+          '<div style="padding-left:2px;">'+
+            '<div class="pname">'+p.name+'</div>'+
+            '<div style="font-family:DM Mono,monospace;font-size:7px;color:var(--text2);">vs '+oppChip+'</div>'+
+          '</div>'+
+        '</div>'+
+      '</td>'+
+      '<td class="c"><span class="hand-badge" style="color:'+handColor+';border-color:'+handColor+'30;">'+p.hand+'</span></td>'+
+      '<td><span class="arch-badge" title="'+p.arch_name+'">'+p.arch_name+'</span></td>'+
+      '<td class="c">'+
+        '<div style="font-family:Bebas Neue,sans-serif;font-size:16px;color:'+scColor+';">'+sc+'</div>'+
+        '<div class="score-bar" style="width:'+barW+'%;background:'+scColor+';max-width:44px;"></div>'+
+      '</td>'+
+      '<td class="c stat-cell" style="color:'+stuffCol(p.stuff_plus)+';font-size:11px;font-weight:600;">'+fmtN(p.stuff_plus,0)+'</td>'+
+      '<td class="c stat-cell" style="color:'+xeraCol(p.xera)+';">'+fmtN(p.xera,2)+'</td>'+
+      '<td class="c stat-cell" style="color:'+k9Col(p.k9)+';">'+k9label+'</td>'+
+      '<td class="c stat-cell" style="color:'+eraCol(p.era)+';">'+eraLabel+'</td>'+
+      '<td class="c stat-cell" style="color:'+bb9Col(p.bb9)+';">'+bb9label+'</td>'+
+      '<td class="c stat-cell" style="color:var(--text1);">'+fmtN(p.ip25,0)+'</td>'+
+      '<td class="c stat-cell" style="color:var(--text2);">'+gs26label+'</td>'+
+      '<td class="c">'+runEnvDisp(p.run_env)+'</td>'+
+      '<td class="c">'+bpDisp(p.opp_bp, p.opp_bp_color)+'</td>'+
+      '<td class="c"><span class="vbadge '+vbCls(p.verdict)+'">'+p.verdict+'</span></td>'+
+    '</tr>';
+  }).join('');
+}
+
+// ── GATE CONTROLS ──────────────────────────────────────────────────────────────
+window.setGate = function(key, val){
+  gates[key].val = val;
+  // Update display label
+  if(key==='stuff')  document.getElementById('v-stuff').textContent='≥ '+parseFloat(val).toFixed(0);
+  if(key==='xera')   document.getElementById('v-xera').textContent='≤ '+parseFloat(val).toFixed(2);
+  if(key==='k9')     document.getElementById('v-k9').textContent='≥ '+parseFloat(val).toFixed(1);
+  if(key==='bb9')    document.getElementById('v-bb9').textContent='≤ '+parseFloat(val).toFixed(2);
+  if(key==='runenv') document.getElementById('v-runenv').textContent=val==='ANY'?'Any':val==='WEAK'?'Weak only':val==='WEAK_AVG'?'Weak+Avg':'Average only';
+  if(key==='oppbp')  document.getElementById('v-oppbp').textContent=val==='ANY'?'Any':val==='NO_SMASH'?'No SMASH':'Caution only';
+  if(key==='score')  document.getElementById('v-score').textContent='≥ '+parseFloat(val).toFixed(0);
+  // Highlight active gates
+  var g = document.getElementById('g-'+key);
+  if(g){
+    var isActive = (gates[key].dir==='min'&&parseFloat(val)>0)||(gates[key].dir==='max'&&parseFloat(val)<9.99)||(gates[key].dir==='select'&&val!=='ANY');
+    g.classList.toggle('active-gate', isActive);
+  }
+  render();
+};
+
+window.resetAll = function(){
+  gates.stuff.val=0; gates.xera.val=10; gates.k9.val=0;
+  gates.bb9.val=10; gates.runenv.val='ANY'; gates.oppbp.val='ANY'; gates.score.val=0;
+  document.querySelectorAll('.gate-slider').forEach(function(s){
+    if(s.min==='0'&&s.step==='5') s.value=0;
+    else if(s.min==='1') s.value=s.max;
+    else s.value=0;
+  });
+  document.getElementById('sel-runenv').value='ANY';
+  document.getElementById('sel-oppbp').value='ANY';
+  document.querySelectorAll('.gate').forEach(function(g){g.classList.remove('active-gate');});
+  ['v-stuff','v-xera','v-k9','v-bb9','v-runenv','v-oppbp','v-score'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el) el.textContent = id==='v-xera'||id==='v-bb9'?'≤ 9.99':id==='v-runenv'||id==='v-oppbp'?'Any':'≥ 0';
+  });
+  render();
+};
+
+// ── PILL FILTERS ───────────────────────────────────────────────────────────────
+function wirePill(id, key){
+  var el = document.getElementById(id);
+  if(!el) return;
+  el.addEventListener('click', function(e){
+    var pill = e.target.closest('.fpill');
+    if(!pill) return;
+    var val = pill.dataset.val;
+    if(val==='ALL'){
+      pillFilters[key].clear();
+      el.querySelectorAll('.fpill').forEach(function(p){p.classList.remove('active');});
+      pill.classList.add('active');
+    } else {
+      var allP = el.querySelector('.fpill[data-val="ALL"]');
+      if(allP) allP.classList.remove('active');
+      if(pillFilters[key].has(val)){
+        pillFilters[key].delete(val); pill.classList.remove('active');
+        if(pillFilters[key].size===0&&allP) allP.classList.add('active');
+      } else {
+        pillFilters[key].add(val); pill.classList.add('active');
+      }
+    }
+    render();
+  });
+}
+
+wirePill('fl-verdict','verdict');
+wirePill('fl-hand','hand');
+wirePill('fl-runenv','runenv');
+wirePill('fl-bp','bp');
+
+// ── SORT ───────────────────────────────────────────────────────────────────────
+document.querySelectorAll('th[data-sort]').forEach(function(th){
+  th.addEventListener('click', function(){
+    var col = th.dataset.sort;
+    // For ERA/xERA/BB9 -- lower is better, so default sort is ASC
+    var lowerBetter = ['xera','bb9','era'];
+    if(sortCol===col) sortDir*=-1;
+    else{sortCol=col; sortDir=lowerBetter.includes(col)?1:-1;}
+    document.querySelectorAll('th[data-sort]').forEach(function(t){t.classList.remove('sort-asc','sort-desc');});
+    th.classList.add(sortDir===1?'sort-asc':'sort-desc');
+    render();
+  });
+});
+
+// ── INIT ───────────────────────────────────────────────────────────────────────
+document.getElementById('footer-ts').textContent = 'Generated: '+new Date().toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'});
+render();
+</script>
+</body>
+</html>

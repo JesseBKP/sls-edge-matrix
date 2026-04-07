@@ -32,12 +32,22 @@
     },
     {
       "src": "/funnel/data.js",
-      "headers": { "content-type": "application/javascript" },
+      "headers": {
+        "content-type": "application/javascript"
+      },
       "dest": "/funnel/data.js"
     },
     {
       "src": "/funnel/(.*)",
       "dest": "/funnel/$1"
+    },
+    {
+      "src": "/pitchers",
+      "dest": "/pitchers/index.html"
+    },
+    {
+      "src": "/pitchers/(.*)",
+      "dest": "/pitchers/$1"
     },
     {
       "src": "/(.*)",
