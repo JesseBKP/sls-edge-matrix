@@ -13,6 +13,7 @@
   --accent:#e8c547;--accent2:#4af0b0;
   --elite:#ff4d6d;--strong:#ff8c42;--lean:#e8c547;--monitor:#5c6878;
   --fadec:#4a7aff;--smashr:#c084fc;
+  --pqs5:#4af0b0;--pqs4:#a3e635;--pqs3:#e8c547;--pqs2:#ff8c42;--pqs1:#ff4d6d;--pqs0:#2a2a3a;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--bg0);color:var(--text0);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:auto;}
@@ -32,7 +33,6 @@ body{background:var(--bg0);color:var(--text0);font-family:'DM Sans',sans-serif;m
 .ls-item{display:flex;align-items:center;gap:3px;font-family:'DM Mono',monospace;font-size:8px;color:var(--text2);white-space:nowrap;}
 .ls-sw{width:7px;height:7px;border-radius:1px;flex-shrink:0;}
 .ls-sep{width:1px;height:9px;background:var(--border);flex-shrink:0;}
-/* FUNNEL */
 .funnel-wrap{padding:6px 10px;background:var(--bg1);border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:4px;}
 .funnel-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px;}
 .funnel-title{font-family:'DM Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:0.12em;color:var(--text2);}
@@ -51,7 +51,6 @@ body{background:var(--bg0);color:var(--text0);font-family:'DM Sans',sans-serif;m
 .gate-select{width:100%;background:var(--bg4);color:var(--text1);border:1px solid var(--border);font-family:'DM Mono',monospace;font-size:8px;padding:2px;}
 .reset-btn{font-family:'DM Mono',monospace;font-size:8px;padding:2px 8px;border:1px solid var(--border);background:var(--bg4);color:var(--text1);cursor:pointer;border-radius:2px;}
 .reset-btn:hover{border-color:var(--border-hi);color:var(--text0);}
-/* FILTER BAR */
 .filter-bar{background:var(--bg1);border-bottom:1px solid var(--border);padding:3px 10px;display:flex;align-items:flex-start;flex-wrap:wrap;gap:4px;row-gap:3px;}
 .fg{display:flex;flex-direction:column;gap:1px;}
 .fl{font-size:7px;text-transform:uppercase;letter-spacing:0.1em;color:var(--text2);font-family:'DM Mono',monospace;}
@@ -60,7 +59,6 @@ body{background:var(--bg0);color:var(--text0);font-family:'DM Sans',sans-serif;m
 .fpill:hover{border-color:var(--border-hi);color:var(--text0);}
 .fpill.active{background:rgba(255,140,66,0.12);border-color:rgba(255,140,66,0.5);color:var(--strong);}
 .fpill.active.slate-pill{background:rgba(74,240,176,0.08);border-color:rgba(74,240,176,0.4);color:var(--accent2);}
-/* TABLE */
 .wrap{overflow-x:auto;width:100%;}
 table{border-collapse:collapse;font-size:10px;width:1px;table-layout:auto;}
 thead tr{background:var(--bg2);border-bottom:1px solid var(--border-hi);position:sticky;top:0;z-index:2;}
@@ -91,17 +89,23 @@ td.r{text-align:right;} td.c{text-align:center;}
 .score-bar{height:3px;border-radius:2px;margin-top:2px;}
 .stat-cell{font-family:'DM Mono',monospace;font-size:9px;}
 .velo-drop-cell{font-family:'DM Mono',monospace;font-size:9px;font-weight:600;}
-.trend-arrow{font-size:9px;}
+/* PQS */
+.pqs-wrap{display:flex;gap:2px;align-items:center;}
+.pqs-col{display:flex;flex-direction:column;align-items:center;gap:1px;cursor:default;}
+.pqs-score{font-family:'Bebas Neue',sans-serif;font-size:14px;line-height:1;}
+.pqs-dots{display:flex;flex-direction:row;gap:1px;}
+.pqs-dot{width:4px;height:4px;border-radius:1px;}
+.pqs-sep{width:1px;height:22px;background:var(--border);margin:0 1px;}
+.pqs-empty{width:16px;height:22px;display:flex;align-items:center;justify-content:center;color:var(--text2);font-size:9px;}
 .footer{padding:5px 10px;border-top:1px solid var(--border);background:var(--bg1);font-family:'DM Mono',monospace;font-size:8px;color:var(--text2);display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;}
 </style>
 </head>
 <body>
 
 <script>
-var PITCHERS = [{"pid": "693433", "name": "Bryan Woo", "team": "SEA", "hand": "R", "archetype": "R1", "arch_name": "POWER FOUR-SEAM", "opp": "TEX", "stuff_plus": 107.0, "xera": 2.77, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 95.6, "velo_current": 95.1, "velo_drop": 0.5, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": 2.12, "l3_k9": 15.4, "l3_starts": 3, "trend": "COLD", "run_env": "AVERAGE", "opp_bp": "NEUTRAL", "opp_bp_color": "#666666", "opp_bp_score": 52.9, "slates": ["1:10 PM (10G)", "2:10 PM (2G)"], "salary": 10000, "salaries": {"1:10 PM (10G)": 10000, "2:10 PM (2G)": 10000}, "score": 86, "verdict": "ACE"}, {"pid": "680694", "name": "Kyle Bradish", "team": "BAL", "hand": "R", "archetype": "R4", "arch_name": "SWEEPER/HORIZONTAL", "opp": "CWS", "stuff_plus": 97.0, "xera": 2.69, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 94.4, "velo_current": 94.1, "velo_drop": 0.3, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": 2.4, "l3_k9": 15.6, "l3_starts": 3, "trend": "HOT", "run_env": "STRONG", "opp_bp": "ATTACK", "opp_bp_color": "#e67e22", "opp_bp_score": 68.6, "slates": ["1:10 PM (10G)", "2:10 PM (2G)"], "salary": 8500, "salaries": {"1:10 PM (10G)": 8500, "2:10 PM (2G)": 8500}, "score": 71, "verdict": "PLAY"}, {"pid": "660271", "name": "Shohei Ohtani", "team": "LAD", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "TOR", "stuff_plus": 99, "xera": 2.64, "era26": 0.0, "k9_26": 0.0, "bb9_26": 0.0, "whip26": 0.0, "gs26": 0, "era25": 2.87, "k9_25": 11.87, "bb9_25": 1.72, "ip25": 47.0, "k9": 11.87, "bb9": 1.72, "era": 2.87, "velo_baseline": 98.4, "velo_current": 96.9, "velo_drop": 1.5, "velo_trend": "DOWN", "velo_type": "FF", "l3_era": null, "l3_k9": null, "l3_starts": null, "trend": null, "run_env": "EXPLOSIVE", "opp_bp": "NEUTRAL", "opp_bp_color": "#666666", "opp_bp_score": 55.9, "slates": ["1:10 PM (10G)", "3:07 PM (6G)"], "salary": 9700, "salaries": {"1:10 PM (10G)": 9700, "3:07 PM (6G)": 9700}, "score": 71, "verdict": "PLAY"}, {"pid": "622663", "name": "Luis Severino", "team": "ATH", "hand": "R", "archetype": "R1", "arch_name": "POWER FOUR-SEAM", "opp": "NYY", "stuff_plus": 109.0, "xera": 3.85, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 96.1, "velo_current": 96.8, "velo_drop": -0.7, "velo_trend": "UP", "velo_type": "FF", "l3_era": 3.35, "l3_k9": 5.6, "l3_starts": 3, "trend": "COLD", "run_env": "AVERAGE", "opp_bp": "CAUTION", "opp_bp_color": "#27ae60", "opp_bp_score": 42.9, "slates": ["6:40 PM (4G)"], "salary": 6500, "salaries": {"6:40 PM (4G)": 6500}, "score": 66, "verdict": "PLAY"}, {"pid": "605400", "name": "Aaron Nola", "team": "PHI", "hand": "R", "archetype": "R1", "arch_name": "POWER FOUR-SEAM", "opp": "SF", "stuff_plus": 112.0, "xera": 3.77, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 91.7, "velo_current": 91.3, "velo_drop": 0.4, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": 5.18, "l3_k9": 8.5, "l3_starts": 3, "trend": "COLD", "run_env": "WEAK", "opp_bp": "CAUTION", "opp_bp_color": "#27ae60", "opp_bp_score": 38.8, "slates": ["1:10 PM (10G)", "3:07 PM (6G)"], "salary": 8700, "salaries": {"1:10 PM (10G)": 8700, "3:07 PM (6G)": 8700}, "score": 64, "verdict": "LEAN"}, {"pid": "691587", "name": "Eury Pérez", "team": "MIA", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "CIN", "stuff_plus": 92, "xera": 3.55, "era26": 3.86, "k9_26": 10.29, "bb9_26": 1.29, "whip26": 0.86, "gs26": 1, "era25": 4.25, "k9_25": 9.91, "bb9_25": 3.02, "ip25": 95.1, "k9": 10.29, "bb9": 1.29, "era": 3.86, "velo_baseline": 97.9, "velo_current": 97.9, "velo_drop": 0.0, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": null, "l3_k9": null, "l3_starts": null, "trend": null, "run_env": "EXPLOSIVE", "opp_bp": "NEUTRAL", "opp_bp_color": "#666666", "opp_bp_score": 54.4, "slates": ["6:40 PM (4G)"], "salary": 7800, "salaries": {"6:40 PM (4G)": 7800}, "score": 64, "verdict": "LEAN"}, {"pid": "664285", "name": "Framber Valdez", "team": "DET", "hand": "L", "archetype": "--", "arch_name": "--", "opp": "MIN", "stuff_plus": 78, "xera": 1.38, "era26": 1.5, "k9_26": 7.5, "bb9_26": 1.5, "whip26": 1.33, "gs26": 1, "era25": 3.66, "k9_25": 8.77, "bb9_25": 3.19, "ip25": 192.0, "k9": 7.5, "bb9": 1.5, "era": 1.5, "velo_baseline": null, "velo_current": null, "velo_drop": null, "velo_trend": "UNKNOWN", "velo_type": "FF", "l3_era": null, "l3_k9": null, "l3_starts": null, "trend": null, "run_env": "AVERAGE", "opp_bp": "--", "opp_bp_color": "#666666", "opp_bp_score": 0, "slates": ["6:40 PM (4G)", "SD 7:40 PM (1G)"], "salary": 9000, "salaries": {"6:40 PM (4G)": 9000, "SD 7:40 PM (1G)": 12000}, "score": 64, "verdict": "LEAN"}, {"pid": "676282", "name": "Joey Cantillo", "team": "CLE", "hand": "L", "archetype": "L5", "arch_name": "CRAFTSMAN", "opp": "KC", "stuff_plus": 92.0, "xera": 3.74, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 91.7, "velo_current": 91.8, "velo_drop": -0.1, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": 2.52, "l3_k9": 10.1, "l3_starts": 3, "trend": "NEUTRAL", "run_env": "AVERAGE", "opp_bp": "--", "opp_bp_color": "#666666", "opp_bp_score": 0, "slates": ["1:10 PM (10G)"], "salary": 7300, "salaries": {"1:10 PM (10G)": 7300}, "score": 62, "verdict": "LEAN"}, {"pid": "543243", "name": "Sonny Gray", "team": "BOS", "hand": "R", "archetype": "R4", "arch_name": "SWEEPER/HORIZONTAL", "opp": "MIL", "stuff_plus": 97.0, "xera": 3.66, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 91.6, "velo_current": 91.9, "velo_drop": -0.3, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": 2.65, "l3_k9": 11.6, "l3_starts": 3, "trend": "NEUTRAL", "run_env": "STRONG", "opp_bp": "NEUTRAL", "opp_bp_color": "#666666", "opp_bp_score": 63.8, "slates": ["1:10 PM (10G)"], "salary": 8000, "salaries": {"1:10 PM (10G)": 8000}, "score": 62, "verdict": "LEAN"}, {"pid": "607067", "name": "Colin Rea", "team": "CHC", "hand": "R", "archetype": "R4", "arch_name": "SWEEPER/HORIZONTAL", "opp": "TB", "stuff_plus": 96.0, "xera": 4.89, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 93.9, "velo_current": 93.9, "velo_drop": 0.0, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": 2.08, "l3_k9": 12.0, "l3_starts": 3, "trend": "COLD", "run_env": "AVERAGE", "opp_bp": "NEUTRAL", "opp_bp_color": "#666666", "opp_bp_score": 45.0, "slates": [], "salary": 0, "salaries": {}, "score": 60, "verdict": "LEAN"}, {"pid": "650633", "name": "Michael King", "team": "SD", "hand": "R", "archetype": "R1", "arch_name": "POWER FOUR-SEAM", "opp": "PIT", "stuff_plus": 96.0, "xera": 3.53, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 93.7, "velo_current": 93.8, "velo_drop": -0.1, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": 7.06, "l3_k9": 7.9, "l3_starts": 3, "trend": "COLD", "run_env": "AVERAGE", "opp_bp": "NEUTRAL", "opp_bp_color": "#666666", "opp_bp_score": 57.7, "slates": ["SD 12:35 PM (1G)"], "salary": 11200, "salaries": {"SD 12:35 PM (1G)": 11200}, "score": 58, "verdict": "LEAN"}, {"pid": "671212", "name": "Joe Boyle", "team": "TB", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "CHC", "stuff_plus": 60, "xera": 2.76, "era26": 3.0, "k9_26": 6.0, "bb9_26": 0.0, "whip26": 0.5, "gs26": 1, "era25": 4.67, "k9_25": 10.04, "bb9_25": 4.85, "ip25": 52.0, "k9": 6.0, "bb9": 0.0, "era": 3.0, "velo_baseline": 98.5, "velo_current": 97.5, "velo_drop": 1.0, "velo_trend": "DOWN", "velo_type": "FF", "l3_era": null, "l3_k9": null, "l3_starts": null, "trend": null, "run_env": "STRONG", "opp_bp": "ATTACK", "opp_bp_color": "#e67e22", "opp_bp_score": 67.7, "slates": [], "salary": 0, "salaries": {}, "score": 57, "verdict": "LEAN"}, {"pid": "641816", "name": "Tyler Mahle", "team": "SF", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "PHI", "stuff_plus": 94, "xera": 4.14, "era26": 4.5, "k9_26": 11.25, "bb9_26": 2.25, "whip26": 1.5, "gs26": 1, "era25": 2.18, "k9_25": 6.85, "bb9_25": 3.01, "ip25": 86.2, "k9": 11.25, "bb9": 2.25, "era": 4.5, "velo_baseline": 92.0, "velo_current": 91.9, "velo_drop": 0.1, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": null, "l3_k9": null, "l3_starts": null, "trend": null, "run_env": "STRONG", "opp_bp": "NEUTRAL", "opp_bp_color": "#666666", "opp_bp_score": 48.8, "slates": ["1:10 PM (10G)", "3:07 PM (6G)"], "salary": 7500, "salaries": {"1:10 PM (10G)": 7500, "3:07 PM (6G)": 7500}, "score": 56, "verdict": "LEAN"}, {"pid": "669194", "name": "Ryne Nelson", "team": "ARI", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "NYM", "stuff_plus": null, "xera": null, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 95.6, "velo_current": 96.1, "velo_drop": -0.5, "velo_trend": "UP", "velo_type": "FF", "l3_era": null, "l3_k9": null, "l3_starts": null, "trend": null, "run_env": "WEAK", "opp_bp": "CAUTION", "opp_bp_color": "#27ae60", "opp_bp_score": 42.8, "slates": ["1:10 PM (10G)", "3:07 PM (6G)"], "salary": 6300, "salaries": {"1:10 PM (10G)": 6300, "3:07 PM (6G)": 6300}, "score": 56, "verdict": "LEAN"}, {"pid": "669022", "name": "MacKenzie Gore", "team": "TEX", "hand": "L", "archetype": "--", "arch_name": "--", "opp": "SEA", "stuff_plus": 88, "xera": 3.11, "era26": 3.38, "k9_26": 11.81, "bb9_26": 5.06, "whip26": 0.94, "gs26": 1, "era25": 4.17, "k9_25": 10.43, "bb9_25": 3.61, "ip25": 159.2, "k9": 11.81, "bb9": 5.06, "era": 3.38, "velo_baseline": 95.3, "velo_current": 95.9, "velo_drop": -0.6, "velo_trend": "UP", "velo_type": "FF", "l3_era": null, "l3_k9": null, "l3_starts": null, "trend": null, "run_env": "STRONG", "opp_bp": "ATTACK", "opp_bp_color": "#e67e22", "opp_bp_score": 73.1, "slates": ["1:10 PM (10G)", "2:10 PM (2G)"], "salary": 9100, "salaries": {"1:10 PM (10G)": 9100, "2:10 PM (2G)": 9100}, "score": 53, "verdict": "LEAN"}, {"pid": "664299", "name": "Cristian Javier", "team": "HOU", "hand": "R", "archetype": "R8", "arch_name": "SWING/MISS POWER", "opp": "COL", "stuff_plus": 99.0, "xera": 4.46, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 92.9, "velo_current": 92.1, "velo_drop": 0.8, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": 5.0, "l3_k9": 7.8, "l3_starts": 3, "trend": "NEUTRAL", "run_env": "WEAK", "opp_bp": "ATTACK", "opp_bp_color": "#e67e22", "opp_bp_score": 68.2, "slates": ["1:10 PM (10G)", "3:07 PM (6G)"], "salary": 5800, "salaries": {"1:10 PM (10G)": 5800, "3:07 PM (6G)": 5800}, "score": 53, "verdict": "LEAN"}, {"pid": "656605", "name": "Mitch Keller", "team": "PIT", "hand": "R", "archetype": "R5", "arch_name": "CRAFTSMAN", "opp": "SD", "stuff_plus": 100.0, "xera": 4.25, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 94.1, "velo_current": 93.3, "velo_drop": 0.8, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": 4.74, "l3_k9": 9.5, "l3_starts": 3, "trend": "COLD", "run_env": "STRONG", "opp_bp": "CAUTION", "opp_bp_color": "#27ae60", "opp_bp_score": 31.9, "slates": ["SD 12:35 PM (1G)"], "salary": 11000, "salaries": {"SD 12:35 PM (1G)": 11000}, "score": 52, "verdict": "LEAN"}, {"pid": "666142", "name": "Cole Ragans", "team": "KC", "hand": "L", "archetype": "--", "arch_name": "--", "opp": "CLE", "stuff_plus": null, "xera": null, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 95.4, "velo_current": 95.0, "velo_drop": 0.4, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": null, "l3_k9": null, "l3_starts": null, "trend": null, "run_env": "AVERAGE", "opp_bp": "NEUTRAL", "opp_bp_color": "#666666", "opp_bp_score": 48.0, "slates": ["1:10 PM (10G)"], "salary": 8900, "salaries": {"1:10 PM (10G)": 8900}, "score": 50, "verdict": "LEAN"}, {"pid": "680732", "name": "Sean Burke", "team": "CWS", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "BAL", "stuff_plus": null, "xera": null, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 94.4, "velo_current": 94.0, "velo_drop": 0.4, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": null, "l3_k9": null, "l3_starts": null, "trend": null, "run_env": "AVERAGE", "opp_bp": "CAUTION", "opp_bp_color": "#27ae60", "opp_bp_score": 44.4, "slates": ["1:10 PM (10G)", "2:10 PM (2G)"], "salary": 6500, "salaries": {"1:10 PM (10G)": 6500, "2:10 PM (2G)": 6500}, "score": 50, "verdict": "LEAN"}, {"pid": "571945", "name": "Miles Mikolas", "team": "WSH", "hand": "R", "archetype": "R5", "arch_name": "CRAFTSMAN", "opp": "STL", "stuff_plus": 94.0, "xera": 4.62, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 92.8, "velo_current": 92.0, "velo_drop": 0.8, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": 4.8, "l3_k9": 7.2, "l3_starts": 3, "trend": "HOT", "run_env": "AVERAGE", "opp_bp": "NEUTRAL", "opp_bp_color": "#666666", "opp_bp_score": 59.9, "slates": ["1:10 PM (10G)", "3:07 PM (6G)", "SD 4:05 PM (1G)"], "salary": 6000, "salaries": {"1:10 PM (10G)": 6000, "3:07 PM (6G)": 6000, "SD 4:05 PM (1G)": 10600}, "score": 50, "verdict": "LEAN"}, {"pid": "547179", "name": "Michael Lorenzen", "team": "COL", "hand": "R", "archetype": "R5", "arch_name": "CRAFTSMAN", "opp": "HOU", "stuff_plus": 91.0, "xera": 4.57, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 93.9, "velo_current": 93.4, "velo_drop": 0.5, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": 2.01, "l3_k9": 9.4, "l3_starts": 3, "trend": "HOT", "run_env": "EXPLOSIVE", "opp_bp": "CAUTION", "opp_bp_color": "#27ae60", "opp_bp_score": 30.9, "slates": ["1:10 PM (10G)", "3:07 PM (6G)"], "salary": 5500, "salaries": {"1:10 PM (10G)": 5500, "3:07 PM (6G)": 5500}, "score": 48, "verdict": "FADE"}, {"pid": "700241", "name": "Michael McGreevy", "team": "STL", "hand": "R", "archetype": "R5", "arch_name": "CRAFTSMAN", "opp": "WSH", "stuff_plus": 91.0, "xera": 3.56, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 93.0, "velo_current": 90.8, "velo_drop": 2.2, "velo_trend": "DOWN", "velo_type": "FF", "l3_era": 4.44, "l3_k9": 6.1, "l3_starts": 3, "trend": "NEUTRAL", "run_env": "STRONG", "opp_bp": "ATTACK", "opp_bp_color": "#e67e22", "opp_bp_score": 79.2, "slates": ["1:10 PM (10G)", "3:07 PM (6G)", "SD 4:05 PM (1G)"], "salary": 7200, "salaries": {"1:10 PM (10G)": 7200, "3:07 PM (6G)": 7200, "SD 4:05 PM (1G)": 11200}, "score": 48, "verdict": "FADE"}, {"pid": "672282", "name": "Reid Detmers", "team": "LAA", "hand": "L", "archetype": "L1", "arch_name": "POWER FOUR-SEAM", "opp": "ATL", "stuff_plus": 104.0, "xera": 4.06, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 95.8, "velo_current": 94.0, "velo_drop": 1.8, "velo_trend": "DOWN", "velo_type": "FF", "l3_era": 4.09, "l3_k9": 8.2, "l3_starts": 3, "trend": "COLD", "run_env": "STRONG", "opp_bp": "NEUTRAL", "opp_bp_color": "#666666", "opp_bp_score": 45.8, "slates": ["1:10 PM (10G)", "3:07 PM (6G)"], "salary": 7700, "salaries": {"1:10 PM (10G)": 7700, "3:07 PM (6G)": 7700}, "score": 47, "verdict": "FADE"}, {"pid": "701542", "name": "Will Warren", "team": "NYY", "hand": "R", "archetype": "R1", "arch_name": "POWER FOUR-SEAM", "opp": "ATH", "stuff_plus": 103.0, "xera": 4.47, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 93.3, "velo_current": 94.1, "velo_drop": -0.8, "velo_trend": "UP", "velo_type": "FF", "l3_era": 6.56, "l3_k9": 7.7, "l3_starts": 3, "trend": "NEUTRAL", "run_env": "STRONG", "opp_bp": "SMASH", "opp_bp_color": "#c0392b", "opp_bp_score": 80.9, "slates": ["6:40 PM (4G)"], "salary": 8200, "salaries": {"6:40 PM (4G)": 8200}, "score": 43, "verdict": "FADE"}, {"pid": "656302", "name": "Dylan Cease", "team": "TOR", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "LAD", "stuff_plus": null, "xera": null, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 97.1, "velo_current": 98.0, "velo_drop": -0.9, "velo_trend": "UP", "velo_type": "FF", "l3_era": null, "l3_k9": null, "l3_starts": null, "trend": null, "run_env": "EXPLOSIVE", "opp_bp": "NEUTRAL", "opp_bp_color": "#666666", "opp_bp_score": 64.8, "slates": ["1:10 PM (10G)", "3:07 PM (6G)"], "salary": 9400, "salaries": {"1:10 PM (10G)": 9400, "3:07 PM (6G)": 9400}, "score": 42, "verdict": "FADE"}, {"pid": "663903", "name": "Brady Singer", "team": "CIN", "hand": "R", "archetype": "R1", "arch_name": "POWER FOUR-SEAM", "opp": "MIA", "stuff_plus": 91.0, "xera": 4.71, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 91.3, "velo_current": 90.7, "velo_drop": 0.6, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": 5.37, "l3_k9": 9.4, "l3_starts": 3, "trend": "HOT", "run_env": "AVERAGE", "opp_bp": "ATTACK", "opp_bp_color": "#e67e22", "opp_bp_score": 72.1, "slates": ["6:40 PM (4G)"], "salary": 7500, "salaries": {"6:40 PM (4G)": 7500}, "score": 41, "verdict": "FADE"}, {"pid": "675660", "name": "Shane Drohan", "team": "MIL", "hand": "L", "archetype": "--", "arch_name": "--", "opp": "BOS", "stuff_plus": 45, "xera": null, "era26": 0.0, "k9_26": 0.0, "bb9_26": 0.0, "whip26": 0.0, "gs26": 0, "era25": 0.0, "k9_25": 0.0, "bb9_25": 0.0, "ip25": 0.0, "k9": 0.0, "bb9": 0.0, "era": 0.0, "velo_baseline": null, "velo_current": 94.7, "velo_drop": null, "velo_trend": "UNKNOWN", "velo_type": "FF", "l3_era": null, "l3_k9": null, "l3_starts": null, "trend": null, "run_env": "AVERAGE", "opp_bp": "NEUTRAL", "opp_bp_color": "#666666", "opp_bp_score": 52.6, "slates": [], "salary": 0, "salaries": {}, "score": 40, "verdict": "FADE"}, {"pid": "656849", "name": "David Peterson", "team": "NYM", "hand": "L", "archetype": "L5", "arch_name": "CRAFTSMAN", "opp": "ARI", "stuff_plus": 93.0, "xera": 4.59, "era26": null, "k9_26": null, "bb9_26": null, "whip26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 92.3, "velo_current": 91.0, "velo_drop": 1.3, "velo_trend": "DOWN", "velo_type": "FF", "l3_era": 11.35, "l3_k9": 8.1, "l3_starts": 3, "trend": "HOT", "run_env": "STRONG", "opp_bp": "NEUTRAL", "opp_bp_color": "#666666", "opp_bp_score": 56.0, "slates": ["1:10 PM (10G)", "3:07 PM (6G)"], "salary": 7000, "salaries": {"1:10 PM (10G)": 7000, "3:07 PM (6G)": 7000}, "score": 40, "verdict": "FADE"}, {"pid": "656550", "name": "Grant Holmes", "team": "ATL", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "LAA", "stuff_plus": 70, "xera": 4.97, "era26": 5.4, "k9_26": 7.2, "bb9_26": 3.6, "whip26": 1.4, "gs26": 1, "era25": 3.99, "k9_25": 9.63, "bb9_25": 4.23, "ip25": 115.0, "k9": 7.2, "bb9": 3.6, "era": 5.4, "velo_baseline": 94.5, "velo_current": 93.9, "velo_drop": 0.6, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": null, "l3_k9": null, "l3_starts": null, "trend": null, "run_env": "EXPLOSIVE", "opp_bp": "NEUTRAL", "opp_bp_color": "#666666", "opp_bp_score": 55.0, "slates": ["1:10 PM (10G)", "3:07 PM (6G)"], "salary": 6700, "salaries": {"1:10 PM (10G)": 6700, "3:07 PM (6G)": 6700}, "score": 32, "verdict": "SMASH"}, {"pid": "641927", "name": "Bailey Ober", "team": "MIN", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "DET", "stuff_plus": 49, "xera": 6.21, "era26": 6.75, "k9_26": 2.25, "bb9_26": 2.25, "whip26": 1.25, "gs26": 1, "era25": 5.1, "k9_25": 7.38, "bb9_25": 1.91, "ip25": 146.1, "k9": 2.25, "bb9": 2.25, "era": 6.75, "velo_baseline": 90.2, "velo_current": 89.2, "velo_drop": 1.0, "velo_trend": "DOWN", "velo_type": "FF", "l3_era": null, "l3_k9": null, "l3_starts": null, "trend": null, "run_env": "AVERAGE", "opp_bp": "NEUTRAL", "opp_bp_color": "#666666", "opp_bp_score": 63.1, "slates": ["6:40 PM (4G)", "SD 7:40 PM (1G)"], "salary": 7000, "salaries": {"6:40 PM (4G)": 7000, "SD 7:40 PM (1G)": 10600}, "score": 24, "verdict": "SMASH"}];
+var PITCHERS = [{"pid": "693433", "name": "Bryan Woo", "team": "SEA", "hand": "R", "archetype": "R1", "arch_name": "POWER FOUR-SEAM", "opp": "TEX", "stuff_plus": 107.0, "xera": 2.77, "cws_pct": 0.0, "swk_pct": 26.2, "xwhip": 0.0, "cmd": null, "era26": null, "k9_26": null, "bb9_26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 95.6, "velo_current": 95.1, "velo_drop": 0.5, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": 2.12, "l3_k9": 15.4, "l3_starts": 3, "trend": "COLD", "pqs_log": [{"date": "2025-09-19", "ip": "5.0", "h": 1, "k": 7, "bb": 1, "hr": 0, "score": 4, "pts": [false, true, true, true, true]}, {"date": "2025-09-13", "ip": "6.0", "h": 3, "k": 13, "bb": 1, "hr": 1, "score": 4, "pts": [true, true, true, true, false]}, {"date": "2025-09-08", "ip": "6.0", "h": 3, "k": 9, "bb": 0, "hr": 1, "score": 4, "pts": [true, true, true, true, false]}, {"date": "2025-09-02", "ip": "5.0", "h": 4, "k": 3, "bb": 3, "hr": 1, "score": 1, "pts": [false, true, false, false, false]}, {"date": "2025-08-27", "ip": "5.2", "h": 6, "k": 6, "bb": 1, "hr": 0, "score": 3, "pts": [false, false, true, true, true]}], "pqs_avg": 3.2, "pqs_starts": 5, "pqs_std": 1.17, "run_env": "AVERAGE", "opp_bp": "NEUTRAL", "opp_bp_color": "#666666", "opp_bp_score": 52.9, "slates": ["1:10 PM (10G)", "2:10 PM (2G)"], "salary": 10000, "salaries": {"1:10 PM (10G)": 10000, "2:10 PM (2G)": 10000}, "score": 87, "verdict": "ACE"}, {"pid": "680694", "name": "Kyle Bradish", "team": "BAL", "hand": "R", "archetype": "R4", "arch_name": "SWEEPER/HORIZONTAL", "opp": "CWS", "stuff_plus": 97.0, "xera": 2.69, "cws_pct": null, "swk_pct": null, "xwhip": null, "cmd": null, "era26": null, "k9_26": null, "bb9_26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 94.4, "velo_current": 94.1, "velo_drop": 0.3, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": 2.4, "l3_k9": 15.6, "l3_starts": 3, "trend": "HOT", "pqs_log": [{"date": "2025-09-28", "ip": "4.0", "h": 5, "k": 8, "bb": 0, "hr": 1, "score": 2, "pts": [false, false, true, true, false]}, {"date": "2025-09-21", "ip": "6.0", "h": 2, "k": 9, "bb": 2, "hr": 0, "score": 5, "pts": [true, true, true, true, true]}, {"date": "2025-09-15", "ip": "5.0", "h": 4, "k": 9, "bb": 4, "hr": 0, "score": 3, "pts": [false, true, true, false, true]}, {"date": "2025-09-09", "ip": "7.0", "h": 4, "k": 6, "bb": 2, "hr": 0, "score": 5, "pts": [true, true, true, true, true]}, {"date": "2025-09-01", "ip": "4.0", "h": 4, "k": 5, "bb": 2, "hr": 0, "score": 2, "pts": [false, false, true, false, true]}], "pqs_avg": 3.4, "pqs_starts": 5, "pqs_std": 1.36, "run_env": "STRONG", "opp_bp": "ATTACK", "opp_bp_color": "#e67e22", "opp_bp_score": 68.6, "slates": ["1:10 PM (10G)", "2:10 PM (2G)"], "salary": 8500, "salaries": {"1:10 PM (10G)": 8500, "2:10 PM (2G)": 8500}, "score": 72, "verdict": "PLAY"}, {"pid": "660271", "name": "Shohei Ohtani", "team": "LAD", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "TOR", "stuff_plus": 99, "xera": 2.64, "cws_pct": null, "swk_pct": null, "xwhip": null, "cmd": 6.9, "era26": 0.0, "k9_26": 0.0, "bb9_26": 0.0, "gs26": 0, "era25": 2.87, "k9_25": 11.87, "bb9_25": 1.72, "ip25": 47.0, "k9": 11.87, "bb9": 1.72, "era": 2.87, "velo_baseline": 98.4, "velo_current": 96.9, "velo_drop": 1.5, "velo_trend": "DOWN", "velo_type": "FF", "l3_era": null, "l3_k9": null, "l3_starts": null, "trend": null, "pqs_log": [{"date": "2025-09-23", "ip": "6.0", "h": 5, "k": 8, "bb": 0, "hr": 0, "score": 5, "pts": [true, true, true, true, true]}, {"date": "2025-09-16", "ip": "5.0", "h": 0, "k": 5, "bb": 1, "hr": 0, "score": 4, "pts": [false, true, true, true, true]}, {"date": "2025-09-05", "ip": "3.2", "h": 3, "k": 5, "bb": 1, "hr": 0, "score": 4, "pts": [false, true, true, true, true]}, {"date": "2025-08-27", "ip": "5.0", "h": 2, "k": 9, "bb": 2, "hr": 1, "score": 3, "pts": [false, true, true, true, false]}, {"date": "2025-08-20", "ip": "4.0", "h": 9, "k": 3, "bb": 0, "hr": 0, "score": 2, "pts": [false, false, false, true, true]}], "pqs_avg": 3.6, "pqs_starts": 5, "pqs_std": 1.02, "run_env": "EXPLOSIVE", "opp_bp": "NEUTRAL", "opp_bp_color": "#666666", "opp_bp_score": 55.9, "slates": ["1:10 PM (10G)", "3:07 PM (6G)"], "salary": 9700, "salaries": {"1:10 PM (10G)": 9700, "3:07 PM (6G)": 9700}, "score": 72, "verdict": "PLAY"}, {"pid": "543243", "name": "Sonny Gray", "team": "BOS", "hand": "R", "archetype": "R4", "arch_name": "SWEEPER/HORIZONTAL", "opp": "MIL", "stuff_plus": 97.0, "xera": 3.66, "cws_pct": 0.0, "swk_pct": 27.5, "xwhip": 0.0, "cmd": null, "era26": null, "k9_26": null, "bb9_26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 91.6, "velo_current": 91.9, "velo_drop": -0.3, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": 2.65, "l3_k9": 11.6, "l3_starts": 3, "trend": "NEUTRAL", "pqs_log": [{"date": "2025-09-24", "ip": "6.0", "h": 7, "k": 7, "bb": 2, "hr": 1, "score": 3, "pts": [true, false, true, true, false]}, {"date": "2025-09-19", "ip": "6.0", "h": 9, "k": 7, "bb": 0, "hr": 1, "score": 3, "pts": [true, false, true, true, false]}, {"date": "2025-09-13", "ip": "5.0", "h": 4, "k": 8, "bb": 1, "hr": 0, "score": 4, "pts": [false, true, true, true, true]}, {"date": "2025-09-07", "ip": "5.1", "h": 2, "k": 6, "bb": 4, "hr": 0, "score": 3, "pts": [false, true, true, false, true]}, {"date": "2025-09-01", "ip": "6.0", "h": 11, "k": 5, "bb": 3, "hr": 3, "score": 2, "pts": [true, false, true, false, false]}], "pqs_avg": 3.0, "pqs_starts": 5, "pqs_std": 0.63, "run_env": "STRONG", "opp_bp": "NEUTRAL", "opp_bp_color": "#666666", "opp_bp_score": 63.8, "slates": ["1:10 PM (10G)"], "salary": 8000, "salaries": {"1:10 PM (10G)": 8000}, "score": 65, "verdict": "PLAY"}, {"pid": "605400", "name": "Aaron Nola", "team": "PHI", "hand": "R", "archetype": "R1", "arch_name": "POWER FOUR-SEAM", "opp": "SF", "stuff_plus": 112.0, "xera": 3.77, "cws_pct": 0.0, "swk_pct": 25.2, "xwhip": 0.0, "cmd": null, "era26": null, "k9_26": null, "bb9_26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 91.7, "velo_current": 91.3, "velo_drop": 0.4, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": 5.18, "l3_k9": 8.5, "l3_starts": 3, "trend": "COLD", "pqs_log": [{"date": "2025-09-26", "ip": "8.0", "h": 2, "k": 9, "bb": 0, "hr": 1, "score": 4, "pts": [true, true, true, true, false]}, {"date": "2025-09-20", "ip": "5.1", "h": 7, "k": 4, "bb": 2, "hr": 0, "score": 1, "pts": [false, false, false, false, true]}, {"date": "2025-09-14", "ip": "6.0", "h": 6, "k": 5, "bb": 1, "hr": 2, "score": 3, "pts": [true, false, true, true, false]}, {"date": "2025-09-08", "ip": "6.0", "h": 3, "k": 7, "bb": 2, "hr": 0, "score": 5, "pts": [true, true, true, true, true]}, {"date": "2025-09-03", "ip": "5.0", "h": 6, "k": 6, "bb": 2, "hr": 1, "score": 2, "pts": [false, false, true, true, false]}], "pqs_avg": 3.0, "pqs_starts": 5, "pqs_std": 1.41, "run_env": "WEAK", "opp_bp": "CAUTION", "opp_bp_color": "#27ae60", "opp_bp_score": 38.8, "slates": ["1:10 PM (10G)", "3:07 PM (6G)"], "salary": 8700, "salaries": {"1:10 PM (10G)": 8700, "3:07 PM (6G)": 8700}, "score": 65, "verdict": "PLAY"}, {"pid": "691587", "name": "Eury Pérez", "team": "MIA", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "CIN", "stuff_plus": 92, "xera": 3.55, "cws_pct": 0.0, "swk_pct": 28.4, "xwhip": 0.0, "cmd": 7.98, "era26": 3.86, "k9_26": 10.29, "bb9_26": 1.29, "gs26": 1, "era25": 4.25, "k9_25": 9.91, "bb9_25": 3.02, "ip25": 95.1, "k9": 10.29, "bb9": 1.29, "era": 3.86, "velo_baseline": 97.9, "velo_current": 97.9, "velo_drop": 0.0, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": null, "l3_k9": null, "l3_starts": null, "trend": null, "pqs_log": [{"date": "2025-09-27", "ip": "5.1", "h": 3, "k": 11, "bb": 3, "hr": 1, "score": 3, "pts": [false, true, true, true, false]}, {"date": "2025-09-21", "ip": "4.0", "h": 2, "k": 9, "bb": 1, "hr": 0, "score": 4, "pts": [false, true, true, true, true]}, {"date": "2025-09-16", "ip": "5.0", "h": 1, "k": 6, "bb": 0, "hr": 0, "score": 4, "pts": [false, true, true, true, true]}, {"date": "2025-09-10", "ip": "5.2", "h": 7, "k": 7, "bb": 0, "hr": 0, "score": 3, "pts": [false, false, true, true, true]}, {"date": "2025-09-03", "ip": "4.0", "h": 8, "k": 2, "bb": 1, "hr": 2, "score": 0, "pts": [false, false, false, false, false]}], "pqs_avg": 2.8, "pqs_starts": 5, "pqs_std": 1.47, "run_env": "EXPLOSIVE", "opp_bp": "NEUTRAL", "opp_bp_color": "#666666", "opp_bp_score": 54.4, "slates": ["6:40 PM (4G)"], "salary": 7800, "salaries": {"6:40 PM (4G)": 7800}, "score": 64, "verdict": "LEAN"}, {"pid": "622663", "name": "Luis Severino", "team": "ATH", "hand": "R", "archetype": "R1", "arch_name": "POWER FOUR-SEAM", "opp": "NYY", "stuff_plus": 109.0, "xera": 3.85, "cws_pct": 0.0, "swk_pct": 18.3, "xwhip": 0.0, "cmd": null, "era26": null, "k9_26": null, "bb9_26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 96.1, "velo_current": 96.8, "velo_drop": -0.7, "velo_trend": "UP", "velo_type": "FF", "l3_era": 3.35, "l3_k9": 5.6, "l3_starts": 3, "trend": "COLD", "pqs_log": [{"date": "2025-09-24", "ip": "6.1", "h": 3, "k": 5, "bb": 1, "hr": 0, "score": 5, "pts": [true, true, true, true, true]}, {"date": "2025-09-19", "ip": "5.0", "h": 7, "k": 3, "bb": 1, "hr": 0, "score": 2, "pts": [false, false, false, true, true]}, {"date": "2025-09-13", "ip": "5.0", "h": 6, "k": 2, "bb": 2, "hr": 2, "score": 0, "pts": [false, false, false, false, false]}, {"date": "2025-09-07", "ip": "5.0", "h": 4, "k": 7, "bb": 1, "hr": 1, "score": 3, "pts": [false, true, true, true, false]}, {"date": "2025-09-02", "ip": "5.0", "h": 3, "k": 4, "bb": 1, "hr": 0, "score": 3, "pts": [false, true, false, true, true]}], "pqs_avg": 2.6, "pqs_starts": 5, "pqs_std": 1.62, "run_env": "AVERAGE", "opp_bp": "CAUTION", "opp_bp_color": "#27ae60", "opp_bp_score": 42.9, "slates": ["6:40 PM (4G)"], "salary": 6500, "salaries": {"6:40 PM (4G)": 6500}, "score": 64, "verdict": "LEAN"}, {"pid": "664285", "name": "Framber Valdez", "team": "DET", "hand": "L", "archetype": "--", "arch_name": "--", "opp": "MIN", "stuff_plus": 78, "xera": 1.38, "cws_pct": 0.0, "swk_pct": 26.6, "xwhip": 0.0, "cmd": 5.0, "era26": 1.5, "k9_26": 7.5, "bb9_26": 1.5, "gs26": 1, "era25": 3.66, "k9_25": 8.77, "bb9_25": 3.19, "ip25": 192.0, "k9": 7.5, "bb9": 1.5, "era": 1.5, "velo_baseline": null, "velo_current": null, "velo_drop": null, "velo_trend": "UNKNOWN", "velo_type": "FF", "l3_era": null, "l3_k9": null, "l3_starts": null, "trend": null, "pqs_log": [{"date": "2025-09-25", "ip": "7.0", "h": 7, "k": 10, "bb": 2, "hr": 1, "score": 3, "pts": [true, false, true, true, false]}, {"date": "2025-09-20", "ip": "4.2", "h": 6, "k": 4, "bb": 4, "hr": 1, "score": 0, "pts": [false, false, false, false, false]}, {"date": "2025-09-14", "ip": "4.0", "h": 6, "k": 2, "bb": 4, "hr": 1, "score": 0, "pts": [false, false, false, false, false]}, {"date": "2025-09-07", "ip": "7.0", "h": 5, "k": 5, "bb": 1, "hr": 1, "score": 4, "pts": [true, true, true, true, false]}, {"date": "2025-09-02", "ip": "5.0", "h": 8, "k": 8, "bb": 1, "hr": 2, "score": 2, "pts": [false, false, true, true, false]}], "pqs_avg": 1.8, "pqs_starts": 5, "pqs_std": 1.6, "run_env": "AVERAGE", "opp_bp": "--", "opp_bp_color": "#666666", "opp_bp_score": 0, "slates": ["6:40 PM (4G)", "SD 7:40 PM (1G)"], "salary": 9000, "salaries": {"6:40 PM (4G)": 9000, "SD 7:40 PM (1G)": 12000}, "score": 62, "verdict": "LEAN"}, {"pid": "676282", "name": "Joey Cantillo", "team": "CLE", "hand": "L", "archetype": "L5", "arch_name": "CRAFTSMAN", "opp": "KC", "stuff_plus": 92.0, "xera": 3.74, "cws_pct": 0.0, "swk_pct": 29.7, "xwhip": 0.0, "cmd": null, "era26": null, "k9_26": null, "bb9_26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 91.7, "velo_current": 91.8, "velo_drop": -0.1, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": 2.52, "l3_k9": 10.1, "l3_starts": 3, "trend": "NEUTRAL", "pqs_log": [{"date": "2025-09-27", "ip": "5.2", "h": 3, "k": 8, "bb": 0, "hr": 1, "score": 3, "pts": [false, true, true, true, false]}, {"date": "2025-09-21", "ip": "4.1", "h": 4, "k": 5, "bb": 2, "hr": 0, "score": 3, "pts": [false, true, true, false, true]}, {"date": "2025-09-16", "ip": "5.0", "h": 4, "k": 3, "bb": 2, "hr": 1, "score": 1, "pts": [false, true, false, false, false]}, {"date": "2025-09-09", "ip": "8.0", "h": 4, "k": 5, "bb": 0, "hr": 0, "score": 5, "pts": [true, true, true, true, true]}, {"date": "2025-09-03", "ip": "6.0", "h": 5, "k": 7, "bb": 2, "hr": 0, "score": 5, "pts": [true, true, true, true, true]}], "pqs_avg": 3.4, "pqs_starts": 5, "pqs_std": 1.5, "run_env": "AVERAGE", "opp_bp": "--", "opp_bp_color": "#666666", "opp_bp_score": 0, "slates": ["1:10 PM (10G)"], "salary": 7300, "salaries": {"1:10 PM (10G)": 7300}, "score": 61, "verdict": "LEAN"}, {"pid": "675660", "name": "Shane Drohan", "team": "MIL", "hand": "L", "archetype": "--", "arch_name": "--", "opp": "BOS", "stuff_plus": 45, "xera": 0.0, "cws_pct": null, "swk_pct": null, "xwhip": null, "cmd": null, "era26": 0.0, "k9_26": 0.0, "bb9_26": 0.0, "gs26": 0, "era25": 0.0, "k9_25": 0.0, "bb9_25": 0.0, "ip25": 0.0, "k9": 0.0, "bb9": 0.0, "era": 0.0, "velo_baseline": null, "velo_current": 94.7, "velo_drop": null, "velo_trend": "UNKNOWN", "velo_type": "FF", "l3_era": null, "l3_k9": null, "l3_starts": null, "trend": null, "pqs_log": [null, null, null, null, null], "pqs_avg": null, "pqs_starts": 0, "pqs_std": null, "run_env": "AVERAGE", "opp_bp": "NEUTRAL", "opp_bp_color": "#666666", "opp_bp_score": 52.6, "slates": [], "salary": 0, "salaries": {}, "score": 58, "verdict": "LEAN"}, {"pid": "607067", "name": "Colin Rea", "team": "CHC", "hand": "R", "archetype": "R4", "arch_name": "SWEEPER/HORIZONTAL", "opp": "TB", "stuff_plus": 96.0, "xera": 4.89, "cws_pct": 0.0, "swk_pct": 22.0, "xwhip": 0.0, "cmd": null, "era26": null, "k9_26": null, "bb9_26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 93.9, "velo_current": 93.9, "velo_drop": 0.0, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": 2.08, "l3_k9": 12.0, "l3_starts": 3, "trend": "COLD", "pqs_log": [{"date": "2025-09-26", "ip": "5.2", "h": 2, "k": 7, "bb": 1, "hr": 0, "score": 4, "pts": [false, true, true, true, true]}, {"date": "2025-09-18", "ip": "7.0", "h": 4, "k": 11, "bb": 0, "hr": 0, "score": 5, "pts": [true, true, true, true, true]}, {"date": "2025-09-13", "ip": "5.1", "h": 7, "k": 5, "bb": 0, "hr": 0, "score": 3, "pts": [false, false, true, true, true]}, {"date": "2025-09-01", "ip": "4.0", "h": 5, "k": 3, "bb": 3, "hr": 0, "score": 1, "pts": [false, false, false, false, true]}, {"date": "2025-08-27", "ip": "4.2", "h": 8, "k": 2, "bb": 2, "hr": 1, "score": 0, "pts": [false, false, false, false, false]}], "pqs_avg": 2.6, "pqs_starts": 5, "pqs_std": 1.85, "run_env": "AVERAGE", "opp_bp": "NEUTRAL", "opp_bp_color": "#666666", "opp_bp_score": 45.0, "slates": [], "salary": 0, "salaries": {}, "score": 58, "verdict": "LEAN"}, {"pid": "641816", "name": "Tyler Mahle", "team": "SF", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "PHI", "stuff_plus": 94, "xera": 4.14, "cws_pct": 0.0, "swk_pct": 23.2, "xwhip": 0.0, "cmd": 5.0, "era26": 4.5, "k9_26": 11.25, "bb9_26": 2.25, "gs26": 1, "era25": 2.18, "k9_25": 6.85, "bb9_25": 3.01, "ip25": 86.2, "k9": 11.25, "bb9": 2.25, "era": 4.5, "velo_baseline": 92.0, "velo_current": 91.9, "velo_drop": 0.1, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": null, "l3_k9": null, "l3_starts": null, "trend": null, "pqs_log": [{"date": "2025-09-25", "ip": "5.0", "h": 5, "k": 4, "bb": 1, "hr": 1, "score": 1, "pts": [false, false, false, true, false]}, {"date": "2025-09-19", "ip": "4.2", "h": 4, "k": 6, "bb": 1, "hr": 0, "score": 4, "pts": [false, true, true, true, true]}, {"date": "2025-06-10", "ip": "5.2", "h": 10, "k": 3, "bb": 1, "hr": 1, "score": 1, "pts": [false, false, false, true, false]}, {"date": "2025-06-03", "ip": "5.1", "h": 5, "k": 5, "bb": 2, "hr": 1, "score": 2, "pts": [false, true, true, false, false]}, {"date": "2025-05-28", "ip": "6.0", "h": 4, "k": 5, "bb": 3, "hr": 0, "score": 4, "pts": [true, true, true, false, true]}], "pqs_avg": 2.4, "pqs_starts": 5, "pqs_std": 1.36, "run_env": "STRONG", "opp_bp": "NEUTRAL", "opp_bp_color": "#666666", "opp_bp_score": 48.8, "slates": ["1:10 PM (10G)", "3:07 PM (6G)"], "salary": 7500, "salaries": {"1:10 PM (10G)": 7500, "3:07 PM (6G)": 7500}, "score": 56, "verdict": "LEAN"}, {"pid": "669194", "name": "Ryne Nelson", "team": "ARI", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "NYM", "stuff_plus": null, "xera": null, "cws_pct": 0.0, "swk_pct": 21.6, "xwhip": 0.0, "cmd": null, "era26": null, "k9_26": null, "bb9_26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 95.6, "velo_current": 96.1, "velo_drop": -0.5, "velo_trend": "UP", "velo_type": "FF", "l3_era": null, "l3_k9": null, "l3_starts": null, "trend": null, "pqs_log": [{"date": "2025-09-24", "ip": "6.0", "h": 7, "k": 9, "bb": 0, "hr": 1, "score": 3, "pts": [true, false, true, true, false]}, {"date": "2025-09-19", "ip": "5.0", "h": 5, "k": 1, "bb": 2, "hr": 1, "score": 0, "pts": [false, false, false, false, false]}, {"date": "2025-09-13", "ip": "6.0", "h": 4, "k": 4, "bb": 3, "hr": 0, "score": 3, "pts": [true, true, false, false, true]}, {"date": "2025-09-07", "ip": "6.0", "h": 3, "k": 3, "bb": 3, "hr": 0, "score": 3, "pts": [true, true, false, false, true]}, {"date": "2025-09-01", "ip": "6.0", "h": 4, "k": 7, "bb": 1, "hr": 2, "score": 4, "pts": [true, true, true, true, false]}], "pqs_avg": 2.6, "pqs_starts": 5, "pqs_std": 1.36, "run_env": "WEAK", "opp_bp": "CAUTION", "opp_bp_color": "#27ae60", "opp_bp_score": 42.8, "slates": ["1:10 PM (10G)", "3:07 PM (6G)"], "salary": 6300, "salaries": {"1:10 PM (10G)": 6300, "3:07 PM (6G)": 6300}, "score": 56, "verdict": "LEAN"}, {"pid": "671212", "name": "Joe Boyle", "team": "TB", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "CHC", "stuff_plus": 60, "xera": 2.76, "cws_pct": 0.0, "swk_pct": 29.0, "xwhip": 0.0, "cmd": null, "era26": 3.0, "k9_26": 6.0, "bb9_26": 0.0, "gs26": 1, "era25": 4.67, "k9_25": 10.04, "bb9_25": 4.85, "ip25": 52.0, "k9": 6.0, "bb9": 0.0, "era": 3.0, "velo_baseline": 98.5, "velo_current": 97.5, "velo_drop": 1.0, "velo_trend": "DOWN", "velo_type": "FF", "l3_era": null, "l3_k9": null, "l3_starts": null, "trend": null, "pqs_log": [{"date": "2025-09-27", "ip": "5.0", "h": 5, "k": 5, "bb": 3, "hr": 0, "score": 2, "pts": [false, false, true, false, true]}, {"date": "2025-09-21", "ip": "4.1", "h": 4, "k": 9, "bb": 4, "hr": 0, "score": 3, "pts": [false, true, true, false, true]}, {"date": "2025-09-15", "ip": "6.0", "h": 4, "k": 5, "bb": 0, "hr": 0, "score": 5, "pts": [true, true, true, true, true]}, {"date": "2025-08-21", "ip": "4.0", "h": 9, "k": 5, "bb": 3, "hr": 0, "score": 2, "pts": [false, false, true, false, true]}, {"date": "2025-08-15", "ip": "2.0", "h": 4, "k": 3, "bb": 2, "hr": 1, "score": 0, "pts": [false, false, false, false, false]}], "pqs_avg": 2.4, "pqs_starts": 5, "pqs_std": 1.62, "run_env": "STRONG", "opp_bp": "ATTACK", "opp_bp_color": "#e67e22", "opp_bp_score": 67.7, "slates": [], "salary": 0, "salaries": {}, "score": 55, "verdict": "LEAN"}, {"pid": "656605", "name": "Mitch Keller", "team": "PIT", "hand": "R", "archetype": "R5", "arch_name": "CRAFTSMAN", "opp": "SD", "stuff_plus": 100.0, "xera": 4.25, "cws_pct": 0.0, "swk_pct": 20.6, "xwhip": 0.0, "cmd": null, "era26": null, "k9_26": null, "bb9_26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 94.1, "velo_current": 93.3, "velo_drop": 0.8, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": 4.74, "l3_k9": 9.5, "l3_starts": 3, "trend": "COLD", "pqs_log": [{"date": "2025-09-26", "ip": "3.2", "h": 3, "k": 6, "bb": 5, "hr": 1, "score": 2, "pts": [false, true, true, false, false]}, {"date": "2025-09-19", "ip": "5.0", "h": 4, "k": 4, "bb": 1, "hr": 2, "score": 2, "pts": [false, true, false, true, false]}, {"date": "2025-09-12", "ip": "5.1", "h": 4, "k": 4, "bb": 1, "hr": 1, "score": 2, "pts": [false, true, false, true, false]}, {"date": "2025-09-06", "ip": "6.1", "h": 5, "k": 4, "bb": 0, "hr": 1, "score": 3, "pts": [true, true, false, true, false]}, {"date": "2025-08-31", "ip": "5.0", "h": 4, "k": 7, "bb": 1, "hr": 1, "score": 3, "pts": [false, true, true, true, false]}], "pqs_avg": 2.4, "pqs_starts": 5, "pqs_std": 0.49, "run_env": "STRONG", "opp_bp": "CAUTION", "opp_bp_color": "#27ae60", "opp_bp_score": 31.9, "slates": ["SD 12:35 PM (1G)"], "salary": 11000, "salaries": {"SD 12:35 PM (1G)": 11000}, "score": 54, "verdict": "LEAN"}, {"pid": "650633", "name": "Michael King", "team": "SD", "hand": "R", "archetype": "R1", "arch_name": "POWER FOUR-SEAM", "opp": "PIT", "stuff_plus": 96.0, "xera": 3.53, "cws_pct": 0.0, "swk_pct": 25.8, "xwhip": 0.0, "cmd": null, "era26": null, "k9_26": null, "bb9_26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 93.7, "velo_current": 93.8, "velo_drop": -0.1, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": 7.06, "l3_k9": 7.9, "l3_starts": 3, "trend": "COLD", "pqs_log": [{"date": "2025-09-27", "ip": "2.2", "h": 1, "k": 3, "bb": 2, "hr": 0, "score": 2, "pts": [false, true, false, false, true]}, {"date": "2025-09-21", "ip": "5.0", "h": 4, "k": 4, "bb": 4, "hr": 0, "score": 2, "pts": [false, true, false, false, true]}, {"date": "2025-09-16", "ip": "3.0", "h": 10, "k": 2, "bb": 0, "hr": 4, "score": 0, "pts": [false, false, false, false, false]}, {"date": "2025-09-09", "ip": "5.0", "h": 3, "k": 2, "bb": 1, "hr": 2, "score": 1, "pts": [false, true, false, false, false]}, {"date": "2025-08-09", "ip": "2.0", "h": 4, "k": 1, "bb": 2, "hr": 0, "score": 1, "pts": [false, false, false, false, true]}], "pqs_avg": 1.2, "pqs_starts": 5, "pqs_std": 0.75, "run_env": "AVERAGE", "opp_bp": "NEUTRAL", "opp_bp_color": "#666666", "opp_bp_score": 57.7, "slates": ["SD 12:35 PM (1G)"], "salary": 11200, "salaries": {"SD 12:35 PM (1G)": 11200}, "score": 53, "verdict": "LEAN"}, {"pid": "669022", "name": "MacKenzie Gore", "team": "TEX", "hand": "L", "archetype": "--", "arch_name": "--", "opp": "SEA", "stuff_plus": 88, "xera": 3.11, "cws_pct": 0.0, "swk_pct": 29.7, "xwhip": 0.0, "cmd": 2.33, "era26": 3.38, "k9_26": 11.81, "bb9_26": 5.06, "gs26": 1, "era25": 4.17, "k9_25": 10.43, "bb9_25": 3.61, "ip25": 159.2, "k9": 11.81, "bb9": 5.06, "era": 3.38, "velo_baseline": 95.3, "velo_current": 95.9, "velo_drop": -0.6, "velo_trend": "UP", "velo_type": "FF", "l3_era": null, "l3_k9": null, "l3_starts": null, "trend": null, "pqs_log": [{"date": "2025-09-22", "ip": "2.0", "h": 4, "k": 3, "bb": 4, "hr": 1, "score": 0, "pts": [false, false, false, false, false]}, {"date": "2025-09-16", "ip": "5.1", "h": 2, "k": 5, "bb": 3, "hr": 0, "score": 3, "pts": [false, true, true, false, true]}, {"date": "2025-09-11", "ip": "5.0", "h": 4, "k": 4, "bb": 2, "hr": 0, "score": 2, "pts": [false, true, false, false, true]}, {"date": "2025-08-26", "ip": "5.0", "h": 3, "k": 3, "bb": 2, "hr": 0, "score": 2, "pts": [false, true, false, false, true]}, {"date": "2025-08-21", "ip": "4.1", "h": 6, "k": 5, "bb": 4, "hr": 2, "score": 1, "pts": [false, false, true, false, false]}], "pqs_avg": 1.6, "pqs_starts": 5, "pqs_std": 1.02, "run_env": "STRONG", "opp_bp": "ATTACK", "opp_bp_color": "#e67e22", "opp_bp_score": 73.1, "slates": ["1:10 PM (10G)", "2:10 PM (2G)"], "salary": 9100, "salaries": {"1:10 PM (10G)": 9100, "2:10 PM (2G)": 9100}, "score": 53, "verdict": "LEAN"}, {"pid": "571945", "name": "Miles Mikolas", "team": "WSH", "hand": "R", "archetype": "R5", "arch_name": "CRAFTSMAN", "opp": "STL", "stuff_plus": 94.0, "xera": 4.62, "cws_pct": 0.0, "swk_pct": 16.5, "xwhip": 0.0, "cmd": null, "era26": null, "k9_26": null, "bb9_26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 92.8, "velo_current": 92.0, "velo_drop": 0.8, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": 4.8, "l3_k9": 7.2, "l3_starts": 3, "trend": "HOT", "pqs_log": [{"date": "2025-09-26", "ip": "5.0", "h": 4, "k": 4, "bb": 1, "hr": 3, "score": 2, "pts": [false, true, false, true, false]}, {"date": "2025-09-20", "ip": "5.0", "h": 7, "k": 3, "bb": 2, "hr": 0, "score": 1, "pts": [false, false, false, false, true]}, {"date": "2025-09-14", "ip": "5.0", "h": 5, "k": 5, "bb": 0, "hr": 2, "score": 2, "pts": [false, false, true, true, false]}, {"date": "2025-09-08", "ip": "5.0", "h": 4, "k": 2, "bb": 1, "hr": 0, "score": 2, "pts": [false, true, false, false, true]}, {"date": "2025-09-02", "ip": "6.0", "h": 5, "k": 0, "bb": 1, "hr": 0, "score": 3, "pts": [true, true, false, false, true]}], "pqs_avg": 2.0, "pqs_starts": 5, "pqs_std": 0.63, "run_env": "AVERAGE", "opp_bp": "NEUTRAL", "opp_bp_color": "#666666", "opp_bp_score": 59.9, "slates": ["1:10 PM (10G)", "3:07 PM (6G)", "SD 4:05 PM (1G)"], "salary": 6000, "salaries": {"1:10 PM (10G)": 6000, "3:07 PM (6G)": 6000, "SD 4:05 PM (1G)": 10600}, "score": 52, "verdict": "LEAN"}, {"pid": "664299", "name": "Cristian Javier", "team": "HOU", "hand": "R", "archetype": "R8", "arch_name": "SWING/MISS POWER", "opp": "COL", "stuff_plus": 99.0, "xera": 4.46, "cws_pct": null, "swk_pct": null, "xwhip": null, "cmd": null, "era26": null, "k9_26": null, "bb9_26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 92.9, "velo_current": 92.1, "velo_drop": 0.8, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": 5.0, "l3_k9": 7.8, "l3_starts": 3, "trend": "NEUTRAL", "pqs_log": [{"date": "2025-09-23", "ip": "4.2", "h": 6, "k": 4, "bb": 1, "hr": 0, "score": 2, "pts": [false, false, false, true, true]}, {"date": "2025-09-17", "ip": "6.0", "h": 5, "k": 4, "bb": 1, "hr": 0, "score": 4, "pts": [true, true, false, true, true]}, {"date": "2025-09-11", "ip": "6.0", "h": 6, "k": 6, "bb": 1, "hr": 1, "score": 3, "pts": [true, false, true, true, false]}, {"date": "2025-09-04", "ip": "4.1", "h": 6, "k": 4, "bb": 3, "hr": 1, "score": 0, "pts": [false, false, false, false, false]}, {"date": "2025-08-29", "ip": "6.0", "h": 0, "k": 6, "bb": 3, "hr": 0, "score": 4, "pts": [true, true, true, false, true]}], "pqs_avg": 2.6, "pqs_starts": 5, "pqs_std": 1.5, "run_env": "WEAK", "opp_bp": "ATTACK", "opp_bp_color": "#e67e22", "opp_bp_score": 68.2, "slates": ["1:10 PM (10G)", "3:07 PM (6G)"], "salary": 5800, "salaries": {"1:10 PM (10G)": 5800, "3:07 PM (6G)": 5800}, "score": 51, "verdict": "LEAN"}, {"pid": "666142", "name": "Cole Ragans", "team": "KC", "hand": "L", "archetype": "--", "arch_name": "--", "opp": "CLE", "stuff_plus": null, "xera": null, "cws_pct": 0.0, "swk_pct": 34.8, "xwhip": 0.0, "cmd": null, "era26": null, "k9_26": null, "bb9_26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 95.4, "velo_current": 95.0, "velo_drop": 0.4, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": null, "l3_k9": null, "l3_starts": null, "trend": null, "pqs_log": [{"date": "2025-09-28", "ip": "4.1", "h": 2, "k": 8, "bb": 1, "hr": 0, "score": 4, "pts": [false, true, true, true, true]}, {"date": "2025-09-23", "ip": "5.0", "h": 3, "k": 10, "bb": 1, "hr": 1, "score": 3, "pts": [false, true, true, true, false]}, {"date": "2025-09-17", "ip": "3.2", "h": 1, "k": 4, "bb": 2, "hr": 1, "score": 1, "pts": [false, true, false, false, false]}, {"date": "2025-06-05", "ip": "3.0", "h": 5, "k": 4, "bb": 3, "hr": 1, "score": 0, "pts": [false, false, false, false, false]}, {"date": "2025-05-16", "ip": "5.0", "h": 5, "k": 7, "bb": 0, "hr": 0, "score": 3, "pts": [false, false, true, true, true]}], "pqs_avg": 2.2, "pqs_starts": 5, "pqs_std": 1.47, "run_env": "AVERAGE", "opp_bp": "NEUTRAL", "opp_bp_color": "#666666", "opp_bp_score": 48.0, "slates": ["1:10 PM (10G)"], "salary": 8900, "salaries": {"1:10 PM (10G)": 8900}, "score": 50, "verdict": "LEAN"}, {"pid": "547179", "name": "Michael Lorenzen", "team": "COL", "hand": "R", "archetype": "R5", "arch_name": "CRAFTSMAN", "opp": "HOU", "stuff_plus": 91.0, "xera": 4.57, "cws_pct": 0.0, "swk_pct": 23.4, "xwhip": 0.0, "cmd": null, "era26": null, "k9_26": null, "bb9_26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 93.9, "velo_current": 93.4, "velo_drop": 0.5, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": 2.01, "l3_k9": 9.4, "l3_starts": 3, "trend": "HOT", "pqs_log": [{"date": "2025-09-25", "ip": "5.2", "h": 5, "k": 9, "bb": 0, "hr": 2, "score": 3, "pts": [false, true, true, true, false]}, {"date": "2025-09-19", "ip": "7.2", "h": 3, "k": 4, "bb": 3, "hr": 1, "score": 2, "pts": [true, true, false, false, false]}, {"date": "2025-09-12", "ip": "3.0", "h": 10, "k": 3, "bb": 2, "hr": 1, "score": 0, "pts": [false, false, false, false, false]}, {"date": "2025-09-07", "ip": "5.1", "h": 7, "k": 5, "bb": 0, "hr": 2, "score": 2, "pts": [false, false, true, true, false]}, {"date": "2025-09-02", "ip": "6.0", "h": 4, "k": 5, "bb": 1, "hr": 1, "score": 4, "pts": [true, true, true, true, false]}], "pqs_avg": 2.2, "pqs_starts": 5, "pqs_std": 1.33, "run_env": "EXPLOSIVE", "opp_bp": "CAUTION", "opp_bp_color": "#27ae60", "opp_bp_score": 30.9, "slates": ["1:10 PM (10G)", "3:07 PM (6G)"], "salary": 5500, "salaries": {"1:10 PM (10G)": 5500, "3:07 PM (6G)": 5500}, "score": 48, "verdict": "FADE"}, {"pid": "680732", "name": "Sean Burke", "team": "CWS", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "BAL", "stuff_plus": null, "xera": null, "cws_pct": 0.0, "swk_pct": 25.1, "xwhip": 0.0, "cmd": null, "era26": null, "k9_26": null, "bb9_26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 94.4, "velo_current": 94.0, "velo_drop": 0.4, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": null, "l3_k9": null, "l3_starts": null, "trend": null, "pqs_log": [{"date": "2025-09-21", "ip": "4.0", "h": 6, "k": 4, "bb": 0, "hr": 1, "score": 1, "pts": [false, false, false, true, false]}, {"date": "2025-09-10", "ip": "4.1", "h": 5, "k": 5, "bb": 4, "hr": 2, "score": 1, "pts": [false, false, true, false, false]}, {"date": "2025-08-16", "ip": "3.2", "h": 5, "k": 3, "bb": 1, "hr": 2, "score": 1, "pts": [false, false, false, true, false]}, {"date": "2025-08-09", "ip": "3.1", "h": 5, "k": 7, "bb": 3, "hr": 0, "score": 2, "pts": [false, false, true, false, true]}, {"date": "2025-08-03", "ip": "5.0", "h": 5, "k": 7, "bb": 2, "hr": 1, "score": 2, "pts": [false, false, true, true, false]}], "pqs_avg": 1.4, "pqs_starts": 5, "pqs_std": 0.49, "run_env": "AVERAGE", "opp_bp": "CAUTION", "opp_bp_color": "#27ae60", "opp_bp_score": 44.4, "slates": ["1:10 PM (10G)", "2:10 PM (2G)"], "salary": 6500, "salaries": {"1:10 PM (10G)": 6500, "2:10 PM (2G)": 6500}, "score": 47, "verdict": "FADE"}, {"pid": "672282", "name": "Reid Detmers", "team": "LAA", "hand": "L", "archetype": "L1", "arch_name": "POWER FOUR-SEAM", "opp": "ATL", "stuff_plus": 104.0, "xera": 4.06, "cws_pct": 0.0, "swk_pct": 32.7, "xwhip": 0.0, "cmd": null, "era26": null, "k9_26": null, "bb9_26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 95.8, "velo_current": 94.0, "velo_drop": 1.8, "velo_trend": "DOWN", "velo_type": "FF", "l3_era": 4.09, "l3_k9": 8.2, "l3_starts": 3, "trend": "COLD", "pqs_log": [null, null, null, null, null], "pqs_avg": null, "pqs_starts": 0, "pqs_std": null, "run_env": "STRONG", "opp_bp": "NEUTRAL", "opp_bp_color": "#666666", "opp_bp_score": 45.8, "slates": ["1:10 PM (10G)", "3:07 PM (6G)"], "salary": 7700, "salaries": {"1:10 PM (10G)": 7700, "3:07 PM (6G)": 7700}, "score": 47, "verdict": "FADE"}, {"pid": "700241", "name": "Michael McGreevy", "team": "STL", "hand": "R", "archetype": "R5", "arch_name": "CRAFTSMAN", "opp": "WSH", "stuff_plus": 91.0, "xera": 3.56, "cws_pct": 0.0, "swk_pct": 19.2, "xwhip": 0.0, "cmd": null, "era26": null, "k9_26": null, "bb9_26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 93.0, "velo_current": 90.8, "velo_drop": 2.2, "velo_trend": "DOWN", "velo_type": "FF", "l3_era": 4.44, "l3_k9": 6.1, "l3_starts": 3, "trend": "NEUTRAL", "pqs_log": [{"date": "2025-09-27", "ip": "4.2", "h": 6, "k": 3, "bb": 2, "hr": 2, "score": 0, "pts": [false, false, false, false, false]}, {"date": "2025-09-22", "ip": "5.0", "h": 6, "k": 2, "bb": 3, "hr": 2, "score": 0, "pts": [false, false, false, false, false]}, {"date": "2025-09-16", "ip": "7.0", "h": 3, "k": 6, "bb": 3, "hr": 0, "score": 4, "pts": [true, true, true, false, true]}, {"date": "2025-09-10", "ip": "6.0", "h": 5, "k": 4, "bb": 0, "hr": 0, "score": 4, "pts": [true, true, false, true, true]}, {"date": "2025-09-05", "ip": "4.0", "h": 9, "k": 3, "bb": 1, "hr": 2, "score": 1, "pts": [false, false, false, true, false]}], "pqs_avg": 1.8, "pqs_starts": 5, "pqs_std": 1.83, "run_env": "STRONG", "opp_bp": "ATTACK", "opp_bp_color": "#e67e22", "opp_bp_score": 79.2, "slates": ["1:10 PM (10G)", "3:07 PM (6G)", "SD 4:05 PM (1G)"], "salary": 7200, "salaries": {"1:10 PM (10G)": 7200, "3:07 PM (6G)": 7200, "SD 4:05 PM (1G)": 11200}, "score": 46, "verdict": "FADE"}, {"pid": "656302", "name": "Dylan Cease", "team": "TOR", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "LAD", "stuff_plus": null, "xera": null, "cws_pct": 0.0, "swk_pct": 33.4, "xwhip": 0.0, "cmd": null, "era26": null, "k9_26": null, "bb9_26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 97.1, "velo_current": 98.0, "velo_drop": -0.9, "velo_trend": "UP", "velo_type": "FF", "l3_era": null, "l3_k9": null, "l3_starts": null, "trend": null, "pqs_log": [{"date": "2025-09-24", "ip": "5.0", "h": 6, "k": 8, "bb": 2, "hr": 0, "score": 3, "pts": [false, false, true, true, true]}, {"date": "2025-09-19", "ip": "6.0", "h": 4, "k": 6, "bb": 3, "hr": 1, "score": 3, "pts": [true, true, true, false, false]}, {"date": "2025-09-13", "ip": "6.0", "h": 5, "k": 6, "bb": 1, "hr": 0, "score": 5, "pts": [true, true, true, true, true]}, {"date": "2025-09-07", "ip": "5.0", "h": 4, "k": 5, "bb": 2, "hr": 0, "score": 3, "pts": [false, true, true, false, true]}, {"date": "2025-09-01", "ip": "4.0", "h": 5, "k": 7, "bb": 2, "hr": 0, "score": 3, "pts": [false, false, true, true, true]}], "pqs_avg": 3.4, "pqs_starts": 5, "pqs_std": 0.8, "run_env": "EXPLOSIVE", "opp_bp": "NEUTRAL", "opp_bp_color": "#666666", "opp_bp_score": 64.8, "slates": ["1:10 PM (10G)", "3:07 PM (6G)"], "salary": 9400, "salaries": {"1:10 PM (10G)": 9400, "3:07 PM (6G)": 9400}, "score": 43, "verdict": "FADE"}, {"pid": "701542", "name": "Will Warren", "team": "NYY", "hand": "R", "archetype": "R1", "arch_name": "POWER FOUR-SEAM", "opp": "ATH", "stuff_plus": 103.0, "xera": 4.47, "cws_pct": 0.0, "swk_pct": 24.6, "xwhip": 0.0, "cmd": null, "era26": null, "k9_26": null, "bb9_26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 93.3, "velo_current": 94.1, "velo_drop": -0.8, "velo_trend": "UP", "velo_type": "FF", "l3_era": 6.56, "l3_k9": 7.7, "l3_starts": 3, "trend": "NEUTRAL", "pqs_log": [{"date": "2025-09-26", "ip": "5.0", "h": 6, "k": 7, "bb": 1, "hr": 2, "score": 2, "pts": [false, false, true, true, false]}, {"date": "2025-09-19", "ip": "5.1", "h": 4, "k": 4, "bb": 2, "hr": 1, "score": 1, "pts": [false, true, false, false, false]}, {"date": "2025-09-14", "ip": "5.0", "h": 10, "k": 2, "bb": 1, "hr": 1, "score": 0, "pts": [false, false, false, false, false]}, {"date": "2025-09-09", "ip": "6.0", "h": 2, "k": 5, "bb": 1, "hr": 1, "score": 4, "pts": [true, true, true, true, false]}, {"date": "2025-09-03", "ip": "5.0", "h": 5, "k": 4, "bb": 0, "hr": 1, "score": 1, "pts": [false, false, false, true, false]}], "pqs_avg": 1.6, "pqs_starts": 5, "pqs_std": 1.36, "run_env": "STRONG", "opp_bp": "SMASH", "opp_bp_color": "#c0392b", "opp_bp_score": 80.9, "slates": ["6:40 PM (4G)"], "salary": 8200, "salaries": {"6:40 PM (4G)": 8200}, "score": 43, "verdict": "FADE"}, {"pid": "663903", "name": "Brady Singer", "team": "CIN", "hand": "R", "archetype": "R1", "arch_name": "POWER FOUR-SEAM", "opp": "MIA", "stuff_plus": 91.0, "xera": 4.71, "cws_pct": 0.0, "swk_pct": 24.0, "xwhip": 0.0, "cmd": null, "era26": null, "k9_26": null, "bb9_26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 91.3, "velo_current": 90.7, "velo_drop": 0.6, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": 5.37, "l3_k9": 9.4, "l3_starts": 3, "trend": "HOT", "pqs_log": [{"date": "2025-09-28", "ip": "3.1", "h": 5, "k": 5, "bb": 1, "hr": 1, "score": 2, "pts": [false, false, true, true, false]}, {"date": "2025-09-23", "ip": "5.1", "h": 7, "k": 3, "bb": 0, "hr": 1, "score": 1, "pts": [false, false, false, true, false]}, {"date": "2025-09-17", "ip": "5.2", "h": 3, "k": 6, "bb": 2, "hr": 1, "score": 3, "pts": [false, true, true, true, false]}, {"date": "2025-09-12", "ip": "6.0", "h": 3, "k": 4, "bb": 1, "hr": 2, "score": 3, "pts": [true, true, false, true, false]}, {"date": "2025-09-06", "ip": "6.0", "h": 4, "k": 5, "bb": 4, "hr": 0, "score": 4, "pts": [true, true, true, false, true]}], "pqs_avg": 2.6, "pqs_starts": 5, "pqs_std": 1.02, "run_env": "AVERAGE", "opp_bp": "ATTACK", "opp_bp_color": "#e67e22", "opp_bp_score": 72.1, "slates": ["6:40 PM (4G)"], "salary": 7500, "salaries": {"6:40 PM (4G)": 7500}, "score": 41, "verdict": "FADE"}, {"pid": "656849", "name": "David Peterson", "team": "NYM", "hand": "L", "archetype": "L5", "arch_name": "CRAFTSMAN", "opp": "ARI", "stuff_plus": 93.0, "xera": 4.59, "cws_pct": 0.0, "swk_pct": 24.0, "xwhip": 0.0, "cmd": null, "era26": null, "k9_26": null, "bb9_26": null, "gs26": 0, "era25": null, "k9_25": null, "bb9_25": null, "ip25": null, "k9": null, "bb9": null, "era": null, "velo_baseline": 92.3, "velo_current": 91.0, "velo_drop": 1.3, "velo_trend": "DOWN", "velo_type": "FF", "l3_era": 11.35, "l3_k9": 8.1, "l3_starts": 3, "trend": "HOT", "pqs_log": [{"date": "2025-09-23", "ip": "1.1", "h": 5, "k": 1, "bb": 2, "hr": 0, "score": 1, "pts": [false, false, false, false, true]}, {"date": "2025-09-17", "ip": "5.0", "h": 6, "k": 1, "bb": 3, "hr": 1, "score": 0, "pts": [false, false, false, false, false]}, {"date": "2025-09-11", "ip": "5.0", "h": 7, "k": 8, "bb": 1, "hr": 1, "score": 2, "pts": [false, false, true, true, false]}, {"date": "2025-09-05", "ip": "5.1", "h": 7, "k": 4, "bb": 1, "hr": 0, "score": 2, "pts": [false, false, false, true, true]}, {"date": "2025-08-30", "ip": "2.0", "h": 8, "k": 1, "bb": 3, "hr": 0, "score": 1, "pts": [false, false, false, false, true]}], "pqs_avg": 1.2, "pqs_starts": 5, "pqs_std": 0.75, "run_env": "STRONG", "opp_bp": "NEUTRAL", "opp_bp_color": "#666666", "opp_bp_score": 56.0, "slates": ["1:10 PM (10G)", "3:07 PM (6G)"], "salary": 7000, "salaries": {"1:10 PM (10G)": 7000, "3:07 PM (6G)": 7000}, "score": 35, "verdict": "FADE"}, {"pid": "656550", "name": "Grant Holmes", "team": "ATL", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "LAA", "stuff_plus": 70, "xera": 4.97, "cws_pct": 0.0, "swk_pct": 29.7, "xwhip": 0.0, "cmd": 2.0, "era26": 5.4, "k9_26": 7.2, "bb9_26": 3.6, "gs26": 1, "era25": 3.99, "k9_25": 9.63, "bb9_25": 4.23, "ip25": 115.0, "k9": 7.2, "bb9": 3.6, "era": 5.4, "velo_baseline": 94.5, "velo_current": 93.9, "velo_drop": 0.6, "velo_trend": "FLAT", "velo_type": "FF", "l3_era": null, "l3_k9": null, "l3_starts": null, "trend": null, "pqs_log": [{"date": "2025-07-26", "ip": "4.0", "h": 6, "k": 2, "bb": 2, "hr": 0, "score": 1, "pts": [false, false, false, false, true]}, {"date": "2025-07-20", "ip": "6.0", "h": 7, "k": 2, "bb": 2, "hr": 1, "score": 1, "pts": [true, false, false, false, false]}, {"date": "2025-07-11", "ip": "3.0", "h": 9, "k": 1, "bb": 2, "hr": 0, "score": 1, "pts": [false, false, false, false, true]}, {"date": "2025-07-06", "ip": "6.0", "h": 4, "k": 5, "bb": 3, "hr": 1, "score": 3, "pts": [true, true, true, false, false]}, {"date": "2025-07-01", "ip": "6.0", "h": 3, "k": 10, "bb": 3, "hr": 0, "score": 5, "pts": [true, true, true, true, true]}], "pqs_avg": 2.2, "pqs_starts": 5, "pqs_std": 1.6, "run_env": "EXPLOSIVE", "opp_bp": "NEUTRAL", "opp_bp_color": "#666666", "opp_bp_score": 55.0, "slates": ["1:10 PM (10G)", "3:07 PM (6G)"], "salary": 6700, "salaries": {"1:10 PM (10G)": 6700, "3:07 PM (6G)": 6700}, "score": 30, "verdict": "SMASH"}, {"pid": "641927", "name": "Bailey Ober", "team": "MIN", "hand": "R", "archetype": "--", "arch_name": "--", "opp": "DET", "stuff_plus": 49, "xera": 6.21, "cws_pct": 0.0, "swk_pct": 24.1, "xwhip": 0.0, "cmd": 1.0, "era26": 6.75, "k9_26": 2.25, "bb9_26": 2.25, "gs26": 1, "era25": 5.1, "k9_25": 7.38, "bb9_25": 1.91, "ip25": 146.1, "k9": 2.25, "bb9": 2.25, "era": 6.75, "velo_baseline": 90.2, "velo_current": 89.2, "velo_drop": 1.0, "velo_trend": "DOWN", "velo_type": "FF", "l3_era": null, "l3_k9": null, "l3_starts": null, "trend": null, "pqs_log": [{"date": "2025-09-25", "ip": "6.0", "h": 2, "k": 5, "bb": 1, "hr": 0, "score": 5, "pts": [true, true, true, true, true]}, {"date": "2025-09-20", "ip": "5.0", "h": 8, "k": 1, "bb": 2, "hr": 0, "score": 1, "pts": [false, false, false, false, true]}, {"date": "2025-09-14", "ip": "6.0", "h": 4, "k": 9, "bb": 0, "hr": 1, "score": 4, "pts": [true, true, true, true, false]}, {"date": "2025-09-07", "ip": "5.1", "h": 4, "k": 6, "bb": 1, "hr": 0, "score": 4, "pts": [false, true, true, true, true]}, {"date": "2025-09-01", "ip": "5.0", "h": 6, "k": 3, "bb": 2, "hr": 2, "score": 0, "pts": [false, false, false, false, false]}], "pqs_avg": 2.8, "pqs_starts": 5, "pqs_std": 1.94, "run_env": "AVERAGE", "opp_bp": "NEUTRAL", "opp_bp_color": "#666666", "opp_bp_score": 63.1, "slates": ["6:40 PM (4G)", "SD 7:40 PM (1G)"], "salary": 7000, "salaries": {"6:40 PM (4G)": 7000, "SD 7:40 PM (1G)": 10600}, "score": 22, "verdict": "SMASH"}];
 var SLATE_LABELS = ["1:10 PM (10G)", "3:07 PM (6G)", "6:40 PM (4G)", "2:10 PM (2G)", "SD 12:35 PM (1G)", "SD 4:05 PM (1G)", "SD 7:40 PM (1G)"];
 </script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 
 <div id="sls-gate">
@@ -140,27 +144,31 @@ var SLATE_LABELS = ["1:10 PM (10G)", "3:07 PM (6G)", "6:40 PM (4G)", "2:10 PM (2
 </div>
 
 <div class="legend-strip">
-  <div class="ls-item"><div class="ls-sw" style="background:var(--elite);"></div><span style="color:var(--text1);">ACE — Lock SP</span></div>
+  <div class="ls-item"><div class="ls-sw" style="background:var(--elite);"></div><span style="color:var(--text1);">ACE</span></div>
   <div class="ls-sep"></div>
-  <div class="ls-item"><div class="ls-sw" style="background:var(--strong);"></div><span style="color:var(--text1);">PLAY — Strong</span></div>
+  <div class="ls-item"><div class="ls-sw" style="background:var(--strong);"></div><span style="color:var(--text1);">PLAY</span></div>
   <div class="ls-sep"></div>
-  <div class="ls-item"><div class="ls-sw" style="background:var(--lean);"></div><span style="color:var(--text1);">LEAN — Situational</span></div>
+  <div class="ls-item"><div class="ls-sw" style="background:var(--lean);"></div><span style="color:var(--text1);">LEAN</span></div>
   <div class="ls-sep"></div>
-  <div class="ls-item"><div class="ls-sw" style="background:var(--fadec);"></div><span style="color:var(--text1);">FADE — Avoid</span></div>
+  <div class="ls-item"><div class="ls-sw" style="background:var(--fadec);"></div><span style="color:var(--text1);">FADE</span></div>
   <div class="ls-sep"></div>
-  <div class="ls-item"><div class="ls-sw" style="background:var(--smashr);"></div><span style="color:var(--text1);">SMASH — Stack opp batters</span></div>
+  <div class="ls-item"><div class="ls-sw" style="background:var(--smashr);"></div><span style="color:var(--text1);">SMASH</span></div>
   <div class="ls-sep"></div>
-  <div class="ls-item"><span style="color:#4af0b0;font-family:'DM Mono',monospace;font-size:8px;">★</span><span>=live 2026 stat</span></div>
+  <div class="ls-item"><span style="color:#4af0b0;font-family:'DM Mono',monospace;">★</span><span>=live 2026</span></div>
   <div class="ls-sep"></div>
-  <div class="ls-item"><span style="color:#ff4d6d;font-family:'DM Mono',monospace;font-size:8px;">▼ VELO</span><span>=dropping vs baseline</span></div>
-  <div class="ls-sep"></div>
-  <div class="ls-item"><span style="color:#4af0b0;font-family:'DM Mono',monospace;font-size:8px;">▲ VELO</span><span>=gaining vs baseline</span></div>
+  <div class="ls-item">
+    <div style="display:flex;gap:2px;">
+      <div style="width:6px;height:6px;border-radius:1px;background:var(--pqs5);"></div>
+      <div style="width:6px;height:6px;border-radius:1px;background:var(--pqs3);"></div>
+      <div style="width:6px;height:6px;border-radius:1px;background:var(--pqs1);"></div>
+    </div>
+    <span>PQS 0-5 per start (newest → oldest) | 5 dots = IP6/H&lt;IP/K5/K:BB/HR=0</span>
+  </div>
 </div>
 
-<!-- FUNNEL GATES -->
 <div class="funnel-wrap">
   <div class="funnel-header">
-    <div class="funnel-title">🔽 FUNNEL — Slide to Filter (Most → Least Predictive)</div>
+    <div class="funnel-title">🔽 FUNNEL — Most → Least Predictive</div>
     <div style="display:flex;align-items:center;gap:8px;">
       <div class="funnel-counts">Pool: <span id="pool-count">30</span> / 30 | Passing: <span id="pass-count">30</span></div>
       <button class="reset-btn" onclick="resetAll()">RESET ALL</button>
@@ -169,49 +177,70 @@ var SLATE_LABELS = ["1:10 PM (10G)", "3:07 PM (6G)", "6:40 PM (4G)", "2:10 PM (2
   <div class="gates" id="gate-container">
 
     <div class="gate" id="g-stuff">
-      <div class="gate-label">① Stuff+ Min <span class="acc">~72% corr</span></div>
+      <div class="gate-label">① Stuff+ Min <span class="acc">~72%</span></div>
       <div class="gate-val" id="v-stuff">≥ 0</div>
       <input type="range" class="gate-slider" min="0" max="130" step="5" value="0" oninput="setGate('stuff',this.value)">
       <div class="gate-pass" id="p-stuff">-- passing</div>
     </div>
 
     <div class="gate" id="g-xera">
-      <div class="gate-label">② xERA Max <span class="acc">~68% corr</span></div>
+      <div class="gate-label">② xERA Max <span class="acc">~68%</span></div>
       <div class="gate-val" id="v-xera">≤ 9.99</div>
       <input type="range" class="gate-slider" min="1" max="10" step="0.25" value="10" oninput="setGate('xera',this.value)">
       <div class="gate-pass" id="p-xera">-- passing</div>
     </div>
 
+    <div class="gate" id="g-cws">
+      <div class="gate-label">③ CWS% Min <span class="acc">~66%</span></div>
+      <div class="gate-val" id="v-cws">≥ 0%</div>
+      <input type="range" class="gate-slider" min="0" max="40" step="1" value="0" oninput="setGate('cws',this.value)">
+      <div class="gate-pass" id="p-cws">-- passing</div>
+    </div>
+
+    <div class="gate" id="g-swk">
+      <div class="gate-label">④ SwK% Min <span class="acc">~63%</span></div>
+      <div class="gate-val" id="v-swk">≥ 0%</div>
+      <input type="range" class="gate-slider" min="0" max="25" step="0.5" value="0" oninput="setGate('swk',this.value)">
+      <div class="gate-pass" id="p-swk">-- passing</div>
+    </div>
+
     <div class="gate" id="g-k9">
-      <div class="gate-label">③ K/9 Min <span class="acc">~61% corr</span></div>
+      <div class="gate-label">⑤ K/9 Min <span class="acc">~61%</span></div>
       <div class="gate-val" id="v-k9">≥ 0</div>
       <input type="range" class="gate-slider" min="0" max="18" step="0.5" value="0" oninput="setGate('k9',this.value)">
       <div class="gate-pass" id="p-k9">-- passing</div>
     </div>
 
     <div class="gate" id="g-bb9">
-      <div class="gate-label">④ BB/9 Max <span class="acc">~54% corr</span></div>
+      <div class="gate-label">⑥ BB/9 Max <span class="acc">~54%</span></div>
       <div class="gate-val" id="v-bb9">≤ 9.99</div>
       <input type="range" class="gate-slider" min="1" max="10" step="0.25" value="10" oninput="setGate('bb9',this.value)">
       <div class="gate-pass" id="p-bb9">-- passing</div>
     </div>
 
     <div class="gate" id="g-velo">
-      <div class="gate-label">⑤ Velo Drop Max <span class="acc">~52% corr</span></div>
+      <div class="gate-label">⑦ Velo Drop Max <span class="acc">~52%</span></div>
       <div class="gate-val" id="v-velo">≤ 9.9 mph</div>
       <input type="range" class="gate-slider" min="0" max="6" step="0.5" value="6" oninput="setGate('velo',this.value)">
       <div class="gate-pass" id="p-velo">-- passing</div>
     </div>
 
     <div class="gate" id="g-l3era">
-      <div class="gate-label">⑥ L3 ERA Max <span class="acc">~50% corr</span></div>
+      <div class="gate-label">⑧ L3 ERA Max <span class="acc">~50%</span></div>
       <div class="gate-val" id="v-l3era">≤ 9.99</div>
       <input type="range" class="gate-slider" min="1" max="10" step="0.25" value="10" oninput="setGate('l3era',this.value)">
       <div class="gate-pass" id="p-l3era">-- passing</div>
     </div>
 
+    <div class="gate" id="g-pqs">
+      <div class="gate-label">⑨ PQS Avg Min <span class="acc">~47%</span></div>
+      <div class="gate-val" id="v-pqs">≥ 0.0</div>
+      <input type="range" class="gate-slider" min="0" max="5" step="0.5" value="0" oninput="setGate('pqs',this.value)">
+      <div class="gate-pass" id="p-pqs">-- passing</div>
+    </div>
+
     <div class="gate" id="g-runenv">
-      <div class="gate-label">⑦ Opp Run Env <span class="acc">~48% corr</span></div>
+      <div class="gate-label">⑩ Opp Run Env <span class="acc">~48%</span></div>
       <div class="gate-val" id="v-runenv">Any</div>
       <select id="sel-runenv" class="gate-select" onchange="setGate('runenv',this.value)">
         <option value="ANY">Any</option>
@@ -223,7 +252,7 @@ var SLATE_LABELS = ["1:10 PM (10G)", "3:07 PM (6G)", "6:40 PM (4G)", "2:10 PM (2
     </div>
 
     <div class="gate" id="g-oppbp">
-      <div class="gate-label">⑧ Own BP Safety <span class="acc">~38% corr</span></div>
+      <div class="gate-label">⑪ Own BP Safety <span class="acc">~38%</span></div>
       <div class="gate-val" id="v-oppbp">Any</div>
       <select id="sel-oppbp" class="gate-select" onchange="setGate('oppbp',this.value)">
         <option value="ANY">Any</option>
@@ -234,31 +263,15 @@ var SLATE_LABELS = ["1:10 PM (10G)", "3:07 PM (6G)", "6:40 PM (4G)", "2:10 PM (2
     </div>
 
     <div class="gate" id="g-score">
-      <div class="gate-label">⑨ SLS Score Min <span class="acc">composite</span></div>
+      <div class="gate-label">⑫ SLS Score Min <span class="acc">composite</span></div>
       <div class="gate-val" id="v-score">≥ 0</div>
       <input type="range" class="gate-slider" min="0" max="100" step="5" value="0" oninput="setGate('score',this.value)">
       <div class="gate-pass" id="p-score">-- passing</div>
     </div>
 
-    <!-- PLACEHOLDER GATES -->
-    <div class="gate" style="opacity:0.4;pointer-events:none;">
-      <div class="gate-label">⑩ CWS% <span class="acc">coming soon</span></div>
-      <div class="gate-val">--</div>
-      <input type="range" class="gate-slider" min="0" max="100" step="5" value="0" disabled>
-      <div class="gate-pass">pending data</div>
-    </div>
-
-    <div class="gate" style="opacity:0.4;pointer-events:none;">
-      <div class="gate-label">⑪ QS% <span class="acc">coming soon</span></div>
-      <div class="gate-val">--</div>
-      <input type="range" class="gate-slider" min="0" max="100" step="5" value="0" disabled>
-      <div class="gate-pass">pending data</div>
-    </div>
-
   </div>
 </div>
 
-<!-- QUICK FILTERS -->
 <div class="filter-bar">
   <div class="fg"><span class="fl">Slate</span><div class="pills" id="fl-slate">
     <div class="fpill active slate-pill" data-val="ALL">All</div>
@@ -284,10 +297,10 @@ var SLATE_LABELS = ["1:10 PM (10G)", "3:07 PM (6G)", "6:40 PM (4G)", "2:10 PM (2
   </div></div>
   <div class="fg"><span class="fl">Run Env</span><div class="pills" id="fl-runenv">
     <div class="fpill active" data-val="ALL">All</div>
-    <div class="fpill" data-val="WEAK" style="color:#4af0b0;">WK Opp</div>
-    <div class="fpill" data-val="AVERAGE">AVG Opp</div>
-    <div class="fpill" data-val="STRONG" style="color:#ff8c42;">STR Opp</div>
-    <div class="fpill" data-val="EXPLOSIVE" style="color:#ff4d6d;">EXP Opp</div>
+    <div class="fpill" data-val="WEAK" style="color:#4af0b0;">WK</div>
+    <div class="fpill" data-val="AVERAGE">AVG</div>
+    <div class="fpill" data-val="STRONG" style="color:#ff8c42;">STR</div>
+    <div class="fpill" data-val="EXPLOSIVE" style="color:#ff4d6d;">EXP</div>
   </div></div>
   <div class="fg"><span class="fl">Opp BP</span><div class="pills" id="fl-bp">
     <div class="fpill active" data-val="ALL">All</div>
@@ -306,15 +319,20 @@ var SLATE_LABELS = ["1:10 PM (10G)", "3:07 PM (6G)", "6:40 PM (4G)", "2:10 PM (2
   <th style="width:22px;" class="c" data-sort="hand">H</th>
   <th style="width:90px;">Archetype</th>
   <th style="width:40px;" class="c" data-sort="score">Score</th>
-  <th style="width:40px;" class="c important" data-sort="stuff_plus" title="Stuff+ (100=avg)">STF+</th>
-  <th style="width:40px;" class="c important" data-sort="xera" title="Expected ERA">xERA</th>
-  <th style="width:35px;" class="c important" data-sort="k9" title="K/9 strikeouts per 9">K/9</th>
-  <th style="width:35px;" class="c" data-sort="era" title="ERA this season">ERA</th>
-  <th style="width:35px;" class="c" data-sort="bb9" title="BB/9 walks per 9">BB/9</th>
-  <th style="width:50px;" class="c important" data-sort="velo_drop" title="Velo drop vs. season baseline (mph)">Velo▼</th>
+  <th style="width:40px;" class="c important" data-sort="stuff_plus" title="Stuff+">STF+</th>
+  <th style="width:40px;" class="c important" data-sort="xera" title="xERA (Statcast)">xERA</th>
+  <th style="width:40px;" class="c important" data-sort="xwhip" title="xWHIP (Statcast)">xWHIP</th>
+  <th style="width:38px;" class="c important" data-sort="cws_pct" title="Chase+Whiff Strike %">CWS%</th>
+  <th style="width:36px;" class="c important" data-sort="swk_pct" title="Swinging Strike %">SwK%</th>
+  <th style="width:35px;" class="c" data-sort="k9" title="K/9">K/9</th>
+  <th style="width:35px;" class="c" data-sort="era" title="ERA">ERA</th>
+  <th style="width:35px;" class="c" data-sort="bb9" title="BB/9">BB/9</th>
+  <th style="width:35px;" class="c" data-sort="cmd" title="Cmd = K/9 ÷ BB/9">Cmd</th>
+  <th style="width:50px;" class="c" data-sort="velo_drop" title="Velo drop vs baseline">Velo▼</th>
   <th style="width:38px;" class="c" data-sort="l3_era" title="Last 3 starts ERA">L3 ERA</th>
-  <th style="width:35px;" class="c" data-sort="ip25" title="2025 innings pitched">IP25</th>
-  <th style="width:28px;" class="c" data-sort="gs26" title="2026 starts">GS</th>
+  <th style="width:115px;" class="c" data-sort="pqs_avg" title="PQS last 5 starts newest→oldest. Score 0-5 per start. Dots=IP6/H&lt;IP/K5/K:BB/HR=0">PQS ← newest</th>
+  <th style="width:35px;" class="c" data-sort="ip25" title="2025 IP">IP25</th>
+  <th style="width:28px;" class="c" data-sort="gs26" title="2026 GS">GS</th>
   <th style="width:42px;" class="c" data-sort="salary" title="DK Salary">Sal</th>
   <th style="width:50px;" class="c" data-sort="run_env">Opp Env</th>
   <th style="width:50px;" class="c" data-sort="opp_bp_score">Own BP</th>
@@ -330,8 +348,8 @@ var SLATE_LABELS = ["1:10 PM (10G)", "3:07 PM (6G)", "6:40 PM (4G)", "2:10 PM (2
 </div>
 
 <script>
-var DATA = (typeof PITCHERS !== 'undefined') ? PITCHERS : [];
-console.log('Matrix.P: ' + DATA.length + ' starters | ' + DATA.filter(function(p){return p.velo_drop!==null;}).length + ' with velo data');
+var DATA=(typeof PITCHERS!=='undefined')?PITCHERS:[];
+console.log('Matrix.P v39: '+DATA.length+' starters');
 
 var TEAMS={LAA:"#BA0021",ARI:"#A71930",BAL:"#DF4601",BOS:"#BD3039",CHC:"#0E3386",
   CIN:"#C6011F",CLE:"#00385D",COL:"#33006F",DET:"#0C2340",HOU:"#EB6E1F",
@@ -340,241 +358,243 @@ var TEAMS={LAA:"#BA0021",ARI:"#A71930",BAL:"#DF4601",BOS:"#BD3039",CHC:"#0E3386"
   TB:"#092C5C",TEX:"#003278",TOR:"#134A8E",MIN:"#002B5C",PHI:"#E81828",
   ATL:"#CE1141",CWS:"#27251F",MIA:"#00A3E0",NYY:"#003087",MIL:"#FFC52F"};
 var LIGHT=new Set(["PIT","HOU","MIL","MIA"]);
-function teamChip(t){var c=TEAMS[t]||'#5c6878';var tc=LIGHT.has(t)?'#000':'#fff';return '<span class="team-chip" style="background:'+c+';color:'+tc+';">'+t+'</span>';}
+function teamChip(t){var c=TEAMS[t]||'#5c6878';var tc=LIGHT.has(t)?'#000':'#fff';return'<span class="team-chip" style="background:'+c+';color:'+tc+';">'+t+'</span>';}
 
-// ── STAT COLORING ──────────────────────────────────────────────────────────────
-function stuffCol(v){if(v===null||v===undefined)return'#5c6878';if(v>=115)return'#4af0b0';if(v>=105)return'#e8c547';if(v>=95)return'#9ca8b8';return'#ff8c42';}
-function xeraCol(v){if(v===null||v===undefined)return'#5c6878';if(v<=3.0)return'#4af0b0';if(v<=3.75)return'#e8c547';if(v<=4.5)return'#ff8c42';return'#ff4d6d';}
-function k9Col(v){if(v===null||v===undefined)return'#5c6878';if(v>=12)return'#4af0b0';if(v>=9)return'#e8c547';if(v>=6)return'#9ca8b8';return'#ff4d6d';}
-function eraCol(v){if(v===null||v===undefined)return'#5c6878';if(v<=2.5)return'#4af0b0';if(v<=3.5)return'#e8c547';if(v<=4.5)return'#ff8c42';return'#ff4d6d';}
-function bb9Col(v){if(v===null||v===undefined)return'#5c6878';if(v<=2.0)return'#4af0b0';if(v<=3.0)return'#e8c547';if(v<=4.0)return'#ff8c42';return'#ff4d6d';}
+function stuffCol(v){if(v==null)return'#5c6878';if(v>=115)return'#4af0b0';if(v>=105)return'#e8c547';if(v>=95)return'#9ca8b8';return'#ff8c42';}
+function xeraCol(v){if(v==null)return'#5c6878';if(v<=3.0)return'#4af0b0';if(v<=3.75)return'#e8c547';if(v<=4.5)return'#ff8c42';return'#ff4d6d';}
+function xwhipCol(v){if(v==null)return'#5c6878';if(v<=1.05)return'#4af0b0';if(v<=1.20)return'#e8c547';if(v<=1.35)return'#ff8c42';return'#ff4d6d';}
+function cwsCol(v){if(v==null)return'#5c6878';if(v>=32)return'#4af0b0';if(v>=28)return'#e8c547';if(v>=22)return'#9ca8b8';return'#ff4d6d';}
+function swkCol(v){if(v==null)return'#5c6878';if(v>=14)return'#4af0b0';if(v>=11)return'#e8c547';if(v>=8)return'#9ca8b8';return'#ff4d6d';}
+function k9Col(v){if(v==null)return'#5c6878';if(v>=12)return'#4af0b0';if(v>=9)return'#e8c547';if(v>=6)return'#9ca8b8';return'#ff4d6d';}
+function eraCol(v){if(v==null)return'#5c6878';if(v<=2.5)return'#4af0b0';if(v<=3.5)return'#e8c547';if(v<=4.5)return'#ff8c42';return'#ff4d6d';}
+function bb9Col(v){if(v==null)return'#5c6878';if(v<=2.0)return'#4af0b0';if(v<=3.0)return'#e8c547';if(v<=4.0)return'#ff8c42';return'#ff4d6d';}
+function cmdCol(v){if(v==null)return'#5c6878';if(v>=5.0)return'#4af0b0';if(v>=3.5)return'#e8c547';if(v>=2.0)return'#9ca8b8';return'#ff4d6d';}
 function scoreCol(v){if(v>=75)return'#ff4d6d';if(v>=60)return'#ff8c42';if(v>=45)return'#e8c547';return'#5c6878';}
+function pqsColor(sc){
+  if(sc==null)return'var(--pqs0)';
+  if(sc>=5)return'var(--pqs5)';if(sc>=4)return'var(--pqs4)';
+  if(sc>=3)return'var(--pqs3)';if(sc>=2)return'var(--pqs2)';
+  if(sc>=1)return'var(--pqs1)';return'var(--pqs0)';
+}
 
 function veloCell(p){
-  if(p.velo_drop===null||p.velo_drop===undefined)return'<span style="color:#5c6878;font-family:DM Mono,monospace;font-size:8px;">--</span>';
-  var drop = parseFloat(p.velo_drop);
-  var trend = p.velo_trend||'FLAT';
-  var arrow = trend==='DROPPING'?'▼':trend==='RISING'?'▲':'→';
-  var color = drop>=3.0?'#ff4d6d':drop>=1.5?'#ff8c42':drop<=-1.0?'#4af0b0':'#9ca8b8';
-  // drop is positive = slower than baseline, negative = faster
-  var sign  = drop>0?'+':'';
-  var typeLabel = p.velo_type?'<span style="color:#5c6878;font-size:7px;"> '+p.velo_type+'</span>':'';
-  return '<span class="velo-drop-cell" style="color:'+color+';">'+arrow+sign+drop.toFixed(1)+'</span>'+typeLabel;
+  if(p.velo_drop==null)return'<span style="color:#5c6878;font-family:DM Mono,monospace;font-size:8px;">--</span>';
+  var drop=parseFloat(p.velo_drop);
+  var trend=p.velo_trend||'FLAT';
+  var arrow=trend==='DROPPING'?'▼':trend==='RISING'?'▲':'→';
+  var color=drop>=3.0?'#ff4d6d':drop>=1.5?'#ff8c42':drop<=-1.0?'#4af0b0':'#9ca8b8';
+  var sign=drop>0?'+':'';
+  var tl=p.velo_type?'<span style="color:#5c6878;font-size:7px;"> '+p.velo_type+'</span>':'';
+  return'<span class="velo-drop-cell" style="color:'+color+';">'+arrow+sign+drop.toFixed(1)+'</span>'+tl;
 }
-
 function l3eraCell(p){
-  if(p.l3_era===null||p.l3_era===undefined)return'<span style="color:#5c6878;">--</span>';
-  var v = parseFloat(p.l3_era);
-  var starts = p.l3_starts!==null?'<span style="color:#5c6878;font-size:7px;"> ('+p.l3_starts+'gs)</span>':'';
-  return '<span style="font-family:DM Mono,monospace;font-size:9px;color:'+eraCol(v)+';">'+v.toFixed(2)+'</span>'+starts;
+  if(p.l3_era==null)return'<span style="color:#5c6878;">--</span>';
+  var v=parseFloat(p.l3_era);
+  var s=p.l3_starts!=null?'<span style="color:#5c6878;font-size:7px;"> ('+p.l3_starts+'gs)</span>':'';
+  return'<span style="font-family:DM Mono,monospace;font-size:9px;color:'+eraCol(v)+';">'+v.toFixed(2)+'</span>'+s;
 }
-
-function salCell(p, activeSlate){
-  var sal = 0;
-  if(activeSlate && p.salaries && p.salaries[activeSlate]) sal = p.salaries[activeSlate];
-  else if(p.salary) sal = p.salary;
-  if(!sal) return '<span style="color:#5c6878;">--</span>';
-  var color = sal>=9000?'#4af0b0':sal>=7500?'#e8c547':sal>=6000?'#ff8c42':'#9ca8b8';
-  return '<span style="font-family:DM Mono,monospace;font-size:9px;color:'+color+';">$'+(sal/1000).toFixed(1)+'k</span>';
+function pqsCell(p){
+  var log=p.pqs_log||[];
+  var hasData=log.some(function(s){return s!==null;});
+  if(!hasData)return'<span style="color:#5c6878;font-size:8px;font-family:DM Mono,monospace;">no data</span>';
+  var LABELS=['IP≥6','H<IP','K≥5','K:BB','HR=0'];
+  var cols=log.slice(0,5).map(function(start,i){
+    if(!start)return'<div class="pqs-col"><div class="pqs-empty">·</div></div>';
+    var sc=start.score;
+    var pts=start.pts||[false,false,false,false,false];
+    var scoreColor=pqsColor(sc);
+    var dots=pts.map(function(met,j){
+      return'<div class="pqs-dot" style="background:'+(met?'var(--pqs5)':'var(--pqs0)')+';" title="'+LABELS[j]+(met?'✓':'✗')+'"></div>';
+    }).join('');
+    var tip='Start '+(i+1)+': '+start.ip+'IP '+start.h+'H '+start.k+'K '+start.bb+'BB '+start.hr+'HR | PQS='+sc;
+    return'<div class="pqs-col" title="'+tip+'"><div class="pqs-score" style="color:'+scoreColor+';">'+sc+'</div><div class="pqs-dots">'+dots+'</div></div>';
+  });
+  var parts=[];
+  cols.forEach(function(c,i){parts.push(c);if(i<cols.length-1)parts.push('<div class="pqs-sep"></div>');});
+  var avg=p.pqs_avg!=null?'<div class="pqs-sep"></div><span style="font-family:DM Mono,monospace;font-size:7px;color:'+pqsColor(p.pqs_avg)+';">'+parseFloat(p.pqs_avg).toFixed(1)+'</span>':'';
+  return'<div class="pqs-wrap">'+parts.join('')+avg+'</div>';
 }
-
+function salCell(p,sl){
+  var sal=0;
+  if(sl&&p.salaries&&p.salaries[sl])sal=p.salaries[sl];
+  else if(p.salary)sal=p.salary;
+  if(!sal)return'<span style="color:#5c6878;">--</span>';
+  var c=sal>=9000?'#4af0b0':sal>=7500?'#e8c547':sal>=6000?'#ff8c42':'#9ca8b8';
+  return'<span style="font-family:DM Mono,monospace;font-size:9px;color:'+c+';">$'+(sal/1000).toFixed(1)+'k</span>';
+}
 function runEnvDisp(v){
-  var colors={EXPLOSIVE:'#ff4d6d',STRONG:'#ff8c42',AVERAGE:'#9ca8b8',WEAK:'#4af0b0'};
-  var shorts={EXPLOSIVE:'EXP',STRONG:'STR',AVERAGE:'AVG',WEAK:'WK'};
-  return '<span style="font-family:DM Mono,monospace;font-size:8px;color:'+(colors[v]||'#5c6878')+'">'+(shorts[v]||v||'--')+'</span>';
+  var col={EXPLOSIVE:'#ff4d6d',STRONG:'#ff8c42',AVERAGE:'#9ca8b8',WEAK:'#4af0b0'};
+  var sh={EXPLOSIVE:'EXP',STRONG:'STR',AVERAGE:'AVG',WEAK:'WK'};
+  return'<span style="font-family:DM Mono,monospace;font-size:8px;color:'+(col[v]||'#5c6878')+'">'+(sh[v]||v||'--')+'</span>';
 }
-function bpDisp(verdict, color){return '<span style="font-family:DM Mono,monospace;font-size:8px;font-weight:700;color:'+(color||'#666')+';">'+(verdict||'--')+'</span>';}
+function bpDisp(vd,color){return'<span style="font-family:DM Mono,monospace;font-size:8px;font-weight:700;color:'+(color||'#666')+';">'+(vd||'--')+'</span>';}
 function vbCls(v){return v==='ACE'?'vb-ace':v==='PLAY'?'vb-play':v==='LEAN'?'vb-lean':v==='FADE'?'vb-fade':'vb-smash';}
 function rowCls(v){return v==='ACE'?'row-ace':v==='PLAY'?'row-play':v==='LEAN'?'row-lean':v==='FADE'?'row-fade':'row-smash';}
-function fmtN(v,dec){if(v===null||v===undefined||v==='')return'<span style="color:#5c6878">--</span>';return parseFloat(v).toFixed(dec!==undefined?dec:2);}
+function fmtN(v,dec){if(v==null||v==='')return'<span style="color:#5c6878">--</span>';return parseFloat(v).toFixed(dec!=null?dec:2);}
 
-// ── GATE + FILTER STATE ────────────────────────────────────────────────────────
-var gates = {
-  stuff:  {val:0,  dir:'min'},
-  xera:   {val:10, dir:'max'},
-  k9:     {val:0,  dir:'min'},
-  bb9:    {val:10, dir:'max'},
-  velo:   {val:6,  dir:'max'},  // velo_drop max
-  l3era:  {val:10, dir:'max'},
-  runenv: {val:'ANY', dir:'select'},
-  oppbp:  {val:'ANY', dir:'select'},
-  score:  {val:0,  dir:'min'},
+var gates={
+  stuff:{val:0,dir:'min'},xera:{val:10,dir:'max'},
+  cws:{val:0,dir:'min'},swk:{val:0,dir:'min'},
+  k9:{val:0,dir:'min'},bb9:{val:10,dir:'max'},
+  velo:{val:6,dir:'max'},l3era:{val:10,dir:'max'},
+  pqs:{val:0,dir:'min'},
+  runenv:{val:'ANY',dir:'select'},oppbp:{val:'ANY',dir:'select'},
+  score:{val:0,dir:'min'},
 };
-var pillFilters = {verdict:new Set(), hand:new Set(), runenv:new Set(), bp:new Set(), velo:new Set(), slate:new Set()};
-var sortCol='score', sortDir=-1;
+var pillFilters={verdict:new Set(),hand:new Set(),runenv:new Set(),bp:new Set(),velo:new Set(),slate:new Set()};
+var sortCol='score',sortDir=-1;
 
-function gatePass(p, key){
-  var g = gates[key];
+function gatePass(p,key){
+  var g=gates[key];
   if(g.dir==='min'){
-    var val = key==='stuff'?p.stuff_plus:key==='k9'?p.k9:key==='score'?p.score:null;
-    if(val===null||val===undefined) return parseFloat(g.val)<=0;
+    var val=key==='stuff'?p.stuff_plus:key==='k9'?p.k9:key==='cws'?p.cws_pct:key==='swk'?p.swk_pct:key==='pqs'?p.pqs_avg:key==='score'?p.score:null;
+    if(val==null)return parseFloat(g.val)<=0;
     return parseFloat(val)>=parseFloat(g.val);
   }
   if(g.dir==='max'){
-    var val2 = key==='xera'?p.xera:key==='bb9'?p.bb9:key==='velo'?p.velo_drop:key==='l3era'?p.l3_era:null;
-    if(val2===null||val2===undefined) return parseFloat(g.val)>=9.9||key==='velo'&&parseFloat(g.val)>=5.9;
+    var val2=key==='xera'?p.xera:key==='bb9'?p.bb9:key==='velo'?p.velo_drop:key==='l3era'?p.l3_era:null;
+    if(val2==null)return parseFloat(g.val)>=(key==='velo'?5.9:9.9);
     return parseFloat(val2)<=parseFloat(g.val);
   }
   if(g.dir==='select'){
     if(key==='runenv'){
-      if(g.val==='ANY') return true;
-      if(g.val==='WEAK') return p.run_env==='WEAK';
-      if(g.val==='WEAK_AVG') return p.run_env==='WEAK'||p.run_env==='AVERAGE';
-      if(g.val==='AVERAGE') return p.run_env==='AVERAGE';
+      if(g.val==='ANY')return true;
+      if(g.val==='WEAK')return p.run_env==='WEAK';
+      if(g.val==='WEAK_AVG')return p.run_env==='WEAK'||p.run_env==='AVERAGE';
+      return p.run_env==='AVERAGE';
     }
     if(key==='oppbp'){
-      if(g.val==='ANY') return true;
-      if(g.val==='NO_SMASH') return p.opp_bp!=='SMASH';
-      if(g.val==='CAUTION_ONLY') return p.opp_bp==='CAUTION'||p.opp_bp==='--';
+      if(g.val==='ANY')return true;
+      if(g.val==='NO_SMASH')return p.opp_bp!=='SMASH';
+      return p.opp_bp==='CAUTION'||p.opp_bp==='--';
     }
   }
   return true;
 }
-
 function passesAllGates(p){return Object.keys(gates).every(function(k){return gatePass(p,k);});}
-
 function passesAllPills(p){
   if(pillFilters.verdict.size>0&&!pillFilters.verdict.has(p.verdict))return false;
   if(pillFilters.hand.size>0&&!pillFilters.hand.has(p.hand))return false;
   if(pillFilters.runenv.size>0&&!pillFilters.runenv.has(p.run_env))return false;
   if(pillFilters.bp.size>0&&!pillFilters.bp.has(p.opp_bp))return false;
   if(pillFilters.velo.size>0&&!pillFilters.velo.has(p.velo_trend))return false;
-  if(pillFilters.slate.size>0&&!(p.slates||[]).some(function(s){return pillFilters.slate.has(s);}))return false;
+  if(pillFilters.slate.size>0&&!(p.slates||[]).some(function(s){return pillFilters.slate.has(s);}) )return false;
   return true;
 }
-
 function updateGatePass(){
-  var passGate = DATA.filter(passesAllGates);
-  var passBoth = passGate.filter(passesAllPills);
-  document.getElementById('pool-count').textContent = passGate.length;
-  document.getElementById('pass-count').textContent = passBoth.length;
+  var pg=DATA.filter(passesAllGates);
+  var pb=pg.filter(passesAllPills);
+  document.getElementById('pool-count').textContent=pg.length;
+  document.getElementById('pass-count').textContent=pb.length;
   Object.keys(gates).forEach(function(k){
-    var el = document.getElementById('p-'+k);
-    if(!el) return;
-    var c = DATA.filter(function(p){return gatePass(p,k);}).length;
-    el.textContent = c + ' passing';
+    var el=document.getElementById('p-'+k);if(!el)return;
+    el.textContent=DATA.filter(function(p){return gatePass(p,k);}).length+' passing';
   });
-  return passBoth;
+  return pb;
 }
-
-function getActiveSlate(){
-  var active = [...pillFilters.slate];
-  return active.length===1 ? active[0] : null;
-}
+function getActiveSlate(){var a=[...pillFilters.slate];return a.length===1?a[0]:null;}
 
 function render(){
-  var filtered = updateGatePass();
-  var activeSlate = getActiveSlate();
-  var lowerBetter = ['xera','bb9','era','velo_drop','l3_era'];
-  filtered = filtered.slice().sort(function(a,b){
-    var av=a[sortCol]; var bv=b[sortCol];
-    if(av===null||av===undefined) av=sortDir===1?9999:-9999;
-    if(bv===null||bv===undefined) bv=sortDir===1?9999:-9999;
+  var filtered=updateGatePass();
+  var sl=getActiveSlate();
+  var LOWER=['xera','bb9','era','velo_drop','l3_era','xwhip'];
+  filtered=filtered.slice().sort(function(a,b){
+    var av=a[sortCol],bv=b[sortCol];
+    if(av==null)av=sortDir===1?9999:-9999;
+    if(bv==null)bv=sortDir===1?9999:-9999;
     return sortDir*(parseFloat(av)>parseFloat(bv)?1:parseFloat(av)<parseFloat(bv)?-1:0);
   });
-
   var tbody=document.getElementById('pitcher-body');
   var empty=document.getElementById('empty-msg');
   var hdr=document.getElementById('hdr-counts');
-  if(hdr) hdr.textContent=filtered.length+' pitchers | '+filtered.filter(function(p){return p.verdict==='ACE';}).length+' ACE | '+filtered.filter(function(p){return p.verdict==='SMASH';}).length+' SMASH | '+filtered.filter(function(p){return p.salary>0;}).length+' in slate';
-
+  if(hdr)hdr.textContent=filtered.length+' pitchers | '+
+    filtered.filter(function(p){return p.verdict==='ACE';}).length+' ACE | '+
+    filtered.filter(function(p){return p.verdict==='SMASH';}).length+' SMASH | '+
+    filtered.filter(function(p){return p.salary>0;}).length+' in slate';
   if(!filtered.length){tbody.innerHTML='';empty.style.display='flex';return;}
   empty.style.display='none';
-
   tbody.innerHTML=filtered.map(function(p,i){
-    var sc=p.score||0;
-    var scColor=scoreCol(sc);
-    var barW=Math.max(2,Math.round(sc));
-    var gs26label=(p.gs26>0)?'<span style="color:#4af0b0;font-size:7px;">★</span>'+p.gs26:(p.gs26===0?'0':'--');
-    var eraLabel=(p.gs26>0&&p.era26!==null)?'<span style="color:#4af0b0;font-size:7px;">★</span>'+fmtN(p.era26,2):fmtN(p.era25,2);
-    var k9label=(p.gs26>0&&p.k9_26!==null)?'<span style="color:#4af0b0;font-size:7px;">★</span>'+fmtN(p.k9_26,1):fmtN(p.k9_25,1);
-    var bb9label=(p.gs26>0&&p.bb9_26!==null)?'<span style="color:#4af0b0;font-size:7px;">★</span>'+fmtN(p.bb9_26,1):fmtN(p.bb9_25,1);
-    var handColor=p.hand==='L'?'#4af0b0':'#9ca8b8';
-    var oppChip=p.opp?teamChip(p.opp):'<span style="color:#5c6878;font-size:8px;">--</span>';
-
-    return '<tr class="'+rowCls(p.verdict)+'">'+
+    var sc=p.score||0,scC=scoreCol(sc),bW=Math.max(2,sc);
+    var gs26l=(p.gs26>0)?'<span style="color:#4af0b0;font-size:7px;">★</span>'+p.gs26:(p.gs26===0?'0':'--');
+    var eraL=(p.gs26>0&&p.era26!=null)?'<span style="color:#4af0b0;font-size:7px;">★</span>'+fmtN(p.era26,2):fmtN(p.era25,2);
+    var k9l=(p.gs26>0&&p.k9_26!=null)?'<span style="color:#4af0b0;font-size:7px;">★</span>'+fmtN(p.k9_26,1):fmtN(p.k9_25,1);
+    var bb9l=(p.gs26>0&&p.bb9_26!=null)?'<span style="color:#4af0b0;font-size:7px;">★</span>'+fmtN(p.bb9_26,1):fmtN(p.bb9_25,1);
+    var hC=p.hand==='L'?'#4af0b0':'#9ca8b8';
+    var oppC=p.opp?teamChip(p.opp):'<span style="color:#5c6878;font-size:8px;">--</span>';
+    return'<tr class="'+rowCls(p.verdict)+'">'+
       '<td class="c" style="font-family:DM Mono,monospace;font-size:9px;color:var(--text2);">'+(i+1)+'</td>'+
-      '<td>'+
-        '<div style="display:flex;align-items:center;gap:3px;">'+
-          teamChip(p.team)+
-          '<div style="padding-left:2px;">'+
-            '<div class="pname">'+p.name+'</div>'+
-            '<div style="font-family:DM Mono,monospace;font-size:7px;color:var(--text2);">vs '+oppChip+'</div>'+
-          '</div>'+
-        '</div>'+
-      '</td>'+
-      '<td class="c"><span class="hand-badge" style="color:'+handColor+';border-color:'+handColor+'30;">'+p.hand+'</span></td>'+
+      '<td><div style="display:flex;align-items:center;gap:3px;">'+teamChip(p.team)+
+        '<div style="padding-left:2px;"><div class="pname">'+p.name+'</div>'+
+        '<div style="font-family:DM Mono,monospace;font-size:7px;color:var(--text2);">vs '+oppC+'</div></div></div></td>'+
+      '<td class="c"><span class="hand-badge" style="color:'+hC+';border-color:'+hC+'30;">'+p.hand+'</span></td>'+
       '<td><span class="arch-badge" title="'+p.arch_name+'">'+p.arch_name+'</span></td>'+
-      '<td class="c">'+
-        '<div style="font-family:Bebas Neue,sans-serif;font-size:16px;color:'+scColor+';">'+sc+'</div>'+
-        '<div class="score-bar" style="width:'+barW+'%;background:'+scColor+';max-width:38px;"></div>'+
-      '</td>'+
+      '<td class="c"><div style="font-family:Bebas Neue,sans-serif;font-size:16px;color:'+scC+';">'+sc+'</div>'+
+        '<div class="score-bar" style="width:'+bW+'%;background:'+scC+';max-width:38px;"></div></td>'+
       '<td class="c stat-cell" style="color:'+stuffCol(p.stuff_plus)+';font-size:11px;font-weight:600;">'+fmtN(p.stuff_plus,0)+'</td>'+
       '<td class="c stat-cell" style="color:'+xeraCol(p.xera)+';">'+fmtN(p.xera,2)+'</td>'+
-      '<td class="c stat-cell" style="color:'+k9Col(p.k9)+';">'+k9label+'</td>'+
-      '<td class="c stat-cell" style="color:'+eraCol(p.era)+';">'+eraLabel+'</td>'+
-      '<td class="c stat-cell" style="color:'+bb9Col(p.bb9)+';">'+bb9label+'</td>'+
+      '<td class="c stat-cell" style="color:'+xwhipCol(p.xwhip)+';">'+fmtN(p.xwhip,2)+'</td>'+
+      '<td class="c stat-cell" style="color:'+cwsCol(p.cws_pct)+';">'+fmtN(p.cws_pct,1)+'%</td>'+
+      '<td class="c stat-cell" style="color:'+swkCol(p.swk_pct)+';">'+fmtN(p.swk_pct,1)+'%</td>'+
+      '<td class="c stat-cell" style="color:'+k9Col(p.k9)+';">'+k9l+'</td>'+
+      '<td class="c stat-cell" style="color:'+eraCol(p.era)+';">'+eraL+'</td>'+
+      '<td class="c stat-cell" style="color:'+bb9Col(p.bb9)+';">'+bb9l+'</td>'+
+      '<td class="c stat-cell" style="color:'+cmdCol(p.cmd)+';">'+fmtN(p.cmd,1)+'</td>'+
       '<td class="c">'+veloCell(p)+'</td>'+
       '<td class="c">'+l3eraCell(p)+'</td>'+
+      '<td>'+pqsCell(p)+'</td>'+
       '<td class="c stat-cell" style="color:var(--text1);">'+fmtN(p.ip25,0)+'</td>'+
-      '<td class="c stat-cell" style="color:var(--text2);">'+gs26label+'</td>'+
-      '<td class="c">'+salCell(p, activeSlate)+'</td>'+
+      '<td class="c stat-cell" style="color:var(--text2);">'+gs26l+'</td>'+
+      '<td class="c">'+salCell(p,sl)+'</td>'+
       '<td class="c">'+runEnvDisp(p.run_env)+'</td>'+
-      '<td class="c">'+bpDisp(p.opp_bp, p.opp_bp_color)+'</td>'+
+      '<td class="c">'+bpDisp(p.opp_bp,p.opp_bp_color)+'</td>'+
       '<td class="c"><span class="vbadge '+vbCls(p.verdict)+'">'+p.verdict+'</span></td>'+
     '</tr>';
   }).join('');
 }
 
-// ── GATE CONTROLS ──────────────────────────────────────────────────────────────
 window.setGate=function(key,val){
   gates[key].val=val;
-  var labels={
-    stuff:'≥ '+parseFloat(val).toFixed(0),
-    xera:'≤ '+parseFloat(val).toFixed(2),
-    k9:'≥ '+parseFloat(val).toFixed(1),
-    bb9:'≤ '+parseFloat(val).toFixed(2),
-    velo:'≤ '+parseFloat(val).toFixed(1)+' mph',
-    l3era:'≤ '+parseFloat(val).toFixed(2),
-    runenv:val==='ANY'?'Any':val==='WEAK'?'Weak only':val==='WEAK_AVG'?'Weak+Avg':'Average only',
+  var lbl={stuff:'≥ '+parseFloat(val).toFixed(0),xera:'≤ '+parseFloat(val).toFixed(2),
+    cws:'≥ '+parseFloat(val).toFixed(0)+'%',swk:'≥ '+parseFloat(val).toFixed(1)+'%',
+    k9:'≥ '+parseFloat(val).toFixed(1),bb9:'≤ '+parseFloat(val).toFixed(2),
+    velo:'≤ '+parseFloat(val).toFixed(1)+' mph',l3era:'≤ '+parseFloat(val).toFixed(2),
+    pqs:'≥ '+parseFloat(val).toFixed(1),
+    runenv:val==='ANY'?'Any':val==='WEAK'?'Weak only':val==='WEAK_AVG'?'Weak+Avg':'Avg only',
     oppbp:val==='ANY'?'Any':val==='NO_SMASH'?'No SMASH':'Caution only',
-    score:'≥ '+parseFloat(val).toFixed(0),
-  };
-  var el=document.getElementById('v-'+key);
-  if(el) el.textContent=labels[key]||val;
+    score:'≥ '+parseFloat(val).toFixed(0)};
+  var el=document.getElementById('v-'+key);if(el)el.textContent=lbl[key]||val;
   var g=document.getElementById('g-'+key);
   if(g){
-    var active=(gates[key].dir==='min'&&parseFloat(val)>0)||(gates[key].dir==='max'&&parseFloat(val)<(key==='velo'?5.9:9.9))||(gates[key].dir==='select'&&val!=='ANY');
-    g.classList.toggle('active-gate',active);
+    var on=(gates[key].dir==='min'&&parseFloat(val)>0)||
+           (gates[key].dir==='max'&&parseFloat(val)<(key==='velo'?5.9:9.9))||
+           (gates[key].dir==='select'&&val!=='ANY');
+    g.classList.toggle('active-gate',on);
   }
   render();
 };
 
 window.resetAll=function(){
-  gates.stuff.val=0; gates.xera.val=10; gates.k9.val=0; gates.bb9.val=10;
-  gates.velo.val=6; gates.l3era.val=10; gates.runenv.val='ANY'; gates.oppbp.val='ANY'; gates.score.val=0;
+  gates.stuff.val=0;gates.xera.val=10;gates.cws.val=0;gates.swk.val=0;
+  gates.k9.val=0;gates.bb9.val=10;gates.velo.val=6;gates.l3era.val=10;
+  gates.pqs.val=0;gates.runenv.val='ANY';gates.oppbp.val='ANY';gates.score.val=0;
   document.querySelectorAll('.gate-slider:not([disabled])').forEach(function(s){
-    if(parseFloat(s.min)===0&&parseFloat(s.step)===5) s.value=0;
-    else if(parseFloat(s.min)===0&&parseFloat(s.max)===6) s.value=6;   // velo
-    else if(parseFloat(s.min)===1) s.value=s.max;
+    if(parseFloat(s.max)===6)s.value=6;
+    else if(parseFloat(s.min)===1)s.value=s.max;
     else s.value=0;
   });
   document.getElementById('sel-runenv').value='ANY';
   document.getElementById('sel-oppbp').value='ANY';
   document.querySelectorAll('.gate').forEach(function(g){g.classList.remove('active-gate');});
-  ['v-stuff','v-xera','v-k9','v-bb9','v-velo','v-l3era','v-runenv','v-oppbp','v-score'].forEach(function(id){
-    var el=document.getElementById(id);
-    if(!el) return;
-    if(id==='v-xera'||id==='v-bb9'||id==='v-l3era') el.textContent='≤ 9.99';
-    else if(id==='v-velo') el.textContent='≤ 9.9 mph';
-    else if(id==='v-runenv'||id==='v-oppbp') el.textContent='Any';
-    else el.textContent='≥ 0';
+  var resets={'v-xera':'≤ 9.99','v-bb9':'≤ 9.99','v-l3era':'≤ 9.99','v-velo':'≤ 9.9 mph',
+    'v-runenv':'Any','v-oppbp':'Any','v-cws':'≥ 0%','v-swk':'≥ 0%','v-pqs':'≥ 0.0'};
+  ['v-stuff','v-xera','v-cws','v-swk','v-k9','v-bb9','v-velo','v-l3era','v-pqs','v-runenv','v-oppbp','v-score'].forEach(function(id){
+    var el=document.getElementById(id);if(!el)return;
+    el.textContent=resets[id]||'≥ 0';
   });
   render();
 };
 
-// ── PILL FILTERS ───────────────────────────────────────────────────────────────
-function wirePill(id,key,isSlate){
+function wirePill(id,key){
   var el=document.getElementById(id);if(!el)return;
   el.addEventListener('click',function(e){
     var pill=e.target.closest('.fpill');if(!pill)return;
@@ -593,32 +613,24 @@ function wirePill(id,key,isSlate){
   });
 }
 
-// Build slate pills dynamically
 if(typeof SLATE_LABELS!=='undefined'&&SLATE_LABELS.length>0){
   var sc=document.getElementById('fl-slate');
   SLATE_LABELS.forEach(function(label){
     var d=document.createElement('div');
-    d.className='fpill slate-pill';
-    d.dataset.val=label;
-    d.textContent=label;
+    d.className='fpill slate-pill';d.dataset.val=label;d.textContent=label;
     sc.appendChild(d);
   });
 }
+wirePill('fl-slate','slate');wirePill('fl-verdict','verdict');
+wirePill('fl-hand','hand');wirePill('fl-velo','velo');
+wirePill('fl-runenv','runenv');wirePill('fl-bp','bp');
 
-wirePill('fl-slate','slate',true);
-wirePill('fl-verdict','verdict');
-wirePill('fl-hand','hand');
-wirePill('fl-velo','velo');
-wirePill('fl-runenv','runenv');
-wirePill('fl-bp','bp');
-
-// ── SORT ───────────────────────────────────────────────────────────────────────
+var LOWER_BETTER=['xera','bb9','era','velo_drop','l3_era','xwhip'];
 document.querySelectorAll('th[data-sort]').forEach(function(th){
   th.addEventListener('click',function(){
     var col=th.dataset.sort;
-    var lowerBetter=['xera','bb9','era','velo_drop','l3_era'];
-    if(sortCol===col) sortDir*=-1;
-    else{sortCol=col; sortDir=lowerBetter.includes(col)?1:-1;}
+    if(sortCol===col)sortDir*=-1;
+    else{sortCol=col;sortDir=LOWER_BETTER.includes(col)?1:-1;}
     document.querySelectorAll('th[data-sort]').forEach(function(t){t.classList.remove('sort-asc','sort-desc');});
     th.classList.add(sortDir===1?'sort-asc':'sort-desc');
     render();
