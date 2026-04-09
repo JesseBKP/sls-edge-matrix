@@ -183,7 +183,8 @@ const BP_USAGE_GAMES = [{"away": "CIN", "home": "MIA", "game_time": "2026-04-09T
 <table id="batter-table">
 <thead><tr>
   <th style="width:22px;" class="c">#</th>
-  <th style="width:140px;" data-sort="name">Player</th>
+  <th style="width:130px;" data-sort="name">Player</th>
+  <th style="width:60px;" data-sort="pitcher_name">vs</th>
   <th style="width:28px;" class="c" data-sort="pos">Pos</th>
   <th style="width:34px;" class="c" data-sort="salary">Sal</th>
   <th style="width:18px;" class="c" data-sort="order">Or</th>
@@ -229,8 +230,10 @@ var PITCHER_POSITIONS = new Set(['SP','RP','P','SP-RP','RP-SP','LHP','RHP']);
 function isPitcher(p) {
   var pos = (p.pos || p.position || '').trim().toUpperCase();
   if (PITCHER_POSITIONS.has(pos)) return true;
-  // single-char check
   if (pos === 'P') return true;
+  // Also block any multi-pos that contains a pitcher slot e.g. "SP-RP"
+  var parts = pos.split(/[-\/]/);
+  if (parts.some(function(pp){ return PITCHER_POSITIONS.has(pp.trim()); })) return true;
   return false;
 }
 
@@ -368,6 +371,9 @@ function render(){
         '<div style="padding-left:3px;">'+
           '<div style="display:flex;align-items:center;gap:2px;"><div class="'+nc+'">'+displayName+'</div>'+confBadge+'</div>'+
         '</div></div></td>'+
+      '<td style="font-family:DM Mono,monospace;font-size:8px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:60px;" title="'+(p.pitcher_name||'')+'">'+
+        (p.pitcher_name?(p.pitcher_name.split(' ').pop()):'--')+
+      '</td>'+
       '<td class="c"><span class="pos-badge">'+pos+'</span></td>'+
       '<td class="c" style="font-family:DM Mono,monospace;font-size:9px;color:'+salColor+';">'+salDisplay+'</td>'+
       '<td class="c"><div class="order-dot '+(p.order<=3&&p.order>0?'top3':'')+'">'+( p.order||'P')+'</div></td>'+
