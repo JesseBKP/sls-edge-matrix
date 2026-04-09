@@ -412,7 +412,14 @@ function pqsCell(p){
   var parts=[];
   cols.forEach(function(c,i){parts.push(c);if(i<cols.length-1)parts.push('<div class="pqs-sep"></div>');});
   var avg=p.pqs_avg!=null?'<div class="pqs-sep"></div><span style="font-family:DM Mono,monospace;font-size:7px;color:'+pqsColor(p.pqs_avg)+';">'+parseFloat(p.pqs_avg).toFixed(1)+'</span>':'';
-  return'<div class="pqs-wrap">'+parts.join('')+avg+'</div>';
+  var sdBadge='';
+  if(p.pqs_std!=null){
+    var sd=parseFloat(p.pqs_std);
+    var sdCol=sd>=2.0?'#ff4d6d':sd>=1.5?'#ff8c42':sd<=0.7?'#4af0b0':'#e8c547';
+    var sdTip=sd>=2.0?'Volatile':sd>=1.5?'Inconsistent':sd<=0.7?'Consistent':'Some variance';
+    sdBadge='<div class="pqs-sep"></div><span style="font-family:DM Mono,monospace;font-size:7px;color:'+sdCol+';letter-spacing:-0.02em;" title="PQS std dev: '+sdTip+' ('+sd.toFixed(2)+')">&#963;'+sd.toFixed(1)+'</span>';
+  }
+  return'<div class="pqs-wrap">'+parts.join('')+avg+sdBadge+'</div>';
 }
 function salCell(p,sl){
   var sal=0;
