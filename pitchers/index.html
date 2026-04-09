@@ -262,8 +262,15 @@ var SLATE_LABELS = ["1:10 PM (10G)", "3:07 PM (6G)", "6:40 PM (4G)", "2:10 PM (2
       <div class="gate-pass" id="p-oppbp">-- passing</div>
     </div>
 
+    <div class="gate" id="g-pqssigma">
+      <div class="gate-label">⑬ PQS σ Max <span class="acc">consistency</span></div>
+      <div class="gate-val" id="v-pqssigma">≤ 3.0</div>
+      <input type="range" class="gate-slider" data-gate="pqssigma" min="0" max="3" step="0.1" value="3" oninput="setGate('pqssigma',this.value)">
+      <div class="gate-pass" id="p-pqssigma">-- passing</div>
+    </div>
+
     <div class="gate" id="g-score">
-      <div class="gate-label">⑫ SLS Score Min <span class="acc">composite</span></div>
+      <div class="gate-label">⑤ SLS Score Min <span class="acc">composite</span></div>
       <div class="gate-val" id="v-score">≥ 0</div>
       <input type="range" class="gate-slider" min="0" max="100" step="5" value="0" oninput="setGate('score',this.value)">
       <div class="gate-pass" id="p-score">-- passing</div>
@@ -445,6 +452,7 @@ var gates={
   k9:{val:0,dir:'min'},bb9:{val:10,dir:'max'},
   velo:{val:6,dir:'max'},l3era:{val:10,dir:'max'},
   pqs:{val:0,dir:'min'},
+  pqssigma:{val:3.0,dir:'max'},
   runenv:{val:'ANY',dir:'select'},oppbp:{val:'ANY',dir:'select'},
   score:{val:0,dir:'min'},
 };
@@ -459,8 +467,8 @@ function gatePass(p,key){
     return parseFloat(val)>=parseFloat(g.val);
   }
   if(g.dir==='max'){
-    var val2=key==='xera'?p.xera:key==='bb9'?p.bb9:key==='velo'?p.velo_drop:key==='l3era'?p.l3_era:null;
-    if(val2==null)return parseFloat(g.val)>=(key==='velo'?5.9:9.9);
+    var val2=key==='xera'?p.xera:key==='bb9'?p.bb9:key==='velo'?p.velo_drop:key==='l3era'?p.l3_era:key==='pqssigma'?p.pqs_std:null;
+    if(val2==null)return parseFloat(g.val)>=(key==='velo'?5.9:key==='pqssigma'?2.99:9.9);
     return parseFloat(val2)<=parseFloat(g.val);
   }
   if(g.dir==='select'){
@@ -566,6 +574,7 @@ window.setGate=function(key,val){
     k9:'≥ '+parseFloat(val).toFixed(1),bb9:'≤ '+parseFloat(val).toFixed(2),
     velo:'≤ '+parseFloat(val).toFixed(1)+' mph',l3era:'≤ '+parseFloat(val).toFixed(2),
     pqs:'≥ '+parseFloat(val).toFixed(1),
+    pqssigma:'≤ '+parseFloat(val).toFixed(1),
     runenv:val==='ANY'?'Any':val==='WEAK'?'Weak only':val==='WEAK_AVG'?'Weak+Avg':'Avg only',
     oppbp:val==='ANY'?'Any':val==='NO_SMASH'?'No SMASH':'Caution only',
     score:'≥ '+parseFloat(val).toFixed(0)};
@@ -573,7 +582,7 @@ window.setGate=function(key,val){
   var g=document.getElementById('g-'+key);
   if(g){
     var on=(gates[key].dir==='min'&&parseFloat(val)>0)||
-           (gates[key].dir==='max'&&parseFloat(val)<(key==='velo'?5.9:9.9))||
+           (gates[key].dir==='max'&&parseFloat(val)<(key==='velo'?5.9:key==='pqssigma'?2.99:9.9))||
            (gates[key].dir==='select'&&val!=='ANY');
     g.classList.toggle('active-gate',on);
   }
@@ -583,9 +592,10 @@ window.setGate=function(key,val){
 window.resetAll=function(){
   gates.stuff.val=0;gates.xera.val=10;gates.cws.val=0;gates.swk.val=0;
   gates.k9.val=0;gates.bb9.val=10;gates.velo.val=6;gates.l3era.val=10;
-  gates.pqs.val=0;gates.runenv.val='ANY';gates.oppbp.val='ANY';gates.score.val=0;
+  gates.pqs.val=0;gates.pqssigma.val=3.0;gates.runenv.val='ANY';gates.oppbp.val='ANY';gates.score.val=0;
   document.querySelectorAll('.gate-slider:not([disabled])').forEach(function(s){
     if(parseFloat(s.max)===6)s.value=6;
+    else if(parseFloat(s.id)==='slider-pqssigma'||s.dataset.gate==='pqssigma')s.value=3.0;
     else if(parseFloat(s.min)===1)s.value=s.max;
     else s.value=0;
   });
@@ -593,8 +603,8 @@ window.resetAll=function(){
   document.getElementById('sel-oppbp').value='ANY';
   document.querySelectorAll('.gate').forEach(function(g){g.classList.remove('active-gate');});
   var resets={'v-xera':'≤ 9.99','v-bb9':'≤ 9.99','v-l3era':'≤ 9.99','v-velo':'≤ 9.9 mph',
-    'v-runenv':'Any','v-oppbp':'Any','v-cws':'≥ 0%','v-swk':'≥ 0%','v-pqs':'≥ 0.0'};
-  ['v-stuff','v-xera','v-cws','v-swk','v-k9','v-bb9','v-velo','v-l3era','v-pqs','v-runenv','v-oppbp','v-score'].forEach(function(id){
+    'v-runenv':'Any','v-oppbp':'Any','v-cws':'≥ 0%','v-swk':'≥ 0%','v-pqs':'≥ 0.0','v-pqssigma':'≤ 3.0'};
+  ['v-stuff','v-xera','v-cws','v-swk','v-k9','v-bb9','v-velo','v-l3era','v-pqs','v-pqssigma','v-runenv','v-oppbp','v-score'].forEach(function(id){
     var el=document.getElementById(id);if(!el)return;
     el.textContent=resets[id]||'≥ 0';
   });
