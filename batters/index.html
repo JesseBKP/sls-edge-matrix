@@ -184,7 +184,7 @@ const BP_USAGE_GAMES = [{"away": "CIN", "home": "MIA", "game_time": "2026-04-09T
 <thead><tr>
   <th style="width:22px;" class="c">#</th>
   <th style="width:130px;" data-sort="name">Player</th>
-  <th style="width:60px;" data-sort="pitcher_name">vs</th>
+  <th style="width:80px;" data-sort="pitcher_name">vs</th>
   <th style="width:32px;" class="c" data-sort="qbab">QBaB</th>
   <th style="width:28px;" class="c" data-sort="pos">Pos</th>
   <th style="width:34px;" class="c" data-sort="salary">Sal</th>
@@ -386,8 +386,8 @@ function render(){
         '<div style="padding-left:3px;">'+
           '<div style="display:flex;align-items:center;gap:2px;"><div class="'+nc+'">'+displayName+'</div>'+confBadge+'</div>'+
         '</div></div></td>'+
-      '<td style="font-family:DM Mono,monospace;font-size:8px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:60px;" title="'+(p.pitcher_name||'')+'">'+
-        (p.pitcher_name?(p.pitcher_name.split(' ').pop()):'--')+
+      '<td style="font-family:DM Mono,monospace;font-size:7.5px;color:var(--text1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:75px;">'+
+        (p.pitcher_name||'TBD')+
       '</td>'+
       '<td class="c">'+qbabCell(p)+'</td>'+
       '<td class="c"><span class="pos-badge">'+pos+'</span></td>'+
@@ -403,7 +403,11 @@ function render(){
       '<td class="c" style="font-family:DM Mono,monospace;font-size:10px;color:'+lColor+';">'+p.leverage+'</td>'+
       '<td class="r" style="font-family:DM Mono,monospace;font-size:9px;color:'+ownColor+';">'+own.toFixed(1)+'%</td>'+
       '<td class="c" style="font-family:DM Mono,monospace;font-size:8px;color:'+runColor+';">'+runShort+'</td>'+
-      '<td class="c" style="font-family:DM Mono,monospace;font-size:8px;font-weight:700;color:'+bpColor+';">'+bpVerdict+'</td>'+
+      '<td class="c">'+
+        (bpVerdict!=='--'?
+          '<span style="display:inline-block;padding:1px 4px;border-radius:2px;font-family:DM Mono,monospace;font-size:7px;font-weight:700;color:'+bpColor+';background:'+bpColor+'22;border:1px solid '+bpColor+'55;">'+bpVerdict+'</span>'
+          :'<span style="font-family:DM Mono,monospace;font-size:8px;color:#5c6878;">--</span>')+
+      '</td>'+
       '<td class="c">'+wxCell(p)+'</td>'+
       '<td><div class="narrative">'+story+'</div></td>'+
     '</tr>';
