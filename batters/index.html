@@ -391,7 +391,15 @@ function applyFilters(){
     if(filters.team.size>0&&!filters.team.has(p.team))return false;
     if(filters.lock.size>0&&!filters.lock.has(p.tier_g))return false;
     if(filters.verdict.size>0&&!filters.verdict.has(p.lethal))return false;
-    if(filters.pos.size>0){const parts=(p.pos||'').split('/');if(!parts.some(pp=>filters.pos.has(pp.trim())))return false;}
+    if(filters.pos.size>0){
+      // Use slate-specific position if a single slate is active, else use p.pos
+      // This must match the same logic as the display 'pos' variable
+      const activeSlatePillsF=[...document.querySelectorAll('#fl-slate .fpill.active')].map(x=>x.dataset.val).filter(v=>v!=='ALL');
+      const activeSlateF=activeSlatePillsF.length===1?activeSlatePillsF[0]:null;
+      const rawPos=activeSlateF?(p.positions&&p.positions[activeSlateF]||p.pos||''):(p.pos||'');
+      const posParts=rawPos.split(/[\/]/).map(x=>x.trim()).filter(Boolean);
+      if(!posParts.some(pp=>filters.pos.has(pp)))return false;
+    }
     if(filters.own.size>0&&!filters.own.has(p.own_tier))return false;
     if(filters.run.size>0&&!filters.run.has(p.run_env||(RUN_ENV[p.team]||'AVERAGE')))return false;
     if(filters.bp.size>0&&(!p.opp_bp||!filters.bp.has(p.opp_bp.verdict)))return false;
