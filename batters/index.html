@@ -205,6 +205,7 @@ const BP_USAGE_GAMES = [{"away": "ARI", "home": "PHI", "game_time": "2026-04-11T
 <table id="batter-table">
 <thead><tr>
   <th style="width:18px;" class="c">#</th>
+  <th style="width:22px;" class="c" data-sort="confirmed" title="Lineup confirmed">Con</th>
   <th style="width:115px;" data-sort="name">Player</th>
   <th style="width:68px;" data-sort="pitcher_name">vs</th>
   <th style="width:28px;" class="c" data-sort="qbab">QBaB</th>
@@ -398,8 +399,8 @@ function applyFilters(){
     if(filters.sal.size>0){const s=p.salary||0;const ok=[...filters.sal].some(t=>t==='5K+'?s>=5000:t==='4K+'?s>=4000&&s<5000:t==='3K+'?s>=3000&&s<4000:t==='<3K'?s<3000:true);if(!ok)return false;}
     return true;
   }).sort((a,b)=>{
-    const av=sortCol==='opp_bp'?(a.opp_bp?a.opp_bp.score:0):sortCol==='qbab'?(QBAB_SORT[a.qbab]||0):sortCol==='arch_verdict'?(ARCH_SORT[a.arch_verdict]||0):sortCol==='cqf_score'?(CQF_SORT[a.cqf_tier]||0):(a[sortCol]||0);
-    const bv=sortCol==='opp_bp'?(b.opp_bp?b.opp_bp.score:0):sortCol==='qbab'?(QBAB_SORT[b.qbab]||0):sortCol==='arch_verdict'?(ARCH_SORT[b.arch_verdict]||0):sortCol==='cqf_score'?(CQF_SORT[b.cqf_tier]||0):(b[sortCol]||0);
+    const av=sortCol==='opp_bp'?(a.opp_bp?a.opp_bp.score:0):sortCol==='qbab'?(QBAB_SORT[a.qbab]||0):sortCol==='arch_verdict'?(ARCH_SORT[a.arch_verdict]||0):sortCol==='cqf_score'?(CQF_SORT[a.cqf_tier]||0):sortCol==='confirmed'?(a.confirmed?1:0):(a[sortCol]||0);
+    const bv=sortCol==='opp_bp'?(b.opp_bp?b.opp_bp.score:0):sortCol==='qbab'?(QBAB_SORT[b.qbab]||0):sortCol==='arch_verdict'?(ARCH_SORT[b.arch_verdict]||0):sortCol==='cqf_score'?(CQF_SORT[b.cqf_tier]||0):sortCol==='confirmed'?(b.confirmed?1:0):(b[sortCol]||0);
     return sortDir*(av>bv?1:av<bv?-1:0);
   });
 }
@@ -442,11 +443,12 @@ function render(){
     // CONF badge
     const confBadge=p.confirmed?'<span class="conf-badge">CONF</span>':'';
 
-    return '<tr class="'+rowCls(p.tier_g)+'">'+
-      '<td class="c" style="font-family:DM Mono,monospace;font-size:9px;color:var(--text2);">'+(i+1)+'</td>'+
-      '<td><div style="display:flex;align-items:center;gap:3px;">'+teamChip(p.team)+
-        '<div style="padding-left:3px;">'+
-          '<div style="display:flex;align-items:center;gap:2px;"><div class="'+nc+'">'+displayName+'</div>'+confBadge+'</div>'+
+    return '<tr class="'+rowCls(p.tier_g)+'">'+ 
+    '<td class="c" style="font-family:DM Mono,monospace;font-size:9px;color:var(--text2);">'+(i+1)+'</td>'+
+    '<td class="c">'+(p.confirmed?'<span style="display:inline-flex;align-items:center;padding:1px 3px;border-radius:2px;font-family:DM Mono,monospace;font-size:7px;font-weight:700;letter-spacing:0.05em;background:rgba(59,130,246,0.18);border:1px solid rgba(59,130,246,0.5);color:#3b82f6;">CON</span>':'<span style="font-family:DM Mono,monospace;font-size:8px;color:#2a3444;">·</span>')+'</td>'+
+    '<td><div style="display:flex;align-items:center;gap:3px;">'+teamChip(p.team)+
+    '<div style="padding-left:3px;">'+
+      '<div style="display:flex;align-items:center;gap:2px;"><div class="'+nc+'">'+displayName+'</div></div>'+
         '</div></div></td>'+
       '<td style="font-family:DM Mono,monospace;font-size:7.5px;color:var(--text1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:75px;">'+
         (p.pitcher_name||'TBD')+
