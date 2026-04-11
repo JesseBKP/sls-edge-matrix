@@ -484,9 +484,8 @@ if(typeof SLATE_LABELS!=='undefined'&&SLATE_LABELS.length>0){
 wireFilter('fl-slate','slate');
 wireFilter('fl-conf','conf');
 wireFilter('fl-arch','arch');
-wireFilter('fl-team','team');
 
-// Build team pills with batter counts
+// Build team pills with batter counts THEN wire filter once
 (function(){
   const teamCounts={};
   BATTERS.forEach(p=>{ teamCounts[p.team]=(teamCounts[p.team]||0)+1; });
@@ -500,7 +499,7 @@ wireFilter('fl-team','team');
     d.innerHTML=t+'<span style="margin-left:3px;font-size:7px;opacity:0.7;">'+teamCounts[t]+'</span>';
     container.appendChild(d);
   });
-  // Re-wire after pills are built
+  // Wire ONCE after pills are built
   wireFilter('fl-team','team');
 })();
 wireFilter('fl-lock','lock');
