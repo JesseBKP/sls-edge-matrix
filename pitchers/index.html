@@ -220,8 +220,8 @@ var SLATE_LABELS = ["1:35 PM (11G)", "2:10 PM (4G)", "4:10 PM (3G)", "SD 1:35 PM
 
     <div class="gate" id="g-l3era">
       <div class="gate-label">⑧ L3 ERA Max <span class="acc">~50%</span></div>
-      <div class="gate-val" id="v-l3era">≤ 9.99</div>
-      <input type="range" class="gate-slider" min="1" max="10" step="0.25" value="10" oninput="setGate('l3era',this.value)">
+      <div class="gate-val" id="v-l3era">≤ 99.0</div>
+      <input type="range" class="gate-slider" min="1" max="99" step="0.5" value="99" oninput="setGate('l3era',this.value)">
       <div class="gate-pass" id="p-l3era">-- passing</div>
     </div>
 
@@ -439,7 +439,7 @@ var gates={
   stuff:{val:0,dir:'min'},xera:{val:10,dir:'max'},
   cws:{val:0,dir:'min'},swk:{val:0,dir:'min'},
   k9:{val:0,dir:'min'},bb9:{val:10,dir:'max'},
-  velo:{val:6,dir:'max'},l3era:{val:10,dir:'max'},
+  velo:{val:6,dir:'max'},l3era:{val:99,dir:'max'},
   pqs:{val:0,dir:'min'},
   pqssigma:{val:3.0,dir:'max'},
   runenv:{val:'ANY',dir:'select'},oppbp:{val:'ANY',dir:'select'},
@@ -471,7 +471,7 @@ function gatePass(p,key){
   }
   if(g.dir==='max'){
     var val2=key==='xera'?p.xera:key==='bb9'?p.bb9:key==='velo'?p.velo_drop:key==='l3era'?p.l3_era:key==='pqssigma'?p.pqs_std:null;
-    if(val2==null)return parseFloat(g.val)>=(key==='velo'?5.9:key==='pqssigma'?2.99:9.9);
+    if(val2==null)return parseFloat(g.val)>=(key==='velo'?5.9:key==='pqssigma'?2.99:key==='l3era'?98.9:9.9);
     return parseFloat(val2)<=parseFloat(g.val);
   }
   if(g.dir==='select'){
@@ -592,7 +592,7 @@ window.setGate=function(key,val){
 
 window.resetAll=function(){
   gates.stuff.val=0;gates.xera.val=10;gates.swk.val=0;
-  gates.k9.val=0;gates.bb9.val=10;gates.velo.val=6;gates.l3era.val=10;
+  gates.k9.val=0;gates.bb9.val=10;gates.velo.val=6;gates.l3era.val=99;
   gates.pqs.val=0;gates.pqssigma.val=3.0;gates.runenv.val='ANY';gates.oppbp.val='ANY';gates.score.val=0;
   document.querySelectorAll('.gate-slider:not([disabled])').forEach(function(s){
     if(parseFloat(s.max)===6)s.value=6;
@@ -603,7 +603,7 @@ window.resetAll=function(){
   document.getElementById('sel-runenv').value='ANY';
   document.getElementById('sel-oppbp').value='ANY';
   document.querySelectorAll('.gate').forEach(function(g){g.classList.remove('active-gate');});
-  var resets={'v-xera':'≤ 9.99','v-bb9':'≤ 9.99','v-l3era':'≤ 9.99','v-velo':'≤ 9.9 mph',
+  var resets={'v-xera':'≤ 9.99','v-bb9':'≤ 9.99','v-l3era':'≤ 99.0','v-velo':'≤ 9.9 mph',
     'v-runenv':'Any','v-oppbp':'Any','v-swk':'≥ 0%','v-pqs':'≥ 0.0','v-pqssigma':'≤ 3.0'};
   ['v-stuff','v-xera','v-swk','v-k9','v-bb9','v-velo','v-l3era','v-pqs','v-pqssigma','v-runenv','v-oppbp','v-score'].forEach(function(id){
     var el=document.getElementById(id);if(!el)return;
