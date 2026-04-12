@@ -445,6 +445,20 @@ var gates={
   runenv:{val:'ANY',dir:'select'},oppbp:{val:'ANY',dir:'select'},
   score:{val:0,dir:'min'},
 };
+
+// Debug: log which pitchers fail which gates at load
+function debugGates(){  
+  DATA.forEach(function(p){  
+    Object.keys(gates).forEach(function(k){  
+      if(!gatePass(p,k)){  
+        console.warn('GATE FAIL: '+p.name+' fails gate ['+k+'] val='+gates[k].val+
+          ' | stuff='+p.stuff_plus+' xera='+p.xera+' swk='+p.swk_pct+
+          ' k9='+p.k9+' bb9='+p.bb9+' velo='+p.velo_drop+
+          ' l3era='+p.l3_era+' pqs='+p.pqs_avg+' pqsstd='+p.pqs_std+' score='+p.score);
+      }
+    });
+  });
+}
 var pillFilters={verdict:new Set(),hand:new Set(),runenv:new Set(),bp:new Set(),velo:new Set(),slate:new Set()};
 var sortCol='score',sortDir=-1;
 
@@ -643,6 +657,7 @@ document.querySelectorAll('th[data-sort]').forEach(function(th){
 
 document.getElementById('footer-ts').textContent='Generated: '+new Date().toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'});
 render();
+debugGates();
 </script>
 </body>
 </html>
