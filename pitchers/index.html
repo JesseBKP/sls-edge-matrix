@@ -293,7 +293,7 @@ var SLATE_LABELS = ["1:35 PM (11G)", "2:10 PM (4G)", "4:10 PM (3G)", "SD 1:35 PM
     <div class="fpill active" data-val="ALL">All</div>
     <div class="fpill" data-val="RISING" style="color:#4af0b0;">▲ Rising</div>
     <div class="fpill" data-val="FLAT">Flat</div>
-    <div class="fpill" data-val="DROPPING" style="color:#ff4d6d;">▼ Dropping</div>
+    <div class="fpill" data-val="DOWN" style="color:#ff4d6d;">▼ Dropping</div>
   </div></div>
   <div class="fg"><span class="fl">Run Env</span><div class="pills" id="fl-runenv">
     <div class="fpill active" data-val="ALL">All</div>
@@ -377,7 +377,7 @@ function veloCell(p){
   if(p.velo_drop==null)return'<span style="color:#5c6878;font-family:DM Mono,monospace;font-size:8px;">--</span>';
   var drop=parseFloat(p.velo_drop);
   var trend=p.velo_trend||'FLAT';
-  var arrow=trend==='DROPPING'?'▼':trend==='RISING'?'▲':'→';
+  var arrow=trend==='DOWN'?'▼':trend==='RISING'?'▲':'→';
   var color=drop>=3.0?'#ff4d6d':drop>=1.5?'#ff8c42':drop<=-1.0?'#4af0b0':'#9ca8b8';
   var sign=drop>0?'+':'';
   var tl=p.velo_type?'<span style="color:#5c6878;font-size:7px;"> '+p.velo_type+'</span>':'';
