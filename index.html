@@ -64,7 +64,7 @@ td.wx-col{background:var(--wx-bg);}td.pit-col{background:var(--pit-bg);}
 .row-lean{border-left:2px solid var(--lean);}
 .row-monitor{border-left:2px solid var(--text2);}
 .pname{font-size:10px;font-weight:600;color:var(--text0);white-space:nowrap;}
-.pname.is-platoon{color:#4af0b0!important;text-transform:uppercase!important;}
+.pname.is-platoon{color:#4af0b0!important;font-style:italic!important;font-weight:700!important;}
 .lkg{font-family:'Bebas Neue',sans-serif;font-size:16px;line-height:1;}
 .lkc{font-family:'Bebas Neue',sans-serif;font-size:12px;line-height:1;color:var(--text1);}
 .vbadge{display:inline-block;padding:1px 3px;border-radius:2px;font-size:7px;font-family:'DM Mono',monospace;font-weight:500;text-transform:uppercase;white-space:nowrap;}
@@ -348,7 +348,7 @@ function render(){
     const eColor=specCol(parseFloat(p.edge),SP.edge);
     const lColor=specCol(parseFloat(p.leverage),SP.leverage);
     const nc=p.platoon?'pname is-platoon':'pname';
-    const displayName=p.platoon?p.name.toUpperCase():p.name;
+    const displayName=p.name;
     const sal=sl?(p.salaries&&p.salaries[sl]?p.salaries[sl]:p.salary||0):(p.salary||0);
     const salDisplay=sal>0?'$'+(sal/1000).toFixed(1)+'k':'--';
     const salColor=sal>=5500?'#4af0b0':sal>=4500?'#e8c547':sal>=3500?'#ff8c42':'#ff4d6d';
