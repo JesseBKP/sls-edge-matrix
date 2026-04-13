@@ -129,7 +129,7 @@ td.wx-col{background:var(--wx-bg);}td.pit-col{background:var(--pit-bg);}
     <div class="fpill conf-pill" data-val="CONF">Conf Only</div>
   </div></div>
   <div class="fg"><span class="fl">Team</span><div class="pills" id="fl-team"><div class="fpill active" data-val="ALL">All</div></div></div>
-  <div class="fg"><span class="fl">Wind</span><div class="pills" id="fl-wind"><div class="fpill active" data-val="ALL">All</div><div class="fpill" data-val="CALM">Calm</div><div class="fpill" data-val="LIGHT">4mph ← Light</div><div class="fpill" data-val="BLOWING OUT">8mph ↗ Blowing Out</div></div></div>
+  <div class="fg"><span class="fl">Wind</span><div class="pills" id="fl-wind"><div class="fpill active" data-val="ALL">All</div><div class="fpill" data-val="CALM">Calm</div><div class="fpill" data-val="BLOWING IN" style="color:#4af0b0;">&#8600; Blowing In</div><div class="fpill" data-val="BLOWING OUT" style="color:#ff8c42;">&#8598; Blowing Out</div><div class="fpill" data-val="CROSSWIND" style="color:#e8c547;">&#8596; Crosswind</div></div></div>
   <div class="fg"><span class="fl">Pitcher</span><div class="pills" id="fl-pit">
     <div class="fpill active" data-val="ALL">All</div>
     <div class="fpill" data-val="ACE" style="color:#ff4d6d;">ACE</div>
@@ -300,10 +300,14 @@ function getActiveSlate(){const a=[...document.querySelectorAll('#fl-slate .fpil
 
 // Wind label from player data (matches what was used to build filter pills)
 function getWindLabel(p){
-  if(p.wx_dome)return'DOME';
+  if(p.wx_dome)return'CALM';
   const mph=p.wx_wind_mph||0;
   if(Math.round(mph)===0)return'CALM';
-  return(p.wx_wind_label||'LIGHT').toUpperCase();
+  const lbl=(p.wx_wind_label||'').toUpperCase();
+  if(lbl==='BLOWING IN')return'BLOWING IN';
+  if(lbl==='BLOWING OUT')return'BLOWING OUT';
+  if(lbl==='CROSSWIND')return'CROSSWIND';
+  return'CALM';
 }
 
 function applyFilters(){
