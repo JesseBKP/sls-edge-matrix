@@ -205,14 +205,13 @@ td.wx-col{background:var(--wx-bg);}td.pit-col{background:var(--pit-bg);}
 <table id="master-table">
 <thead>
 <tr class="sec-hdr">
-  <th colspan="2" style="background:var(--bg0);border-bottom:1px solid var(--border);"></th>
+  <th colspan="1" style="background:var(--bg0);border-bottom:1px solid var(--border);"></th>
   <th colspan="5" class="c wx-hdr">&#9729; WEATHER</th>
   <th colspan="13" class="c pit-hdr">&#9918; PITCHER</th>
-  <th colspan="14" class="c bat-hdr">&#128274; BATTER</th>
+  <th colspan="15" class="c bat-hdr">&#128274; BATTER</th>
 </tr>
 <tr class="col-hdr">
   <th style="width:16px;" class="c">#</th>
-  <th style="width:20px;" class="c" data-sort="confirmed">Con</th>
   <th style="width:22px;" class="c wx-col" data-sort="wx_verdict">Wx</th>
   <th style="width:28px;" class="c wx-col" data-sort="wx_temp">Tmp</th>
   <th style="width:40px;" class="c wx-col" data-sort="wx_wind_mph">Wind</th>
@@ -232,6 +231,7 @@ td.wx-col{background:var(--wx-bg);}td.pit-col{background:var(--pit-bg);}
   <th style="width:34px;" class="c pit-col" data-sort="opp_bp_score">OppBP</th>
   <th style="width:34px;" class="c pit-col" data-sort="pit_verdict">Verd</th>
   <th style="width:115px;" data-sort="name">Batter</th>
+  <th style="width:24px;" class="c" data-sort="confirmed">Con</th>
   <th style="width:20px;" class="c" data-sort="pos">Pos</th>
   <th style="width:26px;" class="c" data-sort="salary">Sal</th>
   <th style="width:14px;" class="c" data-sort="order">Or</th>
@@ -372,7 +372,6 @@ function render(){
     const hC=p.pit_hand==='L'?'#4af0b0':'#9ca8b8';
     return '<tr class="'+rowCls(p.tier_g)+'">'+
       '<td class="c" style="font-family:DM Mono,monospace;font-size:8px;color:var(--text2);">'+(i+1)+'</td>'+
-      '<td class="c">'+(p.confirmed?'<span style="display:inline-flex;align-items:center;padding:1px 2px;border-radius:2px;font-family:DM Mono,monospace;font-size:6px;font-weight:700;background:rgba(59,130,246,0.18);border:1px solid rgba(59,130,246,0.5);color:#3b82f6;">CON</span>':'<span style="color:#2a3444;font-size:8px;">·</span>')+'</td>'+
       '<td class="c wx-col"><span style="font-size:11px;">'+wxIcon(p)+'</span></td>'+
       '<td class="c wx-col" style="font-family:DM Mono,monospace;font-size:8px;color:'+wxC+';">'+(p.wx_temp?p.wx_temp+'°':'--')+'</td>'+
       '<td class="c wx-col" style="font-family:DM Mono,monospace;font-size:7px;">'+windStr+'</td>'+
@@ -398,6 +397,7 @@ function render(){
       '<td class="c pit-col"><span style="font-family:DM Mono,monospace;font-size:7px;font-weight:700;color:'+bpColor+';">'+(p.opp_bp||'--')+'</span></td>'+
       '<td class="c pit-col"><span class="vbadge '+pitVbCls(p.pit_verdict)+'">'+p.pit_verdict+'</span></td>'+
       '<td><div style="display:flex;align-items:center;gap:2px;">'+teamChip(p.team)+'<div style="padding-left:2px;"><div class="'+nc+'">'+displayName+'</div></div></div></td>'+
+      '<td class="c">'+(p.confirmed?'<span style="display:inline-flex;align-items:center;padding:1px 2px;border-radius:2px;font-family:DM Mono,monospace;font-size:6px;font-weight:700;background:rgba(59,130,246,0.18);border:1px solid rgba(59,130,246,0.5);color:#3b82f6;">CON</span>':'<span style="color:#2a3444;font-size:8px;">·</span>')+'</td>'+
       '<td class="c"><span class="pos-badge">'+pos+'</span></td>'+
       '<td class="c" style="font-family:DM Mono,monospace;font-size:8px;color:'+salColor+';">'+salDisplay+'</td>'+
       '<td class="c"><div class="order-dot '+(p.order<=3&&p.order>0?'top3':'')+'">'+( p.order||'P')+'</div></td>'+
