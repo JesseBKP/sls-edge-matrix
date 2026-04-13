@@ -16,7 +16,7 @@
   --wx-bg:rgba(74,122,255,0.04);
   --pit-bg:rgba(255,140,66,0.03);
   --wx-line:#4a7aff;--pit-line:#ff8c42;--bat-line:#4af0b0;
-  --wx-text:#c8d4e0;
+  --wx-text:#e8edf2;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--bg0);color:var(--text0);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:auto;}
@@ -361,7 +361,7 @@ function render(){
     const windStr=p.wx_dome?'<span style="color:#4a7aff;">??</span>':(windMph===0?'<span style="color:#8a9ab0;">calm</span>':'<span style="color:var(--wx-text);">'+windMph+'mph '+windArr+'</span>');
     // Rain: always numeric, display 0 not '--'
     const rainVal=typeof p.wx_rain==='number'?p.wx_rain:0;
-    const rainColor=rainVal>=30?'#ff4d6d':rainVal>=10?'#ff8c42':'#8a9ab0';
+    const rainColor=rainVal>=30?'#ff4d6d':rainVal>=10?'#ff8c42':'#dde3ea';
     const rainStr='<span style="color:'+rainColor+';">'+Math.round(rainVal)+'%</span>';
     const pitSC=pitScoreCol(p.pit_score||50);
     const bpColor=p.opp_bp_color||'#666';
