@@ -236,7 +236,7 @@ td.wx-col{background:var(--wx-bg);}td.pit-col{background:var(--pit-bg);}
   <th style="width:28px;" class="c pit-col" data-sort="pit_velo_drop">Vlo&#9660;</th>
   <th style="width:24px;" class="c pit-col" data-sort="pit_l3_era">L3</th>
   <th style="width:115px;" class="c pit-col" data-sort="pit_pqs_avg">PQS &#8592; newest</th>
-  <th style="width:34px;" class="c pit-col" data-sort="opp_bp_score">OppBP</th>
+  <th style="width:34px;" class="c pit-col" data-sort="opp_bp_verdict">OppBP</th>
   <th style="width:34px;" class="c pit-col" data-sort="pit_verdict">Verd</th>
   <th style="width:115px;" data-sort="name">Batter</th>
   <th style="width:24px;" class="c" data-sort="confirmed">Con</th>
@@ -307,8 +307,8 @@ function qbabCell(p){if(!p.qbab)return'<span style="color:#5c6878;font-size:7px;
 const CQF_C={'ELITE':'#a855f7','SHARP':'#4af0b0','SOLID':'#e8c547','AVERAGE':'#9ca8b8','HACKER':'#ff4d6d'};
 const CQF_SORT={'ELITE':5,'SHARP':4,'SOLID':3,'AVERAGE':2,'HACKER':1};
 function cqfCell(p){if(!p.cqf_tier)return'<span style="color:#5c6878;font-size:7px;">--</span>';const c=CQF_C[p.cqf_tier]||'#5c6878';const em={'ELITE':'&#x1F48E;','SHARP':'&#x1F52A;','SOLID':'&#x2705;','AVERAGE':'&#x2796;','HACKER':'&#x1FA93;'}[p.cqf_tier]||'';return'<div style="text-align:center;"><div style="font-size:9px;line-height:1;">'+em+'</div><div style="font-family:DM Mono,monospace;font-size:7px;font-weight:700;color:'+c+';">'+(p.cqf_score!=null?Math.round(p.cqf_score):'')+'</div></div>';}
-const ARCH_C={'DESTROY':'#00ffcc','LETHAL':'#ff4d6d','ATTACK':'#ff8c42','EDGE':'#e8c547','NEUTRAL':'#5c6878','FADE':'#4a7aff','AVOID':'#c0392b'};
-const ARCH_SORT={'DESTROY':7,'LETHAL':6,'ATTACK':5,'EDGE':4,'NEUTRAL':3,'FADE':2,'AVOID':1};
+const ARCH_C={'DESTROY':'#ff4d6d','LETHAL':'#ff8c42','ATTACK':'#e8c547','EDGE':'#9ca8b8','NEUTRAL':'#5c6878','FADE':'#4a7aff','AVOID':'#4af0b0'}; const ARCH_C_X={a7aff','AVOID':'#c0392b'};
+const ARCH_SORT={'DESTROY':1,'LETHAL':2,'ATTACK':3,'EDGE':4,'NEUTRAL':5,'FADE':6,'AVOID':7};
 function archCell(p){if(!p.arch_verdict)return'<span style="color:#5c6878;font-size:7px;">--</span>';const c=ARCH_C[p.arch_verdict]||'#5c6878';const sub=(p.b_arch||'?')+'/'+(p.p_arch||'?');return'<div style="text-align:center;"><span style="display:inline-block;padding:1px 3px;border-radius:2px;font-family:DM Mono,monospace;font-size:7px;font-weight:700;color:'+c+';background:'+c+'18;border:1px solid '+c+'44;white-space:nowrap;">'+p.arch_verdict+'</span><div style="font-family:DM Mono,monospace;font-size:5px;color:#5c6878;margin-top:1px;">'+sub+'</div></div>';}
 function vbCls(v){return v==='LETHAL'?'vb-lethal':v==='STACK'?'vb-stack':v==='FADE'||v==='HARD FADE'?'vb-fade':'vb-neutral';}
 function pqsMiniCell(log,avg){if(!log||!log.some(s=>s!==null))return'<span style="color:#5c6878;font-size:7px;">--</span>';const PC=v=>v==null?'var(--bg0)':v>=5?'#4af0b0':v>=4?'#a3e635':v>=3?'#e8c547':v>=2?'#ff8c42':v>=1?'#ff4d6d':'#2a2a3a';const cols=log.slice(0,5).map((s,i)=>{if(!s)return'<div class="pqs-mc"><span style="color:#5c6878;font-size:7px;">&middot;</span></div>';const sc=s.score;const pts=s.pts||[false,false,false,false,false];const dots=pts.map(m=>'<div class="pqs-dot" style="background:'+(m?'#4af0b0':'#2a2a3a')+'"></div>').join('');return'<div class="pqs-mc"><div class="pqs-ms" style="color:'+PC(sc)+'">'+sc+'</div><div class="pqs-md">'+dots+'</div></div>';});const parts=[];cols.forEach((c,i)=>{parts.push(c);if(i<cols.length-1)parts.push('<div class="pqs-sep"></div>');});return'<div class="pqs-mini">'+parts.join('')+'</div>';}
@@ -348,8 +348,9 @@ function applyFilters(){
     if(filters.slate.size>0&&!(p.slates||[]).some(s=>filters.slate.has(s)))return false;
     return true;
   }).sort((a,b)=>{
-    const av=sortCol==='arch_verdict'?(ARCH_SORT[a.arch_verdict]||0):sortCol==='cqf_score'?(CQF_SORT[a.cqf_tier]||0):sortCol==='confirmed'?(a.confirmed?1:0):(a[sortCol]||0);
-    const bv=sortCol==='arch_verdict'?(ARCH_SORT[b.arch_verdict]||0):sortCol==='cqf_score'?(CQF_SORT[b.cqf_tier]||0):sortCol==='confirmed'?(b.confirmed?1:0):(b[sortCol]||0);
+    const strCols=['pit_verdict','opp_bp_verdict','qbab'];
+    const av=sortCol==='arch_verdict'?(ARCH_SORT[a.arch_verdict]||0):sortCol==='cqf_score'?(CQF_SORT[a.cqf_tier]||0):sortCol==='confirmed'?(a.confirmed?1:0):strCols.includes(sortCol)?(a[sortCol]||'Z'):(a[sortCol]||0);
+    const bv=sortCol==='arch_verdict'?(ARCH_SORT[b.arch_verdict]||0):sortCol==='cqf_score'?(CQF_SORT[b.cqf_tier]||0):sortCol==='confirmed'?(b.confirmed?1:0):strCols.includes(sortCol)?(b[sortCol]||'Z'):(b[sortCol]||0);
     return sortDir*(av>bv?1:av<bv?-1:0);
   });
 }
@@ -458,6 +459,13 @@ document.querySelectorAll('th[data-sort]').forEach(th=>{
     const col=th.dataset.sort;
     if(sortCol===col)sortDir*=-1;else{sortCol=col;sortDir=-1;}
     document.querySelectorAll('th[data-sort]').forEach(t=>t.classList.remove('sort-asc','sort-desc'));
+    // String columns: first click = ASC (A on top = best targets first)
+    const ascFirstCols=['pit_verdict','opp_bp_verdict','qbab','arch_verdict'];
+    if(ascFirstCols.includes(sortCol)&&th.dataset.firstClick!=='done'){
+      sortDir=1; th.dataset.firstClick='done';
+    } else if(ascFirstCols.includes(sortCol)&&sortDir===0){
+      sortDir=1;
+    }
     th.classList.add(sortDir===1?'sort-asc':'sort-desc');
     render();
   });
