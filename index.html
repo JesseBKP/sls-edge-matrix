@@ -195,10 +195,11 @@ td.wx-col{background:var(--wx-bg);}td.pit-col{background:var(--pit-bg);}
   </div></div>
   <div class="fg"><span class="fl">Run Env</span><div class="pills" id="fl-run">
     <div class="fpill active" data-val="ALL">All</div>
-    <div class="fpill" data-val="EXPLOSIVE" style="color:#ff4d6d;">EXP</div>
-    <div class="fpill" data-val="STRONG" style="color:#ff8c42;">STR</div>
-    <div class="fpill" data-val="AVERAGE">AVG</div>
-    <div class="fpill" data-val="WEAK" style="color:#4a7aff;">WK</div>
+    <div class="fpill" data-val="BOOM" style="color:#ff4d6d;">BOOM</div>
+    <div class="fpill" data-val="CRUSH" style="color:#ff8c42;">CRUSH</div>
+    <div class="fpill" data-val="EQUAL" style="color:#e8c547;">EQUAL</div>
+    <div class="fpill" data-val="FAIR" style="color:#4a7aff;">FAIR</div>
+    <div class="fpill" data-val="POOR" style="color:#4af0b0;">POOR</div>
   </div></div>
   <div class="fg"><span class="fl">Sal</span><div class="pills" id="fl-sal">
     <div class="fpill active" data-val="ALL">All</div>
@@ -238,7 +239,7 @@ td.wx-col{background:var(--wx-bg);}td.pit-col{background:var(--pit-bg);}
   <th style="width:115px;" class="c pit-col" data-sort="pit_pqs_avg">PQS &#8592; newest</th>
   <th style="width:34px;" class="c pit-col" data-sort="opp_bp_verdict">OppBP</th>
   <th style="width:34px;" class="c pit-col" data-sort="pit_verdict">Verd</th>
-  <th style="width:34px;" class="c" data-sort="run_env">Run</th>
+  <th style="width:34px;" class="c" data-sort="run_verdict">Run</th>
   <th style="width:34px;" class="c" data-sort="prun_prob">P.Run</th>
   <th style="width:115px;" data-sort="name">Batter</th>
   <th style="width:24px;" class="c" data-sort="confirmed">Con</th>
@@ -356,13 +357,13 @@ function applyFilters(){
     if(filters.lock.size>0&&!filters.lock.has(p.tier_g))return false;
     if(filters.signal.size>0&&!filters.signal.has(p.signal))return false;
     if(filters.team.size>0&&!filters.team.has(p.team))return false;
-    if(filters.run.size>0&&!filters.run.has(p.run_env))return false;
+    if(filters.run.size>0&&!filters.run.has(p.run_verdict))return false;
     if(filters.pos.size>0){const rawPos=sl?(p.positions&&p.positions[sl]||p.pos||''):(p.pos||'');const parts=rawPos.split(/[\/]/).map(x=>x.trim()).filter(Boolean);if(!parts.some(pp=>filters.pos.has(pp)))return false;}
     if(filters.sal.size>0){const s=p.salary||0;const ok=[...filters.sal].some(t=>t==='5K+'?s>=5000:t==='4K+'?s>=4000&&s<5000:t==='3K+'?s>=3000&&s<4000:t==='<3K'?s<3000:true);if(!ok)return false;}
     if(filters.slate.size>0&&!(p.slates||[]).some(s=>filters.slate.has(s)))return false;
     return true;
   }).sort((a,b)=>{
-    const strCols=['pit_verdict','opp_bp_verdict','qbab'];
+    const strCols=['pit_verdict','opp_bp_verdict','qbab','run_verdict','prun_verdict_slate'];
     const av=sortCol==='arch_verdict'?(ARCH_SORT[a.arch_verdict]||0):sortCol==='cqf_score'?(CQF_SORT[a.cqf_tier]||0):sortCol==='confirmed'?(a.confirmed?1:0):strCols.includes(sortCol)?(a[sortCol]||'Z'):(a[sortCol]||0);
     const bv=sortCol==='arch_verdict'?(ARCH_SORT[b.arch_verdict]||0):sortCol==='cqf_score'?(CQF_SORT[b.cqf_tier]||0):sortCol==='confirmed'?(b.confirmed?1:0):strCols.includes(sortCol)?(b[sortCol]||'Z'):(b[sortCol]||0);
     return sortDir*(av>bv?1:av<bv?-1:0);
