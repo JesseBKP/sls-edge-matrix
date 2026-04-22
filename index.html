@@ -158,14 +158,20 @@ td.wx-col{background:var(--wx-bg);}td.pit-col{background:var(--pit-bg);}
     <div style="flex:0 0 auto;min-width:140px;padding:3px 8px 3px 0;margin-right:8px;border-right:2px solid var(--wx-line);">
       <div style="font-family:'DM Mono',monospace;font-size:7px;font-weight:700;color:var(--wx-line);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:3px;">&#9729; Weather</div>
       <div style="display:flex;flex-direction:column;gap:3px;">
-        <div class="fg"><span class="fl" style="color:#4a7aff;">Run Env &#9650;&#9650;</span><div class="pills" id="fl-run">
-          <div class="fpill active" data-val="ALL">All</div>
-          <div class="fpill" data-val="BOOM" style="color:#ff4d6d;">BOOM</div>
-          <div class="fpill" data-val="CRUSH" style="color:#ff8c42;">CRUSH</div>
-          <div class="fpill" data-val="EQUAL" style="color:#e8c547;">EQUAL</div>
-          <div class="fpill" data-val="FAIR" style="color:#4a7aff;">FAIR</div>
-          <div class="fpill" data-val="POOR" style="color:#4af0b0;">POOR</div>
-        </div></div>
+        <div class="fg"><span class="fl" style="color:#4a7aff;">Run Env &#9650;&#9650;</span>
+          <div class="pills" id="fl-run" style="flex-direction:column;gap:1px;">
+            <div style="display:flex;gap:2px;">
+              <div class="fpill active" data-val="ALL">All</div>
+              <div class="fpill" data-val="BOOM" style="color:#ff4d6d;">BOOM</div>
+              <div class="fpill" data-val="CRUSH" style="color:#ff8c42;">CRUSH</div>
+              <div class="fpill" data-val="EQUAL" style="color:#e8c547;">EQUAL</div>
+            </div>
+            <div style="display:flex;gap:2px;">
+              <div class="fpill" data-val="FAIR" style="color:#4a7aff;">FAIR</div>
+              <div class="fpill" data-val="POOR" style="color:#4af0b0;">POOR</div>
+            </div>
+          </div>
+        </div>
         <div class="fg"><span class="fl" style="color:#4a7aff;">Wind</span>
           <div class="pills" id="fl-wind" style="flex-direction:column;gap:1px;">
             <div style="display:flex;gap:2px;">
