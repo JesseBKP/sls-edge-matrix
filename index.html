@@ -311,7 +311,7 @@ function fmtN(v,dec){if(v==null||v==='')return'<span style="color:#5c6878">--</s
 function veloDrop(v){if(v==null)return'<span style="color:#5c6878;font-size:8px;font-family:DM Mono,monospace;">--</span>';const d=parseFloat(v),c=d>=3.0?'#ff4d6d':d>=1.5?'#ff8c42':d<=-1.0?'#4af0b0':'#9ca8b8';const sign=d>0?'+':'';return'<span style="font-family:DM Mono,monospace;font-size:8px;color:'+c+';">'+sign+d.toFixed(1)+'</span>';}
 function wxVerdCol(v){return v==='GREAT'?'#4af0b0':v==='GOOD'?'#a3e635':v==='BAD'?'#ff8c42':v==='POOR'?'#ff4d6d':v==='DOME'?'#4a7aff':'#9ca8b8';}
 function wxArrow(a){return a==='up'||a==='up_center'?'↑':a==='up_right'?'↗':a==='right'?'→':a==='down_right'?'↘':a==='down'||a==='down_center'?'↓':a==='down_left'?'↙':a==='left'?'←':a==='up_left'?'↖':'·';}
-function wxIcon(p){if(p.wx_dome)return'??';const i=p.wx_icon||'neutral';return i==='sun'?'☀':i==='rain'?'??':i==='snowflake'?'❄':'⛅';}
+function wxIcon(p){if(p.wx_dome)return'&#127961;';const i=p.wx_icon||'neutral';return i==='sun'?'&#9728;':i==='rain'?'&#127783;':i==='snowflake'?'&#10052;':'&#9925;';}
 const QBAB_C={'A':'#4af0b0','B':'#e8c547','C':'#ff8c42','D':'#ff4d6d','F':'#5c6878'};
 function qbabCell(p){if(!p.qbab)return'<span style="color:#5c6878;font-size:7px;" data-sort-val="Z">Z</span>';const c=QBAB_C[p.qbab]||'#5c6878';const sub=(p.qbab_ev||'-')+'/'+(p.qbab_la||'-')+'/'+(p.qbab_lav||'-');return'<div style="text-align:center;"><div style="font-family:Bebas Neue,sans-serif;font-size:13px;color:'+c+';line-height:1;">'+p.qbab+'</div><div style="font-family:DM Mono,monospace;font-size:5px;color:#5c6878;">'+sub+'</div></div>';}
 const CQF_C={'ELITE':'#a855f7','SHARP':'#4af0b0','SOLID':'#e8c547','AVERAGE':'#9ca8b8','HACKER':'#ff4d6d'};
@@ -389,7 +389,7 @@ function render(){
     const wxC=wxVerdCol(p.wx_verdict);
     const windMph=Math.round(p.wx_wind_mph||0);
     const windArr=wxArrow(p.wx_arrow);
-    const windStr=p.wx_dome?'<span style="color:#4a7aff;">??</span>':(windMph===0?'<span style="color:#8a9ab0;">calm</span>':'<span style="color:var(--wx-text);">'+windMph+'mph '+windArr+'</span>');
+    const windStr=p.wx_dome?'<span style="color:#4a7aff;">&#127961;</span>';
     const rainVal=typeof p.wx_rain==='number'?p.wx_rain:0;
     const rainColor=rainVal>=30?'#ff4d6d':rainVal>=10?'#ff8c42':'#dde3ea';
     const rainStr='<span style="color:'+rainColor+';">'+Math.round(rainVal)+'%</span>';
