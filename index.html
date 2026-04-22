@@ -389,7 +389,7 @@ function render(){
     const wxC=wxVerdCol(p.wx_verdict);
     const windMph=Math.round(p.wx_wind_mph||0);
     const windArr=wxArrow(p.wx_arrow);
-    const windStr=p.wx_dome?'<span style="color:#4a7aff;">&#127961;</span>';
+    const windStr=p.wx_dome?'<span style="color:#4a7aff;">&#127961;</span>':(windMph===0?'<span style="color:#8a9ab0;">calm</span>':'<span style="color:var(--wx-text);">'+windMph+'mph '+windArr+'</span>');
     const rainVal=typeof p.wx_rain==='number'?p.wx_rain:0;
     const rainColor=rainVal>=30?'#ff4d6d':rainVal>=10?'#ff8c42':'#dde3ea';
     const rainStr='<span style="color:'+rainColor+';">'+Math.round(rainVal)+'%</span>';
