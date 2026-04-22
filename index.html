@@ -32,7 +32,7 @@ body{background:var(--bg0);color:var(--text0);font-family:'DM Sans',sans-serif;m
 .brand{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:0.04em;}
 .brand .wx{color:#4a7aff;}.brand .pit{color:#ff8c42;}.brand .bat{color:#4af0b0;}
 .hdr-right{font-family:'DM Mono',monospace;font-size:8px;color:var(--text2);text-align:right;}
-.filter-bar{background:var(--bg1);border-bottom:1px solid var(--border);padding:3px 10px;display:flex;align-items:flex-start;flex-wrap:wrap;gap:4px;row-gap:3px;}
+.filter-bar{background:var(--bg1);border-bottom:1px solid var(--border);padding:4px 10px;display:flex;flex-direction:column;gap:3px;}
 .fg{display:flex;flex-direction:column;gap:1px;}
 .fl{font-size:7px;text-transform:uppercase;letter-spacing:0.1em;color:var(--text2);font-family:'DM Mono',monospace;}
 .pills{display:flex;flex-wrap:wrap;gap:2px;}
@@ -122,88 +122,115 @@ td.wx-col{background:var(--wx-bg);}td.pit-col{background:var(--pit-bg);}
   <div class="hdr-right" id="hdr-counts"></div>
 </div>
 
-<div class="filter-bar">
-  <div class="fg"><span class="fl">Slate</span><div class="pills" id="fl-slate"><div class="fpill active" data-val="ALL">All</div></div></div>
-  <div class="fg"><span class="fl">Status</span><div class="pills" id="fl-conf">
-    <div class="fpill active conf-pill" data-val="ALL">All</div>
-    <div class="fpill conf-pill" data-val="CONF">Conf Only</div>
-  </div></div>
-  <div class="fg"><span class="fl">Team</span><div class="pills" id="fl-team"><div class="fpill active" data-val="ALL">All</div></div></div>
-  <div class="fg"><span class="fl">Wind</span><div class="pills" id="fl-wind"><div class="fpill active" data-val="ALL">All</div><div class="fpill" data-val="CALM">Calm</div><div class="fpill" data-val="BLOWING IN" style="color:#4af0b0;">&#8600; Blowing In</div><div class="fpill" data-val="BLOWING OUT" style="color:#ff8c42;">&#8598; Blowing Out</div><div class="fpill" data-val="CROSSWIND" style="color:#e8c547;">&#8596; Crosswind</div></div></div>
-  <div class="fg"><span class="fl">Pitcher</span><div class="pills" id="fl-pit">
-    <div class="fpill active" data-val="ALL">All</div>
-    <div class="fpill" data-val="ATTACK" style="color:#ff4d6d;">ATTACK</div>
-    <div class="fpill" data-val="BOOST" style="color:#ff8c42;">BOOST</div>
-    <div class="fpill" data-val="EVEN" style="color:#e8c547;">EVEN</div>
-    <div class="fpill" data-val="FADE" style="color:#4a7aff;">FADE</div>
-    <div class="fpill" data-val="GHOST" style="color:#4af0b0;">GHOST</div>
-  </div></div>
-  <div class="fg"><span class="fl">BP</span><div class="pills" id="fl-bp">
-    <div class="fpill active" data-val="ALL">All</div>
-    <div class="fpill" data-val="ATTACK" style="color:#ff4d6d;">ATTACK</div>
-    <div class="fpill" data-val="BOOST" style="color:#ff8c42;">BOOST</div>
-    <div class="fpill" data-val="EVEN" style="color:#e8c547;">EVEN</div>
-    <div class="fpill" data-val="FADE" style="color:#4a7aff;">FADE</div>
-    <div class="fpill" data-val="GHOST" style="color:#4af0b0;">GHOST</div>
-    <div class="fpill" data-val="ATTACK" style="color:#ff8c42;">ATK</div>
-    <div class="fpill" data-val="NEUTRAL">NEU</div>
-  </div></div>
-  <div class="fg"><span class="fl">Matchup</span><div class="pills" id="fl-arch">
-    <div class="fpill active" data-val="ALL">All</div>
-    <div class="fpill" data-val="DESTROY" style="color:#00ffcc;">DESTROY</div>
-    <div class="fpill" data-val="LETHAL" style="color:#ff4d6d;">LETHAL</div>
-    <div class="fpill" data-val="ATTACK" style="color:#ff8c42;">ATTACK</div>
-    <div class="fpill" data-val="EDGE" style="color:#e8c547;">EDGE</div>
-    <div class="fpill" data-val="NEUTRAL" style="color:#5c6878;">NEUTRAL</div>
-    <div class="fpill" data-val="FADE" style="color:#4a7aff;">FADE</div>
-    <div class="fpill" data-val="AVOID" style="color:#c0392b;">AVOID</div>
-  </div></div>
-  <div class="fg"><span class="fl">CQF</span><div class="pills" id="fl-cqf">
-    <div class="fpill active" data-val="ALL">All</div>
-    <div class="fpill" data-val="ELITE" style="color:#a855f7;">&#128142; ELITE</div>
-    <div class="fpill" data-val="SHARP" style="color:#4af0b0;">&#128298; SHARP</div>
-    <div class="fpill" data-val="SOLID" style="color:#e8c547;">SOLID</div>
-    <div class="fpill" data-val="AVERAGE" style="color:#9ca8b8;">AVG</div>
-    <div class="fpill" data-val="HACKER" style="color:#ff4d6d;">HACKER</div>
-  </div></div>
-  <div class="fg"><span class="fl">Lock</span><div class="pills" id="fl-lock">
-    <div class="fpill active" data-val="ALL">All</div>
-    <div class="fpill" data-val="ELITE">Elite</div>
-    <div class="fpill" data-val="STRONG">Strong</div>
-    <div class="fpill" data-val="LEAN">Lean</div>
-    <div class="fpill" data-val="MONITOR">Mon</div>
-  </div></div>
-  <div class="fg"><span class="fl">Signal</span><div class="pills" id="fl-signal">
-    <div class="fpill active" data-val="ALL">All</div>
-    <div class="fpill" data-val="LETHAL" style="color:#ff4d6d;">LETHAL</div>
-    <div class="fpill" data-val="STACK" style="color:#ff8c42;">STACK</div>
-    <div class="fpill" data-val="FADE" style="color:#4a7aff;">FADE</div>
-  </div></div>
-  <div class="fg"><span class="fl">Pos</span><div class="pills" id="fl-pos">
-    <div class="fpill active pos-pill" data-val="ALL">All</div>
-    <div class="fpill pos-pill" data-val="C">C</div>
-    <div class="fpill pos-pill" data-val="1B">1B</div>
-    <div class="fpill pos-pill" data-val="2B">2B</div>
-    <div class="fpill pos-pill" data-val="3B">3B</div>
-    <div class="fpill pos-pill" data-val="SS">SS</div>
-    <div class="fpill pos-pill" data-val="OF">OF</div>
-    <div class="fpill pos-pill" data-val="DH">DH</div>
-  </div></div>
-  <div class="fg"><span class="fl">Run Env</span><div class="pills" id="fl-run">
-    <div class="fpill active" data-val="ALL">All</div>
-    <div class="fpill" data-val="BOOM" style="color:#ff4d6d;">BOOM</div>
-    <div class="fpill" data-val="CRUSH" style="color:#ff8c42;">CRUSH</div>
-    <div class="fpill" data-val="EQUAL" style="color:#e8c547;">EQUAL</div>
-    <div class="fpill" data-val="FAIR" style="color:#4a7aff;">FAIR</div>
-    <div class="fpill" data-val="POOR" style="color:#4af0b0;">POOR</div>
-  </div></div>
-  <div class="fg"><span class="fl">Sal</span><div class="pills" id="fl-sal">
-    <div class="fpill active" data-val="ALL">All</div>
-    <div class="fpill" data-val="5K+">$5K+</div>
-    <div class="fpill" data-val="4K+">$4K+</div>
-    <div class="fpill" data-val="3K+">$3K+</div>
-    <div class="fpill" data-val="&lt;3K">&lt;$3K</div>
-  </div></div>
+<div class="filter-bar" style="flex-direction:column;gap:3px;">
+
+  <div style="display:flex;align-items:center;flex-wrap:wrap;gap:4px;padding-bottom:2px;border-bottom:1px solid var(--border);">
+    <div class="fg"><span class="fl">Slate</span><div class="pills" id="fl-slate"><div class="fpill active" data-val="ALL">All</div></div></div>
+    <div class="fg"><span class="fl">Status</span><div class="pills" id="fl-conf">
+      <div class="fpill active conf-pill" data-val="ALL">All</div>
+      <div class="fpill conf-pill" data-val="CONF">Conf Only</div>
+    </div></div>
+    <div class="fg"><span class="fl">Pos</span><div class="pills" id="fl-pos">
+      <div class="fpill active pos-pill" data-val="ALL">All</div>
+      <div class="fpill pos-pill" data-val="C">C</div>
+      <div class="fpill pos-pill" data-val="1B">1B</div>
+      <div class="fpill pos-pill" data-val="2B">2B</div>
+      <div class="fpill pos-pill" data-val="3B">3B</div>
+      <div class="fpill pos-pill" data-val="SS">SS</div>
+      <div class="fpill pos-pill" data-val="OF">OF</div>
+      <div class="fpill pos-pill" data-val="DH">DH</div>
+    </div></div>
+    <div class="fg"><span class="fl">Sal</span><div class="pills" id="fl-sal">
+      <div class="fpill active" data-val="ALL">All</div>
+      <div class="fpill" data-val="5K+">$5K+</div>
+      <div class="fpill" data-val="4K+">$4K+</div>
+      <div class="fpill" data-val="3K+">$3K+</div>
+      <div class="fpill" data-val="&lt;3K">&lt;$3K</div>
+    </div></div>
+  </div>
+
+  <div style="display:flex;align-items:center;flex-wrap:wrap;gap:4px;padding-bottom:2px;border-bottom:1px solid var(--border);">
+    <div class="fg"><span class="fl">Team</span><div class="pills" id="fl-team"><div class="fpill active" data-val="ALL">All</div></div></div>
+  </div>
+
+  <div style="display:flex;align-items:stretch;gap:0;width:100%;margin-top:1px;">
+
+    <div style="flex:0 0 auto;min-width:140px;padding:3px 8px 3px 0;margin-right:8px;border-right:2px solid var(--wx-line);">
+      <div style="font-family:'DM Mono',monospace;font-size:7px;font-weight:700;color:var(--wx-line);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:3px;">&#9729; Weather</div>
+      <div style="display:flex;flex-direction:column;gap:3px;">
+        <div class="fg"><span class="fl" style="color:#4a7aff;">Run Env &#9650;&#9650;</span><div class="pills" id="fl-run">
+          <div class="fpill active" data-val="ALL">All</div>
+          <div class="fpill" data-val="BOOM" style="color:#ff4d6d;">BOOM</div>
+          <div class="fpill" data-val="CRUSH" style="color:#ff8c42;">CRUSH</div>
+          <div class="fpill" data-val="EQUAL" style="color:#e8c547;">EQUAL</div>
+          <div class="fpill" data-val="FAIR" style="color:#4a7aff;">FAIR</div>
+          <div class="fpill" data-val="POOR" style="color:#4af0b0;">POOR</div>
+        </div></div>
+        <div class="fg"><span class="fl" style="color:#4a7aff;">Wind</span><div class="pills" id="fl-wind"><div class="fpill active" data-val="ALL">All</div><div class="fpill" data-val="CALM">Calm</div><div class="fpill" data-val="BLOWING IN" style="color:#4af0b0;">&#8600; Blowing In</div><div class="fpill" data-val="BLOWING OUT" style="color:#ff8c42;">&#8598; Blowing Out</div><div class="fpill" data-val="CROSSWIND" style="color:#e8c547;">&#8596; Crosswind</div></div></div>
+      </div>
+    </div>
+
+    <div style="flex:0 0 auto;padding:3px 8px 3px 0;margin-right:8px;border-right:2px solid var(--pit-line);">
+      <div style="font-family:'DM Mono',monospace;font-size:7px;font-weight:700;color:var(--pit-line);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:3px;">&#9918; Pitcher</div>
+      <div style="display:flex;flex-direction:column;gap:3px;">
+        <div class="fg"><span class="fl" style="color:#ff8c42;">Verd &#9650;&#9650;</span><div class="pills" id="fl-pit">
+          <div class="fpill active" data-val="ALL">All</div>
+          <div class="fpill" data-val="ATTACK" style="color:#ff4d6d;">ATTACK</div>
+          <div class="fpill" data-val="BOOST" style="color:#ff8c42;">BOOST</div>
+          <div class="fpill" data-val="EVEN" style="color:#e8c547;">EVEN</div>
+          <div class="fpill" data-val="FADE" style="color:#4a7aff;">FADE</div>
+          <div class="fpill" data-val="GHOST" style="color:#4af0b0;">GHOST</div>
+        </div></div>
+        <div class="fg"><span class="fl" style="color:#ff8c42;">OppBP &#9650;</span><div class="pills" id="fl-bp">
+          <div class="fpill active" data-val="ALL">All</div>
+          <div class="fpill" data-val="ATTACK" style="color:#ff4d6d;">ATTACK</div>
+          <div class="fpill" data-val="BOOST" style="color:#ff8c42;">BOOST</div>
+          <div class="fpill" data-val="EVEN" style="color:#e8c547;">EVEN</div>
+          <div class="fpill" data-val="FADE" style="color:#4a7aff;">FADE</div>
+          <div class="fpill" data-val="GHOST" style="color:#4af0b0;">GHOST</div>
+        </div></div>
+      </div>
+    </div>
+
+    <div style="flex:1;padding:3px 0;">
+      <div style="font-family:'DM Mono',monospace;font-size:7px;font-weight:700;color:var(--bat-line);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:3px;">&#128274; Batter</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;">
+        <div class="fg"><span class="fl" style="color:#4af0b0;">Signal &#9650;&#9650;</span><div class="pills" id="fl-signal">
+          <div class="fpill active" data-val="ALL">All</div>
+          <div class="fpill" data-val="LETHAL" style="color:#ff4d6d;">LETHAL</div>
+          <div class="fpill" data-val="STACK" style="color:#ff8c42;">STACK</div>
+          <div class="fpill" data-val="FADE" style="color:#4a7aff;">FADE</div>
+        </div></div>
+        <div class="fg"><span class="fl" style="color:#4af0b0;">Lock &#9650;&#9650;</span><div class="pills" id="fl-lock">
+          <div class="fpill active" data-val="ALL">All</div>
+          <div class="fpill" data-val="ELITE">Elite</div>
+          <div class="fpill" data-val="STRONG">Strong</div>
+          <div class="fpill" data-val="LEAN">Lean</div>
+          <div class="fpill" data-val="MONITOR">Mon</div>
+        </div></div>
+        <div class="fg"><span class="fl" style="color:#4af0b0;">Matchup &#9650;</span><div class="pills" id="fl-arch">
+          <div class="fpill active" data-val="ALL">All</div>
+          <div class="fpill" data-val="DESTROY" style="color:#00ffcc;">DESTROY</div>
+          <div class="fpill" data-val="LETHAL" style="color:#ff4d6d;">LETHAL</div>
+          <div class="fpill" data-val="ATTACK" style="color:#ff8c42;">ATTACK</div>
+          <div class="fpill" data-val="EDGE" style="color:#e8c547;">EDGE</div>
+          <div class="fpill" data-val="NEUTRAL" style="color:#5c6878;">NEUTRAL</div>
+          <div class="fpill" data-val="FADE" style="color:#4a7aff;">FADE</div>
+          <div class="fpill" data-val="AVOID" style="color:#c0392b;">AVOID</div>
+        </div></div>
+        <div class="fg"><span class="fl" style="color:#4af0b0;">CQF</span><div class="pills" id="fl-cqf">
+          <div class="fpill active" data-val="ALL">All</div>
+          <div class="fpill" data-val="ELITE" style="color:#a855f7;">&#128142; ELITE</div>
+          <div class="fpill" data-val="SHARP" style="color:#4af0b0;">&#128298; SHARP</div>
+          <div class="fpill" data-val="SOLID" style="color:#e8c547;">SOLID</div>
+          <div class="fpill" data-val="AVERAGE" style="color:#9ca8b8;">AVG</div>
+          <div class="fpill" data-val="HACKER" style="color:#ff4d6d;">HACKER</div>
+        </div></div>
+      </div>
+    </div>
+
+  </div>
+
 </div>
 
 <div class="wrap">
