@@ -166,7 +166,27 @@ td.wx-col{background:var(--wx-bg);}td.pit-col{background:var(--pit-bg);}
           <div class="fpill" data-val="FAIR" style="color:#4a7aff;">FAIR</div>
           <div class="fpill" data-val="POOR" style="color:#4af0b0;">POOR</div>
         </div></div>
-        <div class="fg"><span class="fl" style="color:#4a7aff;">Wind</span><div class="pills" id="fl-wind"><div class="fpill active" data-val="ALL">All</div><div class="fpill" data-val="CALM">Calm</div><div class="fpill" data-val="BLOWING IN" style="color:#4af0b0;">&#8600; Blowing In</div><div class="fpill" data-val="BLOWING OUT" style="color:#ff8c42;">&#8598; Blowing Out</div><div class="fpill" data-val="CROSSWIND" style="color:#e8c547;">&#8596; Crosswind</div></div></div>
+        <div class="fg"><span class="fl" style="color:#4a7aff;">Wind</span>
+          <div class="pills" id="fl-wind" style="flex-direction:column;gap:1px;">
+            <div style="display:flex;gap:2px;">
+              <div class="fpill active" data-val="ALL">All</div>
+              <div class="fpill" data-val="CALM">Calm</div>
+              <div class="fpill" data-val="BLOWING IN" style="color:#4af0b0;">&#8600; Blowing In</div>
+            </div>
+            <div style="display:flex;gap:2px;">
+              <div class="fpill" data-val="BLOWING OUT" style="color:#ff8c42;">&#8598; Blowing Out</div>
+              <div class="fpill" data-val="CROSSWIND" style="color:#e8c547;">&#8596; Crosswind</div>
+            </div>
+          </div>
+        </div>
+        <div class="fg"><span class="fl" style="color:#4a7aff;">Temp</span>
+          <div class="pills" id="fl-temp">
+            <div class="fpill active" data-val="ALL">All</div>
+            <div class="fpill" data-val="COLD" style="color:#4a7aff;">&lt;50&#176;</div>
+            <div class="fpill" data-val="NEUTRAL" style="color:#e8c547;">51-71&#176;</div>
+            <div class="fpill" data-val="WARM" style="color:#ff8c42;">72&#176;+</div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -350,7 +370,7 @@ function archCell(p){if(!p.arch_verdict)return'<span style="color:#5c6878;font-s
 function vbCls(v){return v==='LETHAL'?'vb-lethal':v==='STACK'?'vb-stack':v==='FADE'||v==='HARD FADE'?'vb-fade':'vb-neutral';}
 function pqsMiniCell(log,avg){if(!log||!log.some(s=>s!==null))return'<span style="color:#5c6878;font-size:7px;">--</span>';const PC=v=>v==null?'var(--bg0)':v>=5?'#4af0b0':v>=4?'#a3e635':v>=3?'#e8c547':v>=2?'#ff8c42':v>=1?'#ff4d6d':'#2a2a3a';const cols=log.slice(0,5).map((s,i)=>{if(!s)return'<div class="pqs-mc"><span style="color:#5c6878;font-size:7px;">&middot;</span></div>';const sc=s.score;const pts=s.pts||[false,false,false,false,false];const dots=pts.map(m=>'<div class="pqs-dot" style="background:'+(m?'#4af0b0':'#2a2a3a')+'"></div>').join('');return'<div class="pqs-mc"><div class="pqs-ms" style="color:'+PC(sc)+'">'+sc+'</div><div class="pqs-md">'+dots+'</div></div>';});const parts=[];cols.forEach((c,i)=>{parts.push(c);if(i<cols.length-1)parts.push('<div class="pqs-sep"></div>');});return'<div class="pqs-mini">'+parts.join('')+'</div>';}
 
-let filters={lock:new Set(),pos:new Set(),run:new Set(),bp:new Set(),slate:new Set(),sal:new Set(),signal:new Set(),conf:new Set(),arch:new Set(),team:new Set(),cqf:new Set(),wind:new Set(),pit:new Set()};
+let filters={lock:new Set(),pos:new Set(),run:new Set(),bp:new Set(),slate:new Set(),sal:new Set(),signal:new Set(),conf:new Set(),arch:new Set(),team:new Set(),cqf:new Set(),wind:new Set(),pit:new Set(),temp:new Set()};
 let sortCol='lock_g',sortDir=-1;
 
 function getActiveSlate(){const a=[...document.querySelectorAll('#fl-slate .fpill.active')].map(p=>p.dataset.val).filter(v=>v!=='ALL');return a.length===1?a[0]:null;}
@@ -371,6 +391,7 @@ function applyFilters(){
   return DATA.filter(p=>{
     if(filters.conf.has('CONF')&&!p.confirmed)return false;
     if(filters.wind.size>0&&!filters.wind.has(getWindLabel(p)))return false;
+    if(filters.temp.size>0){const t=parseFloat(p.wx_temp)||72;const tb=t<50?'COLD':t<=71?'NEUTRAL':'WARM';if(!filters.temp.has(tb))return false;}
     if(filters.pit.size>0&&!filters.pit.has(p.pit_verdict))return false;
     if(filters.bp.size>0&&!filters.bp.has(p.opp_bp))return false;
     if(filters.arch.size>0&&!filters.arch.has(p.arch_verdict))return false;
@@ -507,7 +528,7 @@ if(typeof SLATE_LABELS!=='undefined'&&SLATE_LABELS.length>0){
   SLATE_LABELS.forEach(label=>{const d=document.createElement('div');d.className='fpill';d.dataset.val=label;d.textContent=label;sc.appendChild(d);});
 }
 wireFilter('fl-slate','slate');wireFilter('fl-conf','conf');
-wireFilter('fl-wind','wind');wireFilter('fl-pit','pit');wireFilter('fl-bp','bp');
+wireFilter('fl-wind','wind');wireFilter('fl-temp','temp');wireFilter('fl-pit','pit');wireFilter('fl-bp','bp');
 wireFilter('fl-arch','arch');wireFilter('fl-cqf','cqf');wireFilter('fl-lock','lock');
 wireFilter('fl-signal','signal');wireFilter('fl-run','run');wireFilter('fl-pos','pos');
 wireFilter('fl-sal','sal');
