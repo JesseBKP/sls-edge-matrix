@@ -281,7 +281,6 @@ td.wx-col{background:var(--wx-bg);}td.pit-col{background:var(--pit-bg);}
   <th style="width:34px;" class="c pit-col" data-sort="pit_siera">SIERA</th>
   <th style="width:28px;" class="c pit-col" data-sort="pit_csw">CSW%</th>
   <th style="width:24px;" class="c pit-col" data-sort="pit_k9">K/9</th>
-  <th style="width:24px;" class="c pit-col" data-sort="pit_cmd">Cmd</th>
   <th style="width:28px;" class="c pit-col" data-sort="pit_velo_drop">Vlo&#9660;</th>
   <th style="width:24px;" class="c pit-col" data-sort="pit_l3_era">L3</th>
   <th style="width:115px;" class="c pit-col" data-sort="pit_pqs_avg">PQS &#8592; newest</th>
@@ -331,7 +330,6 @@ function xeraCol(v){if(v==null)return'#5c6878';if(v<=3.0)return'#4af0b0';if(v<=3
 function swkCol(v){if(v==null)return'#5c6878';if(v>=32)return'#4af0b0';if(v>=30)return'#e8c547';if(v>=27)return'#9ca8b8';if(v>=24)return'#ff8c42';return'#ff4d6d';}
 function k9Col(v){if(v==null)return'#5c6878';if(v>=12)return'#4af0b0';if(v>=9)return'#e8c547';if(v>=6)return'#9ca8b8';return'#ff4d6d';}
 function eraCol(v){if(v==null)return'#5c6878';if(v<=2.5)return'#4af0b0';if(v<=3.5)return'#e8c547';if(v<=4.5)return'#ff8c42';return'#ff4d6d';}
-function cmdCol(v){if(v==null)return'#5c6878';if(v>=5.0)return'#ff4d6d';if(v>=3.5)return'#ff8c42';if(v>=2.0)return'#9ca8b8';return'#4af0b0';}
 function pqsCol(v){if(v==null)return'#5c6878';if(v>=4.0)return'#4af0b0';if(v>=3.0)return'#e8c547';if(v>=2.0)return'#ff8c42';return'#ff4d6d';}
 function pitScoreCol(v){if(v>=75)return'#ff4d6d';if(v>=60)return'#ff8c42';if(v>=45)return'#e8c547';return'#5c6878';}
 function pitVbCls(v){return v==='ATTACK'?'pvb-attack':v==='BOOST'?'pvb-boost':v==='EVEN'?'pvb-even':v==='FADE'?'pvb-fade':'pvb-ghost';}
@@ -467,7 +465,6 @@ function render(){
       '<td class="c pit-col" style="font-family:DM Mono,monospace;font-size:9px;color:'+xeraCol(p.pit_siera)+';">'+fmtN(p.pit_siera,2)+'</td>'+
       '<td class="c pit-col" style="font-family:DM Mono,monospace;font-size:8px;color:'+swkCol(p.pit_csw)+';">'+fmtN(p.pit_csw,1)+'</td>'+
       '<td class="c pit-col" style="font-family:DM Mono,monospace;font-size:8px;color:'+k9Col(p.pit_k9)+';">'+fmtN(p.pit_k9,1)+'</td>'+
-      '<td class="c pit-col" style="font-family:DM Mono,monospace;font-size:8px;color:'+cmdCol(p.pit_cmd)+';">'+fmtN(p.pit_cmd,1)+'</td>'+
       '<td class="c pit-col">'+veloDrop(p.pit_velo_drop)+'</td>'+
       '<td class="c pit-col" style="font-family:DM Mono,monospace;font-size:8px;color:'+eraCol(p.pit_l3_era)+';">'+fmtN(p.pit_l3_era,2)+'</td>'+
       '<td class="c pit-col">'+pqsMiniCell(p.pit_pqs_log,p.pit_pqs_avg)+'</td>'+
