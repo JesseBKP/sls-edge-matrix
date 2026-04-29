@@ -540,7 +540,7 @@ function render(){
     const displayName=p.name;
     const _bcsColor=p.bcs_color||'#888';
     const _bcsTip='BCS '+(p.bcs_score||'')+' | Avg DK: '+(p.bcs_mean||'')+'pts | Floor: '+(p.bcs_floor||'')+'% | HR-dep: '+(p.bcs_hrdep||'')+'% | '+(p.bcs_games||'')+'g';
-    const _bcs=p.bcs_grade?'<span style="background:'+_bcsColor+';color:#fff;font-size:9px;font-weight:700;padding:1px 4px;border-radius:3px;margin-right:4px;cursor:help;" title="'+_bcsTip+'">'+p.bcs_tier+'</span>':'';
+    const _bcs=p.bcs_grade?'<span style="background:'+_bcsColor+';color:#fff;font-size:9px;font-weight:700;padding:1px 4px;border-radius:3px;margin-right:4px;cursor:help;" title="">'+p.bcs_grade+'</span>':'';
     const sal=sl?(p.salaries&&p.salaries[sl]?p.salaries[sl]:p.salary||0):(p.salary||0);
     const salDisplay=sal>0?'$'+(sal/1000).toFixed(1)+'k':'--';
     const salColor=sal>=5500?'#4af0b0':sal>=4500?'#e8c547':sal>=3500?'#ff8c42':'#ff4d6d';
