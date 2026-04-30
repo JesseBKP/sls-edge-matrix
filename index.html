@@ -306,6 +306,14 @@ td.wx-col{background:var(--wx-bg);}td.pit-col{background:var(--pit-bg);}
           <div class="fpill" data-val="FADE" style="color:#4a7aff;">FADE</div>
           <div class="fpill" data-val="GHOST" style="color:#4af0b0;">GHOST</div>
         </div></div>
+        <div class="fg"><span class="fl" style="color:#e8c547;">PBCS &#9650;</span><div class="pills" id="fl-pbcs">
+          <div class="fpill active" data-val="ALL">All</div>
+          <div class="fpill" data-val="A" style="color:#c0392b;">A</div>
+          <div class="fpill" data-val="B" style="color:#e67e22;">B</div>
+          <div class="fpill" data-val="C" style="color:#e8c547;">C</div>
+          <div class="fpill" data-val="D" style="color:#27ae60;">D</div>
+          <div class="fpill" data-val="F" style="color:#2980b9;">F</div>
+        </div></div>
         <div class="fg"><span class="fl" style="color:#ff8c42;">OppBP &#9650;</span><div class="pills" id="fl-bp">
           <div class="fpill active" data-val="ALL">All</div>
           <div class="fpill" data-val="ATTACK" style="color:#ff4d6d;">ATTACK</div>
@@ -313,6 +321,14 @@ td.wx-col{background:var(--wx-bg);}td.pit-col{background:var(--pit-bg);}
           <div class="fpill" data-val="EVEN" style="color:#e8c547;">EVEN</div>
           <div class="fpill" data-val="FADE" style="color:#4a7aff;">FADE</div>
           <div class="fpill" data-val="GHOST" style="color:#4af0b0;">GHOST</div>
+        </div></div>
+        <div class="fg"><span class="fl" style="color:#e8c547;">PBCS &#9650;</span><div class="pills" id="fl-pbcs">
+          <div class="fpill active" data-val="ALL">All</div>
+          <div class="fpill" data-val="A" style="color:#c0392b;">A</div>
+          <div class="fpill" data-val="B" style="color:#e67e22;">B</div>
+          <div class="fpill" data-val="C" style="color:#e8c547;">C</div>
+          <div class="fpill" data-val="D" style="color:#27ae60;">D</div>
+          <div class="fpill" data-val="F" style="color:#2980b9;">F</div>
         </div></div>
       </div>
     </div>
@@ -372,7 +388,7 @@ td.wx-col{background:var(--wx-bg);}td.pit-col{background:var(--pit-bg);}
 <tr class="sec-hdr">
   <th colspan="1" style="background:var(--bg0);border-bottom:1px solid var(--border);"></th>
   <th colspan="5" class="c wx-hdr">&#9729; WEATHER</th>
-  <th colspan="13" class="c pit-hdr">&#9918; PITCHER</th>
+  <th colspan="14" class="c pit-hdr">&#9918; PITCHER</th>
   <th colspan="17" class="c bat-hdr">&#128274; BATTER</th>
 </tr>
 <tr class="col-hdr">
@@ -382,6 +398,7 @@ td.wx-col{background:var(--wx-bg);}td.pit-col{background:var(--pit-bg);}
   <th style="width:40px;" class="c wx-col" data-sort="wx_wind_mph">Wind</th>
   <th style="width:22px;" class="c wx-col" data-sort="wx_rain">Rain%</th>
   <th style="width:24px;" class="c wx-col">Park</th>
+  <th style="width:28px;" class="c pit-col" data-sort="pbcs_grade">PBCS</th>
   <th style="width:108px;" class="pit-col" data-sort="pitcher_name">Pitcher</th>
   <th style="width:30px;" class="c pit-col" data-sort="pit_score">Scr</th>
   <th style="width:32px;" class="c pit-col" data-sort="pit_stuff">STF+</th>
@@ -395,7 +412,8 @@ td.wx-col{background:var(--wx-bg);}td.pit-col{background:var(--pit-bg);}
   <th style="width:34px;" class="c pit-col" data-sort="pit_verdict">Verd</th>
   <th style="width:34px;" class="c" data-sort="run_verdict">Run</th>
   <th style="width:34px;" class="c" data-sort="prun_prob">P.Run</th>
-  <th style="width:115px;" data-sort="name">Batter</th>
+  <th style="width:115px;" data-sort="name">BCS</th>
+  <th class="c" data-sort="bcs_score">Batter</th>
   <th style="width:24px;" class="c" data-sort="confirmed">Con</th>
   <th style="width:20px;" class="c" data-sort="pos">Pos</th>
   <th style="width:26px;" class="c" data-sort="salary">Sal</th>
@@ -480,7 +498,7 @@ function archCell(p){if(!p.arch_verdict)return'<span style="color:#5c6878;font-s
 function vbCls(v){return v==='LETHAL'?'vb-lethal':v==='STACK'?'vb-stack':v==='FADE'||v==='HARD FADE'?'vb-fade':'vb-neutral';}
 function pqsMiniCell(log,avg){if(!log||!log.some(s=>s!==null))return'<span style="color:#5c6878;font-size:7px;">--</span>';const PC=v=>v==null?'var(--bg0)':v>=5?'#4af0b0':v>=4?'#a3e635':v>=3?'#e8c547':v>=2?'#ff8c42':v>=1?'#ff4d6d':'#2a2a3a';const cols=log.slice(0,5).map((s,i)=>{if(!s)return'<div class="pqs-mc"><span style="color:#5c6878;font-size:7px;">&middot;</span></div>';const sc=s.score;const pts=s.pts||[false,false,false,false,false];const dots=pts.map(m=>'<div class="pqs-dot" style="background:'+(m?'#4af0b0':'#2a2a3a')+'"></div>').join('');return'<div class="pqs-mc"><div class="pqs-ms" style="color:'+PC(sc)+'">'+sc+'</div><div class="pqs-md">'+dots+'</div></div>';});const parts=[];cols.forEach((c,i)=>{parts.push(c);if(i<cols.length-1)parts.push('<div class="pqs-sep"></div>');});return'<div class="pqs-mini">'+parts.join('')+'</div>';}
 
-let filters={lock:new Set(),pos:new Set(),run:new Set(),bp:new Set(),slate:new Set(),sal:new Set(),signal:new Set(),conf:new Set(),arch:new Set(),team:new Set(),cqf:new Set(),wind:new Set(),pit:new Set(),temp:new Set(),bcs:new Set()};
+let filters={lock:new Set(),pos:new Set(),run:new Set(),bp:new Set(),slate:new Set(),sal:new Set(),signal:new Set(),conf:new Set(),arch:new Set(),team:new Set(),cqf:new Set(),wind:new Set(),pit:new Set(),temp:new Set(),bcs:new Set(),pbcs:new Set()};
 let sortCol='lock_g',sortDir=-1;
 
 function getActiveSlate(){const a=[...document.querySelectorAll('#fl-slate .fpill.active')].map(p=>p.dataset.val).filter(v=>v!=='ALL');return a.length===1?a[0]:null;}
@@ -509,6 +527,7 @@ function applyFilters(){
     if(filters.lock.size>0&&!filters.lock.has(p.tier_g))return false;
     if(filters.signal.size>0&&!filters.signal.has(p.signal))return false;
     if(filters.bcs.size>0&&!filters.bcs.has(p.bcs_grade))return false;
+    if(filters.pbcs.size>0&&!filters.pbcs.has(p.pbcs_grade))return false;
     if(filters.team.size>0&&!filters.team.has(p.team))return false;
     if(filters.run.size>0&&!filters.run.has(p.run_verdict))return false;
     if(filters.pos.size>0){const rawPos=sl?(p.positions&&p.positions[sl]||p.pos||''):(p.pos||'');const parts=rawPos.split(/[\/]/).map(x=>x.trim()).filter(Boolean);if(!parts.some(pp=>filters.pos.has(pp)))return false;}
@@ -567,10 +586,11 @@ function render(){
       '<td class="pit-col">'+
         '<div style="display:flex;align-items:center;gap:2px;">'+
           '<span style="font-family:DM Mono,monospace;font-size:6px;font-weight:700;color:'+hC+';background:'+hC+'22;border:1px solid '+hC+'44;padding:0 2px;border-radius:1px;">'+(p.pit_hand||'?')+'</span>'+
-          '<span style="font-family:DM Mono,monospace;font-size:7.5px;color:var(--text1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:82px;">'+(p.pbcs_grade?'<span style="background:'+p.pbcs_color+';color:#fff;font-size:9px;font-weight:700;padding:1px 4px;border-radius:3px;margin-right:3px;">'+p.pbcs_grade+'</span>':'')+p.pitcher_name+'</span>'+
+          '<span style="font-family:DM Mono,monospace;font-size:7.5px;color:var(--text1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:82px;">'+p.pitcher_name+'</span>'+
         '</div>'+
         teamChip(p.pit_team||p.team)+
       '</td>'+
+      '<td class="c pit-col">'+(p.pbcs_grade?'<span style="background:'+p.pbcs_color+';color:#fff;font-size:9px;font-weight:700;padding:1px 4px;border-radius:3px;">'+p.pbcs_grade+'</span>':'--')+'</td>'+
       '<td class="c pit-col"><div style="font-family:Bebas Neue,sans-serif;font-size:14px;color:'+pitSC+';">'+(p.pit_score||'--')+'</div></td>'+
       '<td class="c pit-col" style="font-family:DM Mono,monospace;font-size:9px;color:'+stuffCol(p.pit_stuff)+';">'+fmtN(p.pit_stuff,0)+'</td>'+
       '<td class="c pit-col" style="font-family:DM Mono,monospace;font-size:9px;color:'+xeraCol(p.pit_siera)+';">'+fmtN(p.pit_siera,2)+'</td>'+
@@ -642,7 +662,7 @@ if(typeof SLATE_LABELS!=='undefined'&&SLATE_LABELS.length>0){
 wireFilter('fl-slate','slate');wireFilter('fl-conf','conf');
 wireFilter('fl-wind','wind');wireFilter('fl-temp','temp');wireFilter('fl-pit','pit');wireFilter('fl-bp','bp');
 wireFilter('fl-arch','arch');wireFilter('fl-cqf','cqf');wireFilter('fl-lock','lock');
-wireFilter('fl-signal','signal');wireFilter('fl-bcs','bcs');wireFilter('fl-run','run');wireFilter('fl-pos','pos');
+wireFilter('fl-signal','signal');wireFilter('fl-bcs','bcs');wireFilter('fl-pbcs','pbcs');wireFilter('fl-run','run');wireFilter('fl-pos','pos');
 wireFilter('fl-sal','sal');
 
 (function(){
