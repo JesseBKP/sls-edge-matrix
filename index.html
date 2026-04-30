@@ -322,14 +322,7 @@ td.wx-col{background:var(--wx-bg);}td.pit-col{background:var(--pit-bg);}
           <div class="fpill" data-val="FADE" style="color:#4a7aff;">FADE</div>
           <div class="fpill" data-val="GHOST" style="color:#4af0b0;">GHOST</div>
         </div></div>
-        <div class="fg"><span class="fl" style="color:#e8c547;">PBCS &#9650;</span><div class="pills" id="fl-pbcs">
-          <div class="fpill active" data-val="ALL">All</div>
-          <div class="fpill" data-val="A" style="color:#c0392b;">A</div>
-          <div class="fpill" data-val="B" style="color:#e67e22;">B</div>
-          <div class="fpill" data-val="C" style="color:#e8c547;">C</div>
-          <div class="fpill" data-val="D" style="color:#27ae60;">D</div>
-          <div class="fpill" data-val="F" style="color:#2980b9;">F</div>
-        </div></div>
+        
       </div>
     </div>
 
@@ -590,7 +583,7 @@ function render(){
         '</div>'+
         teamChip(p.pit_team||p.team)+
       '</td>'+
-      '<td class="c pit-col">'+(p.pbcs_grade?'<span style="background:'+p.pbcs_color+';color:#fff;font-size:9px;font-weight:700;padding:1px 4px;border-radius:3px;">'+p.pbcs_grade+'</span>':'--')+'</td>'+
+      '<td class="c pit-col">'+(p.pbcs_grade?'<span style="background:'+p.pbcs_color+';color:#fff;font-size:9px;font-weight:700;padding:1px 4px;border-radius:3px;">'+p.pbcs_grade+'</span>':'<span style="color:#5c6878;font-size:9px;">INC</span>')+'</td>'+
       '<td class="c pit-col"><div style="font-family:Bebas Neue,sans-serif;font-size:14px;color:'+pitSC+';">'+(p.pit_score||'--')+'</div></td>'+
       '<td class="c pit-col" style="font-family:DM Mono,monospace;font-size:9px;color:'+stuffCol(p.pit_stuff)+';">'+fmtN(p.pit_stuff,0)+'</td>'+
       '<td class="c pit-col" style="font-family:DM Mono,monospace;font-size:9px;color:'+xeraCol(p.pit_siera)+';">'+fmtN(p.pit_siera,2)+'</td>'+
